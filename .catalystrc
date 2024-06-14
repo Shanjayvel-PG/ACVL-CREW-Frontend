@@ -1,0 +1,30 @@
+{
+  "defaults": {
+    "project": 1,
+    "env": 1
+  },
+  "actives": {
+    "project": 1,
+    "env": 1
+  },
+  "projects": [
+    {
+      "idx": 1,
+      "id": "23165000000019318",
+      "name": "ACVL-CREW-APP",
+      "domain": {
+        "id": "10082548703",
+        "name": "acvl-crew-app-854660434.development"
+      },
+      "timezone": "Asia/Colombo",
+      "env": [
+        {
+          "idx": 1,
+          "id": "854660434",
+          "name": "Development",
+          "type": 3
+        }
+      ]
+    }
+  ]
+}
