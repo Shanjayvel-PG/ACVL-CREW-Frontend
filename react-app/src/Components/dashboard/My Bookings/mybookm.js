@@ -265,12 +265,20 @@ const BookingDetails = () => {
             </div>
             <div>
               <label>Paid By</label>
+              <input
+                type="text"
+                value={booking["Paid By"]}
+                readOnly
+              />
+            </div>
+            {/* <div>
+              <label>Paid By</label>
               <select value={booking["Paid By"]} readOnly>
                 <option value="welfare">welfare</option>
                 <option value="self">self</option>
                 <option value="company">company</option>
               </select>
-            </div>
+            </div> */}
           </div>
         );
       case "Team":
