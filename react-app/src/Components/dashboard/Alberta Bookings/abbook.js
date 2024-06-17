@@ -18,7 +18,7 @@ const Abbookings = () => {
   useEffect(() => {
     axios
       .get(
-        "https://appsail-10082548988.development.catalystappsail.com/zoho-data"
+        "https://appsail-10082552291.development.catalystappsail.com/zoho-data"
       )
       .then((response) => {
         setBookingsData(response.data.records);

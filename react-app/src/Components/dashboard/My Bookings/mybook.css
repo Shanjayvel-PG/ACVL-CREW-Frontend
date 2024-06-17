@@ -212,9 +212,9 @@ button1 {
     background-color: #cecece;
   }
   .view-button1.active {
-    background-color: blue;
+    background-color: red;
     color: white;
-    border-color: blue;
+    border-color: red;
   }
   .bookings-grid {
     display: grid;
