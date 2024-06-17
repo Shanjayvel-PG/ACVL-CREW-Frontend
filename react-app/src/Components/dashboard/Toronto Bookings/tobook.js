@@ -211,7 +211,7 @@ const Onbookings = () => {
               <label>Customer Pickup Time</label>
               <input
                 type="text"
-                value={selectedBooking["Customer Pickup Time"]}
+                value={selectedBooking["Customer prefered Pick up Time"]}
                 readOnly
               />
             </div>
@@ -219,7 +219,7 @@ const Onbookings = () => {
               <label>Pick Up Time</label>
               <input
                 type="text"
-                value={selectedBooking["Pick Up Time"]}
+                value={selectedBooking["PickUpTime"]}
                 readOnly
               />
             </div>
@@ -279,14 +279,6 @@ const Onbookings = () => {
                 readOnly
               />
             </div>
-            {/* <div>
-                      <label>Coordinate Origin Details</label>
-                      <textarea value={selectedBooking['Coordinates_Origin']} readOnly />
-                  </div>
-                  <div>
-                      <label>Coordinate Destination Details</label>
-                      <textarea value={selectedBooking['Coordinates_Destn']} readOnly />
-                  </div> */}
           </div>
         );
       case "Supplies & Instruction":
@@ -332,7 +324,7 @@ const Onbookings = () => {
               <label>Packing Services</label>
               <input
                 type="text"
-                value={selectedBooking["Packing Services"]}
+                value={selectedBooking["Packing Service"]}
                 readOnly
               />
             </div>
@@ -395,13 +387,13 @@ const Onbookings = () => {
           <div className="team-details-my details-content-my">
             <div>
               <label>Sales Agent</label>
-              <input type="text" value={selectedBooking["Agent"]} readOnly />
+              <input type="text" value={selectedBooking["Sales Agent"]} readOnly />
             </div>
             <div>
               <label>Crew Leader</label>
               <input
                 type="text"
-                value={selectedBooking["Crew leader"]}
+                value={selectedBooking["Move Co ordinator"]}
                 readOnly
               />
             </div>
@@ -409,21 +401,21 @@ const Onbookings = () => {
               <label>Dispatch Manager</label>
               <input
                 type="text"
-                value={selectedBooking["Crew Assigned"]}
+                value={selectedBooking["Dispatch Manager"]}
                 readOnly
               />
             </div>
             <div>
-              <label>Dispatch Manager Phone Number</label>
+              <label>Crew Lead Phone Number</label>
               <input
                 type="text"
-                value={selectedBooking["Manager Phone Numbe"]}
+                value={selectedBooking["Crew Lead Contact Number"]}
                 readOnly
               />
             </div>
             <div>
               <label>Ground Team</label>
-              <input type="text" value={selectedBooking["Crew"]} readOnly />
+              <input type="text" value={selectedBooking["Ground Team"]} readOnly />
             </div>
           </div>
         );
@@ -431,7 +423,6 @@ const Onbookings = () => {
         return null;
     }
   };
-
   if (loading) {
     return <div>Loading...</div>;
   }

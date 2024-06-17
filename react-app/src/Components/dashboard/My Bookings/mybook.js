@@ -5,6 +5,7 @@ import { BsGrid1X2Fill } from "react-icons/bs";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaClipboardList } from "react-icons/fa";
 import "./mybook.css"; // Import the CSS file for styling
+import { useUserContext } from '../../UserContext';
 
 const Mybookings = () => {
   const [Bookings, setBookingsData] = useState([]);
@@ -14,6 +15,7 @@ const Mybookings = () => {
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [viewMode, setViewMode] = useState("list"); 
+  const { userDetails, isUserAuthenticated } = useUserContext();
 
   useEffect(() => {
     axios
@@ -212,7 +214,7 @@ const Mybookings = () => {
               <label>Customer Pickup Time</label>
               <input
                 type="text"
-                value={selectedBooking["Customer Pickup Time"]}
+                value={selectedBooking["Customer prefered Pick up Time"]}
                 readOnly
               />
             </div>
@@ -220,7 +222,7 @@ const Mybookings = () => {
               <label>Pick Up Time</label>
               <input
                 type="text"
-                value={selectedBooking["Pick Up Time"]}
+                value={selectedBooking["PickUpTime"]}
                 readOnly
               />
             </div>
@@ -280,14 +282,6 @@ const Mybookings = () => {
                 readOnly
               />
             </div>
-            {/* <div>
-                      <label>Coordinate Origin Details</label>
-                      <textarea value={selectedBooking['Coordinates_Origin']} readOnly />
-                  </div>
-                  <div>
-                      <label>Coordinate Destination Details</label>
-                      <textarea value={selectedBooking['Coordinates_Destn']} readOnly />
-                  </div> */}
           </div>
         );
       case "Supplies & Instruction":
@@ -333,7 +327,7 @@ const Mybookings = () => {
               <label>Packing Services</label>
               <input
                 type="text"
-                value={selectedBooking["Packing Services"]}
+                value={selectedBooking["Packing Service"]}
                 readOnly
               />
             </div>
@@ -396,13 +390,13 @@ const Mybookings = () => {
           <div className="team-details-my details-content-my">
             <div>
               <label>Sales Agent</label>
-              <input type="text" value={selectedBooking["Agent"]} readOnly />
+              <input type="text" value={selectedBooking["Sales Agent"]} readOnly />
             </div>
             <div>
               <label>Crew Leader</label>
               <input
                 type="text"
-                value={selectedBooking["Crew leader"]}
+                value={selectedBooking["Move Co ordinator"]}
                 readOnly
               />
             </div>
@@ -410,21 +404,21 @@ const Mybookings = () => {
               <label>Dispatch Manager</label>
               <input
                 type="text"
-                value={selectedBooking["Crew Assigned"]}
+                value={selectedBooking["Dispatch Manager"]}
                 readOnly
               />
             </div>
             <div>
-              <label>Dispatch Manager Phone Number</label>
+              <label>Crew Lead Phone Number</label>
               <input
                 type="text"
-                value={selectedBooking["Manager Phone Numbe"]}
+                value={selectedBooking["Crew Lead Contact Number"]}
                 readOnly
               />
             </div>
             <div>
               <label>Ground Team</label>
-              <input type="text" value={selectedBooking["Crew"]} readOnly />
+              <input type="text" value={selectedBooking["Ground Team"]} readOnly />
             </div>
           </div>
         );
@@ -455,12 +449,17 @@ const Mybookings = () => {
     const bookingValues = Object.values(booking).map((value) =>
       String(value).toLowerCase()
     );
+  
+    // Check if the Crew Assigned first name matches with the logged-in user's first name
+    const crewAssignedFirstName = booking["Crew Assigned"]?.split(" ")[0].toLowerCase();
+    const userFirstName = userDetails.firstName.toLowerCase(); // Assuming userDetails is accessible here
+  
     return (
       bookingValues.some((value) => value.includes(query.toLowerCase())) &&
-      isFutureOrToday(booking.MoveDate)
+      isFutureOrToday(booking.MoveDate) &&
+      crewAssignedFirstName === userFirstName
     );
   });
-
   return (
     <div className="bookings-my">
       <div className="main-content-my">

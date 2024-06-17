@@ -17,6 +17,7 @@ const BookingDetails = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("");
 
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -40,6 +41,53 @@ const BookingDetails = () => {
 
   const renderTabContent = () => {
     if (!booking) return null;
+    
+    const coordinatesOrigin = booking.Coordinates_Origin;
+    const coordinatesDestn = booking.Coordinates_Destn;
+
+    let originLat, originLng, destnLat, destnLng;
+
+    if (coordinatesOrigin) {
+      const originCoords = coordinatesOrigin.split(",");
+      if (originCoords.length !== 2) return null; // Ensure there are two coordinates
+
+      originLat = parseFloat(originCoords[0].trim());
+      originLng = parseFloat(originCoords[1].trim());
+
+      if (isNaN(originLat) || isNaN(originLng)) return null; // Ensure coordinates are valid numbers
+
+      console.log("Origin:", originLat, originLng);
+    }
+
+    if (coordinatesDestn) {
+      const destnCoords = coordinatesDestn.split(",");
+      if (destnCoords.length !== 2) return null; // Ensure there are two coordinates
+
+      destnLat = parseFloat(destnCoords[0].trim());
+      destnLng = parseFloat(destnCoords[1].trim());
+
+      if (isNaN(destnLat) || isNaN(destnLng)) return null; // Ensure coordinates are valid numbers
+
+      console.log("Destination:", destnLat, destnLng);
+    }
+
+    const origin = coordinatesOrigin
+      ? { lat: originLat, lng: originLng }
+      : null;
+    const destination = coordinatesDestn
+      ? { lat: destnLat, lng: destnLng }
+      : null;
+
+    let googleMapsLink;
+    // Generate the Google Maps route link
+    if (origin !== null && destination !== null) {
+      const generateGoogleMapsLink = (origin, destination) => {
+        return `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}`;
+      };
+
+      googleMapsLink = generateGoogleMapsLink(origin, destination);
+    }
+
     switch (activeTab) {
       case "Customer Details":
         return (
@@ -88,29 +136,43 @@ const BookingDetails = () => {
             <div>
               <label>Customer Pickup Time</label>
               <input
-                type="text"
-                value={booking["Customer Pickup Time"]}
+                type="Time"
+                value={booking["Customer prefered Pick up Time"]}
                 readOnly
               />
             </div>
             <div>
               <label>Pick Up Time</label>
-              <input type="text" value={booking["Pick Up Time"]} readOnly />
+              <input type="Time" value={booking["PickUpTime"]} readOnly />
             </div>
             <div>
               <label>Trailer</label>
               <input type="text" value={booking["Trailer"]} readOnly />
             </div>
-            <div>
-              <label>Google Route Link</label>
-              <a
-                href={booking["Google Route Link"]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Route Link
-              </a>
-            </div>
+            {googleMapsLink ? (
+              <div>
+                <label>Google Route Link</label>
+                <a
+                  href={googleMapsLink}
+                  className="google-route-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get Route
+                </a>
+              </div>
+            ) : (
+              <div>
+                <label>Google Route Link</label>
+                <a
+                  href={googleMapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  No Routes Found
+                </a>
+              </div>
+            )}
             <div>
               <label>Storage</label>
               <input type="text" value={booking["Storage"]} readOnly />
@@ -162,7 +224,7 @@ const BookingDetails = () => {
             </div>
             <div>
               <label>Packing Services</label>
-              <input type="text" value={booking["Packing Services"]} readOnly />
+              <input type="text" value={booking["Packing Service"]} readOnly />
             </div>
             <div>
               <label>Special Instruction</label>
@@ -216,27 +278,27 @@ const BookingDetails = () => {
           <div className="team-details-my details-content-all">
             <div>
               <label>Sales Agent</label>
-              <input type="text" value={booking["Agent"]} readOnly />
+              <input type="text" value={booking["Sales Agent"]} readOnly />
             </div>
             <div>
               <label>Crew Leader</label>
-              <input type="text" value={booking["Crew leader"]} readOnly />
+              <input type="text" value={booking["Move Co ordinator"]} readOnly />
             </div>
             <div>
               <label>Dispatch Manager</label>
               <input type="text" value={booking["Crew Assigned"]} readOnly />
             </div>
             <div>
-              <label>Dispatch Manager Phone Number</label>
+              <label>Crew Lead Phone Number</label>
               <input
                 type="text"
-                value={booking["Manager Phone Numbe"]}
+                value={booking["Crew Lead Contact Number"]}
                 readOnly
               />
             </div>
             <div>
               <label>Ground Team</label>
-              <input type="text" value={booking["Crew"]} readOnly />
+              <input type="text" value={booking["Ground Team"]} readOnly />
             </div>
           </div>
         );
