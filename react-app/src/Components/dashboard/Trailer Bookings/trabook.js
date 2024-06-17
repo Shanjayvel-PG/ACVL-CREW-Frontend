@@ -170,13 +170,13 @@ const Trabooking = () => {
               />
             </div>
             {/* <div>
-                        <label>From Address</label>
-                        <input type="text" value={selectedBooking['FromAddress']} readOnly />
-                    </div>
-                    <div>
-                        <label>To Address</label>
-                        <input type="text" value={selectedBooking['ToAddress']} readOnly />
-                    </div> */}
+                      <label>From Address</label>
+                      <input type="text" value={selectedBooking['FromAddress']} readOnly />
+                  </div>
+                  <div>
+                      <label>To Address</label>
+                      <input type="text" value={selectedBooking['ToAddress']} readOnly />
+                  </div> */}
           </div>
         );
       case "Move Details":
@@ -218,7 +218,7 @@ const Trabooking = () => {
               <label>Customer Pickup Time</label>
               <input
                 type="text"
-                value={selectedBooking["Customer Pickup Time"]}
+                value={selectedBooking["Customer prefered Pick up Time"]}
                 readOnly
               />
             </div>
@@ -226,7 +226,7 @@ const Trabooking = () => {
               <label>Pick Up Time</label>
               <input
                 type="text"
-                value={selectedBooking["Pick Up Time"]}
+                value={selectedBooking["PickUpTime"]}
                 readOnly
               />
             </div>
@@ -286,14 +286,6 @@ const Trabooking = () => {
                 readOnly
               />
             </div>
-            {/* <div>
-                        <label>Coordinate Origin Details</label>
-                        <textarea value={selectedBooking['Coordinates_Origin']} readOnly />
-                    </div>
-                    <div>
-                        <label>Coordinate Destination Details</label>
-                        <textarea value={selectedBooking['Coordinates_Destn']} readOnly />
-                    </div> */}
           </div>
         );
       case "Supplies & Instruction":
@@ -339,7 +331,7 @@ const Trabooking = () => {
               <label>Packing Services</label>
               <input
                 type="text"
-                value={selectedBooking["Packing Services"]}
+                value={selectedBooking["Packing Service"]}
                 readOnly
               />
             </div>
@@ -402,13 +394,13 @@ const Trabooking = () => {
           <div className="team-details-my details-content-my">
             <div>
               <label>Sales Agent</label>
-              <input type="text" value={selectedBooking["Agent"]} readOnly />
+              <input type="text" value={selectedBooking["Sales Agent"]} readOnly />
             </div>
             <div>
               <label>Crew Leader</label>
               <input
                 type="text"
-                value={selectedBooking["Crew leader"]}
+                value={selectedBooking["Move Co ordinator"]}
                 readOnly
               />
             </div>
@@ -416,21 +408,21 @@ const Trabooking = () => {
               <label>Dispatch Manager</label>
               <input
                 type="text"
-                value={selectedBooking["Crew Assigned"]}
+                value={selectedBooking["Dispatch Manager"]}
                 readOnly
               />
             </div>
             <div>
-              <label>Dispatch Manager Phone Number</label>
+              <label>Crew Lead Phone Number</label>
               <input
                 type="text"
-                value={selectedBooking["Manager Phone Numbe"]}
+                value={selectedBooking["Crew Lead Contact Number"]}
                 readOnly
               />
             </div>
             <div>
               <label>Ground Team</label>
-              <input type="text" value={selectedBooking["Crew"]} readOnly />
+              <input type="text" value={selectedBooking["Ground Team"]} readOnly />
             </div>
           </div>
         );
@@ -639,12 +631,12 @@ const Trabooking = () => {
                       handleBookingClick1(booking["Customer Name"])
                     }
                   >
-                    {booking["Move Co ordinator"]
+                    {booking["Crew Assigned"]
                       ? `${
-                          booking["Move Co ordinator"].split(" ")[0][0] || ""
+                          booking["Crew Assigned"].split(" ")[0][0] || ""
                         }${
-                          booking["Move Co ordinator"].split(" ")[1]
-                            ? booking["Move Co ordinator"].split(" ")[1][0]
+                          booking["Crew Assigned"].split(" ")[1]
+                            ? booking["Crew Assigned"].split(" ")[1][0]
                             : ""
                         }`
                       : "N/A"}

@@ -638,12 +638,12 @@ const Mybookings = () => {
                       handleBookingClick1(booking["Customer Name"])
                     }
                   >
-                    {booking["Move Co ordinator"]
+                    {booking["Crew Assigned"]
                       ? `${
-                          booking["Move Co ordinator"].split(" ")[0][0] || ""
+                          booking["Crew Assigned"].split(" ")[0][0] || ""
                         }${
-                          booking["Move Co ordinator"].split(" ")[1]
-                            ? booking["Move Co ordinator"].split(" ")[1][0]
+                          booking["Crew Assigned"].split(" ")[1]
+                            ? booking["Crew Assigned"].split(" ")[1][0]
                             : ""
                         }`
                       : "N/A"}
