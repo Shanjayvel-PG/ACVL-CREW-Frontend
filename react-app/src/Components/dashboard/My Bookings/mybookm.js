@@ -136,14 +136,14 @@ const BookingDetails = () => {
             <div>
               <label>Customer Pickup Time</label>
               <input
-                type="Time"
+                type="text"
                 value={booking["Customer prefered Pick up Time"]}
                 readOnly
               />
             </div>
             <div>
               <label>Pick Up Time</label>
-              <input type="Time" value={booking["PickUpTime"]} readOnly />
+              <input type="text" value={booking["PickUpTime"]} readOnly />
             </div>
             <div>
               <label>Trailer</label>
