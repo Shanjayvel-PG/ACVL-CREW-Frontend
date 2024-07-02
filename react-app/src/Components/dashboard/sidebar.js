@@ -4,6 +4,8 @@ import './asd.css';
 function Sidebar12({ onMenuItemClick, closeSidebar, isSidebarOpen }) {
     const [activeItem, setActiveItem] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isProvinceDropdownOpen, setIsProvinceDropdownOpen] = useState(false);
+    const [isHubsDropdownOpen, setIsHubsDropdownOpen] = useState(false);
 
     const handleMenuItemClick = (item) => {
         setActiveItem(item);
@@ -30,6 +32,14 @@ function Sidebar12({ onMenuItemClick, closeSidebar, isSidebarOpen }) {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const toggleProvinceDropdown = () => {
+        setIsProvinceDropdownOpen(!isProvinceDropdownOpen);
+    };
+
+    const toggleHubsDropdown = () => {
+        setIsHubsDropdownOpen(!isHubsDropdownOpen);
+    };
+
     return (
         <div className="sidebar1">
             <a 
@@ -48,20 +58,63 @@ function Sidebar12({ onMenuItemClick, closeSidebar, isSidebarOpen }) {
                     All Bookings 
                 </a>
                 <div className={`dropdown-content1 ${isDropdownOpen ? 'show' : ''}`}>
-                    <a 
-                        href="#" 
-                        className={activeItem === 'alberta' ? 'active' : ''} 
-                        onClick={() => handleMenuItemClick('alberta')}
-                    >
-                        Alberta
-                    </a>
-                    <a 
-                        href="#" 
-                        className={activeItem === 'toronto' ? 'active' : ''} 
-                        onClick={() => handleMenuItemClick('toronto')}
-                    >
-                        Ontario
-                    </a>
+                    <div className="dropdown1">
+                        <a 
+                            href="#" 
+                            className={activeItem === 'province' ? 'active' : ''} 
+                            onClick={toggleProvinceDropdown}
+                        >
+                            Province
+                        </a>
+                        <div className={`dropdown-content1 green ${isProvinceDropdownOpen ? 'show' : ''}`}>
+                            <a 
+                                href="#" 
+                                className={activeItem === 'alberta' ? 'active' : ''} 
+                                onClick={() => handleMenuItemClick('alberta')}
+                            >
+                                Alberta
+                            </a>
+                            <a 
+                                href="#" 
+                                className={activeItem === 'ontario' ? 'active' : ''} 
+                                onClick={() => handleMenuItemClick('ontario')}
+                            >
+                                Ontario
+                            </a>
+                        </div>
+                    </div>
+                    <div className="dropdown1">
+                        <a 
+                            href="#" 
+                            className={activeItem === 'hubs' ? 'active' : ''} 
+                            onClick={toggleHubsDropdown}
+                        >
+                            Hubs
+                        </a>
+                        <div className={`dropdown-content1 green ${isHubsDropdownOpen ? 'show' : ''}`}>
+                            <a 
+                                href="#" 
+                                className={activeItem === 'london' ? 'active' : ''} 
+                                onClick={() => handleMenuItemClick('london')}
+                            >
+                                London, Ontario
+                            </a>
+                            <a 
+                                href="#" 
+                                className={activeItem === 'toronto' ? 'active' : ''} 
+                                onClick={() => handleMenuItemClick('toronto')}
+                            >
+                                Toronto, Ontario
+                            </a>
+                            <a 
+                                href="#" 
+                                className={activeItem === 'calgary' ? 'active' : ''} 
+                                onClick={() => handleMenuItemClick('calgary')}
+                            >
+                                Calgary, Alberta
+                            </a>
+                        </div>
+                    </div>
                     <a 
                         href="#" 
                         className={activeItem === 'trailer' ? 'active' : ''} 

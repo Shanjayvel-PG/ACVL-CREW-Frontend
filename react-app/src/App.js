@@ -14,6 +14,7 @@ return (
 <Route path="/" element={<Layout/>} />
 <Route  path="/logout" element={<Layout/>}/>
 <Route path="/booking/:id" element={<BookingDetails/>} />
+<Route path="/booking-details/:id" element={<BookingDetails />} />
 
 </Routes>
 </HashRouter>

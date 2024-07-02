@@ -1,0 +1,138 @@
+/* Existing styles */
+.table-container {
+  overflow-x: auto;
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  background: #f1f1f1;
+  z-index: 2;
+}
+.date-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background: #f1f1f1;
+  z-index: 1;
+}
+.month-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.month-button {
+  margin: 0 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+.indicator {
+  position: relative;
+  cursor: pointer;
+}
+/* Popup styles */
+.indicator .popup {
+  display: none;
+  position: absolute;
+  text-align: left;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 200px;
+  z-index: 10;
+}
+.indicator:hover .popup {
+  display: block;
+}
+.popup-content {
+  font-size: 12px;
+  color: #333;
+}
+.table-container {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  table {
+    border-collapse: collapse;
+    width: auto;
+  }
+  th, td {
+    border: 0.5px solid rgba(0, 0, 0, 0.551);
+    text-align: center;
+    padding: 2px; /* Reduced padding */
+    min-width: 10px;
+    font-size: 10px; /* Reduced font size */
+    vertical-align: bottom; /* Align content to the bottom */
+  }
+  th.sticky, td.sticky {
+    position: -webkit-sticky; 
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 2;
+    width: 50px; /* Adjusted width */
+    min-width: 50px; /* Adjusted min-width */
+    box-shadow: 1px 0 0 #ddd; 
+    text-align: left; 
+  }
+  th.date-header {
+    height: 40px; /* Adjusted height */
+  }
+  th {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .hidden {
+    display: none;
+  }
+  .month-buttons {
+    margin-bottom: 10px;
+  } 
+  .month-button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #c6b5b5;
+    border: 1px solid #150d0d;
+    border-radius: 5px;
+  }
+  .month-button:hover {
+    background-color: #d0d0d0;
+  }
+  .indicator {
+    display: block;
+    line-height: 1;
+    font-size: 20px; /* Reduced font size */
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .indicator.right-indicator {
+    color: rgb(3, 149, 35);
+    text-align: left;
+    /* float: left; */
+  }
+  .indicator.left-indicator {
+    color: rgb(241, 30, 30);
+    text-align: right;
+    /* float: right; */
+    margin-right: -4px; 
+    padding-right: 2px;
+  }
+  .indicator.both-indicator {
+    color: rgb(78, 88, 222); 
+    text-align: center;
+  }
+  
+ 
+ 
+  
+  
+  
+  
+ 

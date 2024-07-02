@@ -1,24 +1,26 @@
-
-
 import React, { useEffect, useState } from "react";
 import './asd.css';
 import UserProfile from "../../UserProfile";
 import img_logo from "../images/trucklogo.png";
 import LogoutConfirmation from './Logout/logout';
 
-function Header({ toggleSidebar, firstName }) {
+function Header({ toggleSidebar }) {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-  const firstLetter = firstName.charAt(0).toUpperCase();
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
     mailid: "",
     timeZone: "",
     createdTime: "",
+    userid:"",
+roledetails: {
+    rolename: "",
+    roleid: ""
+  }
   });
 
   useEffect(() => {
@@ -31,6 +33,11 @@ function Header({ toggleSidebar, firstName }) {
           mailid: result.content.email_id,
           timeZone: result.content.time_zone,
           createdTime: result.content.created_time,
+          userid: result.content.user_id,
+roledetails: {
+    rolename: result.content.role_details.role_name,
+    roleid: result.content.role_details.role_id,
+  }
         };
         setUserDetails(userDetails);
         setIsUserAuthenticated(true);
@@ -84,7 +91,7 @@ function Header({ toggleSidebar, firstName }) {
         <div className="profile-container">
           <a href="#" className="profile" onClick={toggleDropdown}>
             <div className="profile-letter">
-              {firstLetter}
+              {userDetails.firstName.charAt(0).toUpperCase()}
             </div>
           </a>
           {dropdownVisible && (

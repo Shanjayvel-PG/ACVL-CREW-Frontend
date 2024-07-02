@@ -6,6 +6,7 @@ import Pastbookings from './Past Bookings/pastbook.js';
 import Abbookings from './Alberta Bookings/abbook.js';
 import Onbookings from './Toronto Bookings/tobook.js';
 import Trabooking from './Trailer Bookings/trabook.js';
+import London from './London Hubs/London.js';
 
 function Content12({ selectedContent }) {
     const getContent = () => {
@@ -40,7 +41,13 @@ function Content12({ selectedContent }) {
                       <Abbookings/>
                     </>
                 );
-            case 'toronto':
+            case 'london':
+                return (
+                    <>
+                        <London/>
+                    </>
+                );
+            case 'ontario':
                 return (
                     <>
                       <Onbookings/>
