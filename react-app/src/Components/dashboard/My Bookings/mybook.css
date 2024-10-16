@@ -1,7 +1,7 @@
-/* General styling for the bookings component */
+
 .bookings-my {
   display: flex;
-  height: 100vh;
+  height: auto;
   font-family: "Poppins", sans-serif;
 }
 .main-content-my {
@@ -10,8 +10,63 @@
   margin: 0 auto;
   padding: 0px;
 }
+.updates-tab-content-my{
+
+  padding: 10px;
+  background-color: #cecece;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.updates-tab-content-my button3{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100px;
+  border: 1px solid black;
+  background-color: red;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  width: 80%;
+  max-width: 600px; 
+  max-height: 80%; 
+  overflow-y: auto; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+}
+
+.popup-content button {
+  margin-top: 20px;
+}
+
 .header-my {
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  z-index: 99;
+  background-color: #f4f4f4; 
 }
 .bookings-list-my {
   margin-bottom: 20px;
@@ -29,13 +84,12 @@
   background-color: red;
   border-radius: 50px;
   font-weight: bold;
+  position: -webkit-sticky; 
+  position: sticky;
+  top: 81px;
+  z-index: 100;
 }
-.header-my {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
+
 .search-bar {
   margin: 0;
 }
@@ -49,7 +103,11 @@
   flex: 1;
   text-align: center;
 }
-
+.bookings-header-my span1,
+.booking-item-my span1 {
+  flex: 1;
+  text-align: left;
+}
 .booking-item-my {
   cursor: pointer;
 }
@@ -63,7 +121,7 @@
   color: white;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-}
+} 
 .tabs-my {
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -87,14 +145,14 @@
   border-bottom: 2px solid rgb(54, 11, 11);
 }
 
-button1 {
+button3 {
   margin: 5px;
 }
-
 button2 {
   margin-top: -20px;
   float: right;
 }
+
 .edit-button:hover{
   color: red;
 }
@@ -102,9 +160,10 @@ button2 {
   color: red;
 }
 .view-button1 {
-  border: 1px solid;
+  border: 1px solid black;
   border-radius: 10px;
   background-color: #fff;
+  color: black;
   padding: 8px;
 }
 .view-button1:hover {
@@ -119,11 +178,19 @@ button2 {
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  background-color: #cecece;
-  border-top: none;
+  margin: 10px;
+  /* border: 1px solid black; */
+  border-radius: 10px;
+  background-color: #fff;
+  /* border-top: none; */
+}
+
+.time{
+  display: flex;
+  color: #eb0a0a;
+}
+.from{
+  padding-left: 50px;
 }
 
 .details-content-my > div {
@@ -134,27 +201,25 @@ button2 {
 
 .details-content-my label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+  padding: 6px;
 }
 
 .details-content-my input,
 .details-content-my select,
-.details-content-my textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.details-content-my textarea{
+  border: none;
 }
 
+.booking-details-my{
+  background-color: #ccc;
+}
 .details-content-my textarea {
   resize: vertical;
-  height: 60px;
+  height: 80px;
 }
 .details-tabs-my {
   background-color: #cecece;
+  color: #000;
   display: flex;
 }
 
@@ -165,6 +230,7 @@ button2 {
   border: none;
   background: none;
   outline: none;
+  color: #000;
   flex: 1;
   text-align: center;
 }
@@ -176,105 +242,39 @@ button2 {
 .bookings-grid {
   display: none;
 }
+.nottodisplayinlapview{
+  display: none;
+}
 .invoice-link{
-  /* top: 10px;
-  background-color: #fff; */
   border: 1px solid black;
   background-color: antiquewhite;
   border-radius: 10px;
   padding: 2px 5px;
   color: black;
 }
-
-/* bookmjs lap view css */
-
-.booking-details-header {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0;
-  margin-top: 100px;
-}
-.grid-header1 {
-  font-weight: bold;
-  background-color: #a7a6a6;
-  color: black;
-  padding: 10px;
-  text-align: left;
-}
-
-.grid-header1:first-child {
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-.grid-header1:nth-child(8) {
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.details-container {
-background-color: #f9f9f9;
-margin-top: 10px;
-border-radius: 10px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-width: 100%;
-box-sizing: border-box; 
-}
-.tab1{
-width: 100%;
-display: flex;
-color: red;
-font-weight: 800;
-justify-content: space-between;
-align-items: center;
-background-color: #F4EEEE;
-border: 0px solid #ddd;
-border-radius: 5px;
-padding: 10px 20px;
-margin-bottom: 10px;
-cursor: pointer;
-font-size: 16px;
-transition: background-color 0.3s ease;
-}
-.tab1:hover {
-background-color: #ddd;
-}
-.tab1.active {
-background-color: #f37c80;
-color: black;
-font-weight: 800;
-}
-.details-content-container {
-background-color: #F4EEEE;
-margin-top: -10px;
-margin-bottom: 10px;
-}
-.arrow {
-  margin-left: auto;
-}
-.details-content-all {
-  width: 95%;
-  max-width: 800px;
-}
-
-.details-content-all div {
+.details-content1 {
   display: flex;
-  align-items: center;
-  background-color: #f4eeee;
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 100%;
+  flex-wrap: wrap;
+  padding: 10px;
 }
 
-.details-content-all label {
-  width: 38%;
-  font-weight: bold;
+.details-content1 > div {
+  width: 48%;
+  margin-bottom: 10px;
+  margin: 10px;
+}
+
+.details-content1 label {
+  display: block;
+  /* font-weight: bold; */
   margin-bottom: 5px;
 }
 
-.details-content-all input,
-.details-content-all textarea,
-.details-content-all select {
-  flex: 1;
+.details-content1 input,
+.details-content1 select,
+.details-content1 textarea {
+  /* margin-left: 15px; */
+  width: 100%;
   padding: 8px;
   margin-top: 5px;
   box-sizing: border-box;
@@ -282,13 +282,50 @@ margin-bottom: 10px;
   border-radius: 4px;
 }
 
-.details-content-all textarea {
+.details-content1 textarea {
   resize: vertical;
-  border-radius: 20px;
   height: 60px;
 }
-/* bookmjs lap view css */
+.addmovecreatebutton{
+  text-align: center;
+  justify-content: center;
+ 
+}
 
+.booking-details-header{
+  display: none;
+}
+.details-container{
+  display: none;
+}
+
+.booking-item-my1{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: rgb(128, 128, 128);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+.bookings-header-my span,
+.header-with-hover span
+.booking-item-my1 span {
+  flex: 1;
+  text-align: center;
+}
+.booking-item-my1 span1 {
+  flex: 1;
+  text-align: left;
+  
+}
+.hover-css-block{
+  padding: 20px;
+  margin-top: 100px;
+}
 .edit-button{
   background-color: #cecece;
   
@@ -302,6 +339,9 @@ margin-bottom: 10px;
 
 
 @media (max-width: 900px) {
+  .nottodisplayinlapview{
+    display: block;
+  }
   .bookings-list-my {
     display: none;
   }
@@ -313,14 +353,32 @@ margin-bottom: 10px;
 
     margin-bottom: 20px;
   }
-  /* .sc-container{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-} */
   .search-bar {
     margin: 0;
   }
+
+    .react-datepicker {
+      width: 100%; 
+      font-size: 14px;
+    }
+    
+    .react-datepicker__input-container {
+      width: 100%;
+    }
+  
+    .react-datepicker__day, .react-datepicker__day-name {
+      width: 2.5rem;
+      height: 2.5rem; 
+    }
+  
+    .react-datepicker__header {
+      padding: 0.5rem; 
+    }
+  
+    .react-datepicker__navigation {
+      top: 10px; 
+    }
+    
   .search-bar input {
     padding: 10px;
     border-radius: 50px;
@@ -330,13 +388,14 @@ margin-bottom: 10px;
     float: right;
     margin-top: -36px;
   }
-  button1 {
+  button3 {
     margin: 5px;
   }
   .view-button1 {
-    border: 1px solid;
+    border: 1px solid black;
     border-radius: 10px;
     background-color: #fff;
+    color: black;
     font-size: 10px;
     padding: 8px;
   }
@@ -350,7 +409,7 @@ margin-bottom: 10px;
   }
   .bookings-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     gap: 0;
     margin-top: 10px;
   }
@@ -363,22 +422,34 @@ margin-bottom: 10px;
   }
   .grid-cell {
     padding: 1px;
-    text-align: left;
+    text-align: center;
     cursor: pointer;
   }
   .grid-header:first-child {
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
   }
-  .grid-header:nth-child(8) {
+  .grid-header:nth-child(9) {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
   }
-
+  /* new */
+  button2{
+    display: none;
+  }
+  button1{
+    display: block;
+  }
+  .hover-css-block{
+    display: none;
+   }
+  .details-container{
+    display: block;
+  }
   /* bookmjs mobile view css */
   .booking-details-header {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     gap: 0;
     margin-top: 100px;
   }
@@ -394,7 +465,7 @@ margin-bottom: 10px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
   }
-  .grid-header1:nth-child(8) {
+  .grid-header1:nth-child(9) {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
   }
@@ -477,73 +548,7 @@ margin-bottom: 10px;
     border-radius: 20px;
     height: 60px;
   }
-/* bookmjs mobile view css */
 
-  /* .details-content-all a {
-    flex: 1;
-    text-decoration: none;
-    color: blue;
-  } */
-  /* .details-content-all {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #f4eeee;
-    border-top: none;
-  }
-  .details-content-all > div {
-    width: 48%;
-    margin-bottom: 10px;
-    margin: 10px;
-  }
-
-  .details-content-all > div:nth-child(2n) {
-    margin-right: 0;
-    margin: 10px;
-  }
-
-  .details-content-all label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .details-content-all input,
-  .details-content-all select,
-  .details-content-all textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .details-content-all textarea {
-    resize: vertical;
-    height: 60px;
-  } */
-  /* .details-tabs-my {
-    background-color: #f4eeee;
-    display: flex;
-  }
-
-  .details-tabs-my button {
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 30px;
-    border: none;
-    background: none;
-    outline: none;
-    flex: 1;
-    text-align: center;
-  }
-  .details-tabs-my button.active {
-    background-color: red;
-    color: white;
-    border-bottom: 2px solid rgb(54, 11, 11);
-  } */
   .green-circle,
   .red-circle {
     margin: 5px;
@@ -576,7 +581,6 @@ margin-bottom: 10px;
   }
   .navbar-brand {
     display: flex;
-
     align-items: center;
   }
   .company-logo {
@@ -591,12 +595,59 @@ margin-bottom: 10px;
     padding: 2px 5px;
     border-radius: 6px;
     background-color: antiquewhite;
-    position: relative;
+    /* position: relative; */
     top: 9px;
   }
+
   .google-route-link:hover {
     background-color: rgb(219, 166, 96);
   }
+
+  .details-content-inventory1 {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top: none;
+  }
+
+  .details-content-inventory1 label {
+    display: block;
+    /* font-weight: bold; */
+    margin-bottom: 5px;
+  }
+
+  .details-content-inventory1 input,
+  .details-content-inventory1 select,
+  .details-content-inventory1 textarea {
+    margin-left: 15px;
+    width: 100%;
+    padding: 12px;
+    /* margin-top: 5px; */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .details-content-inventory1 > div {
+    width: 100%;
+    margin-bottom: 10px;
+    margin: 10px;
+  }
+  
+  .addbutton{
+    float: right;
+    color: red;
+    justify-content: right;
+  }
+
+  .hello{
+    float: left;
+    color: #000;
+  }
+
+
 }
 .google-route-link {
   font-size: 15px;
@@ -604,9 +655,61 @@ margin-bottom: 10px;
   padding: 2px 5px;
   border-radius: 6px;
   background-color: antiquewhite;
-  position: relative;
+  /* position: relative; */
   top: 9px;
 }
 .google-route-link:hover {
   background-color: rgb(219, 166, 96);
+}
+.header-content-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 60px;
+  line-height: 1;
+  color: #000;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+}
+.navbar-brand {
+  display: flex;
+
+  align-items: center;
+}
+.company-logo {
+  height: 40px;
+}
+.ms-2 {
+  margin-left: 0.5rem;
+}
+@media (max-width: 480px)
+{
+  .header-my {
+  display: grid;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .view-button1{
+    justify-content: right;
+    margin-top: 50px;
+  }
+}
+.totalmoves p, h1{
+  margin-top: 5px;
+  margin-bottom: 5px;
+ }
+ .date-picker-wrapper .react-datepicker__input-container input {
+  width: 100px !important;
+  border-radius: 5px;
+}
+.toggle-icon{
+
+ justify-items: flex-end;
 }

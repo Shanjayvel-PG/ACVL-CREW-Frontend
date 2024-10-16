@@ -8,7 +8,7 @@
   position: sticky;
   left: 0;
   background: #f1f1f1;
-  z-index: 2;
+  /* z-index: 2; */
 }
 .date-header {
   position: -webkit-sticky;
@@ -32,25 +32,35 @@
   cursor: pointer;
 }
 /* Popup styles */
-.indicator .popup {
+/* .indicator .popup1 {
   display: none;
   position: absolute;
   text-align: left;
-  top: -70px;
-  left: 50%;
   transform: translateX(-50%);
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px;
   width: 200px;
   z-index: 10;
+} */
+
+.indicator .popup1 {
+  display: none;
+  position: absolute;
+  text-align: left;
+  transform: translateX(-20%);
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  z-index: 10;
 }
-.indicator:hover .popup {
+.indicator:hover .popup1 {
   display: block;
 }
-.popup-content {
-  font-size: 12px;
+.popup-content1 {
+  padding: 8px;
+  font-size: 13px;
   color: #333;
 }
 .table-container {
@@ -62,21 +72,20 @@
     width: auto;
   }
   th, td {
-    border: 0.5px solid rgba(0, 0, 0, 0.551);
+    border: 2.5px solid rgba(46, 46, 46, 0.551);
     text-align: center;
-    padding: 2px; /* Reduced padding */
-    min-width: 10px;
-    font-size: 10px; /* Reduced font size */
-    vertical-align: bottom; /* Align content to the bottom */
+    padding: 2px; 
+    min-width: 35px;
+    font-size: 10px; 
+    vertical-align: bottom;
   }
   th.sticky, td.sticky {
     position: -webkit-sticky; 
     position: sticky;
     left: 0;
-    background-color: white;
-    z-index: 2;
+    /* z-index: 2; */
     width: 50px; /* Adjusted width */
-    min-width: 50px; /* Adjusted min-width */
+    min-width: 65px; /* Adjusted min-width */
     box-shadow: 1px 0 0 #ddd; 
     text-align: left; 
   }
@@ -128,11 +137,58 @@
     color: rgb(78, 88, 222); 
     text-align: center;
   }
-  
+  .month-button.active {
+    background-color:red;
+    color: white;
+  }
  
- 
+  .indicator .tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 12px;
+    width: 200px; 
+    z-index: 10;
+    bottom: 125%; 
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
   
+  .indicator:hover .tooltip {
+    display: block;
+    opacity: 1;
+  }
+  .sticky.province-cell.active {
+    background-color: #f0f8ff; 
+    font-weight: bold;
+    color: #2b6cb0;
+    cursor: pointer;
+    /* z-index: 1; */
+  }
   
+   .title {
+    top: 0; 
+    z-index: 1;
+  }
   
+  .centered-province {
+    text-align: center;
+    vertical-align: middle; 
+  }
+  
+  .centered-cell {
+  text-align: center;
+  vertical-align: middle;
+  }
+  
+  .total-moves-label{
+    background-color: red;
+    }
   
  

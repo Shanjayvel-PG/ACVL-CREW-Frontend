@@ -7,6 +7,11 @@ import Abbookings from './Alberta Bookings/abbook.js';
 import Onbookings from './Toronto Bookings/tobook.js';
 import Trabooking from './Trailer Bookings/trabook.js';
 import London from './London Hubs/London.js';
+import Calgary from './Calgary Hubs/Calgray.js';
+import Toronto from './Toronto Hubs/Toronto.js';
+import Addmoves from './Addmoves.js';
+import Storage from './Storage.js';
+import Finance from './Finance/Finance.js';
 
 function Content12({ selectedContent }) {
     const getContent = () => {
@@ -29,12 +34,6 @@ function Content12({ selectedContent }) {
                         <Pastbookings/>
                     </>
                 );
-            case 'trailer':
-                return (
-                    <>
-                    <Trabooking/>
-                    </>
-                );
             case 'alberta':
                 return (
                     <>
@@ -47,17 +46,46 @@ function Content12({ selectedContent }) {
                         <London/>
                     </>
                 );
+            case 'calgary':
+                    return (
+                        <>
+                         <Calgary/>
+                        </>
+                    );
+            case 'toronto':
+                    return (
+                        <>
+                            <Toronto/>
+                        </>
+                        );
             case 'ontario':
                 return (
                     <>
                       <Onbookings/>
                     </>
                 );
+            case 'Addmoves':
+                return (
+                    <>
+                      <Addmoves/>
+                    </>
+                );
+            case 'Storage':
+               return (
+                    <>
+                      <Storage/>
+                    </>
+                ); 
+            case 'finance':
+               return (
+                    <>
+                      <Finance/>
+                    </>
+                ); 
             default:
                 return (
                     <>
-                    {/* <h2>Welcome to ACVL & M N movers Crew Dashboard</h2> */}
-                    <Mybookings/>
+                    <Allbookings/>
                     </>
                 );
         }

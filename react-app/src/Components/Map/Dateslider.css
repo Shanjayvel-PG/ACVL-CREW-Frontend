@@ -1,0 +1,86 @@
+.date-slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+}
+  
+  .month-filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .date-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    height: 420px; /* Adjust height as necessary */
+    position: relative;
+    width: 100%; /* Ensures the slider takes full width */
+  }
+  
+  .date-line {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    background-color: gray;
+    z-index: 0;
+  }
+  
+  .date-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 100%; /* Ensures the item takes full width */
+    margin: 30px 1; /* Adjust margin as necessary */
+    position: relative; /* Ensures absolute positioning within each item */
+    z-index: 5;
+  }
+  
+  .date-marker {
+    height: 2.7px; /* Thin line height */
+    width: 20px; /* Adjust width as necessary */
+    background-color: gray; /* Default color */
+    margin: 5px 0; /* Space around the hyphen */
+    z-index: 2;
+  }
+  
+  .date-marker.major {
+    width: 30px; /* Wider hyphen for major dates */
+    background-color: #007bff; /* Color for major dates */
+  }
+  
+  .date-item.selected .date-marker {
+    background-color: #0056b3; /* Color for selected date */
+  }
+  
+  .date-item:hover .date-marker {
+    background-color: #003d7a; /* Color for hovered date */
+  }
+  
+  .date-label {
+    position: absolute;
+    left: 20px; /* Adjust distance from the line as necessary */
+    top: 5;
+    transform: translateX(-50%);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .date-hover-label {
+    display: none;
+    position: absolute;
+    background-color: red;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 3px;
+    margin-left: 50px;
+    white-space: nowrap;
+  }
+  
+  .date-item:hover .date-hover-label {
+    display: block;
+  }

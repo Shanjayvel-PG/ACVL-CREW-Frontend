@@ -1,17 +1,22 @@
-import React, {useState} from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import { BsGrid1X2Fill } from "react-icons/bs";
-import { FaMapMarkerAlt, FaClipboardList } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../My Bookings/mybook.css";
+import { BsGrid1X2Fill } from "react-icons/bs";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaClipboardList, FaPen } from "react-icons/fa";
+import "react-datepicker/dist/react-datepicker.css";
 import MapComponent from "../../MapVisualization";
 import Gridview from "../../Gridvisualization";
 import useBookings from '../../usebooking';
 import ListView from "../../Listvisualization";
 
-const Trabooking = () => {
-
+const Toronto = () => {
+  const [columnMapping, setColumnMapping] = useState({});
+  const [bookingsData, setBookingsData] = useState([]);
+  const [filteredBookingsData, setFilteredData] = useState([]);
+  const [zipcodeRanges, setZipcodeRanges] = useState([]);
   const {
-    bookingsData, selectedBooking, editableBooking, activeTab, activeInventoryTab,
+    selectedBooking, editableBooking, activeTab, activeInventoryTab,
     loading, error, query, viewMode, editStates, isPopupVisible, popupContent,
     setQuery, setViewMode, setEditStates, setIsPopupVisible, setPopupContent,
     handleClosePopup, handlePopupOpen, parseDate, getLastTwoLetters, formatDate,
@@ -20,26 +25,80 @@ const Trabooking = () => {
     renderCrewnotesBookingDetails,handleInputChange1,downloadPDF,
   } = useBookings();
 
-  const filteredBookingsData = bookingsData.filter((booking) => {
-    const formattedDate = formatDate(booking.MoveDate);
-    const bookingValues = Object.values(booking).map((value) =>
-      String(value).toLowerCase()
-    );
-    const isTrailerYes = booking.Trailer.toLowerCase() === "yes";
-    const isStatusExcluded = ['review completed', 'move cancelled'].includes(
-      booking.Status.toLowerCase()
-    );
-    return (
-      (bookingValues.some((value) => value.includes(query.toLowerCase())) ||
-      formattedDate.toLowerCase().includes(query.toLowerCase())) &&
-      isTrailerYes &&
-      !isStatusExcluded 
-    );
-  })
-  .sort((a, b) => parseDate(a.MoveDate) - parseDate(b.MoveDate));
+  useEffect(() => {
+    const fetchZipcodeData = async () => {
+      try {
+        const response = await axios.get("https://appsail-10083976836.development.catalystappsail.com/zoho-data/zip-code");
+        const data = response.data;
+        if (data && Array.isArray(data.records)) {
+          setZipcodeRanges(data.records);
+        } else {
+          console.error("Zipcode API response is not an array:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching zipcode data:", error);
+      }
+    };
+    fetchZipcodeData();
+  }, []);
 
+  useEffect(() => {
+    axios.get("https://appsail-10083976836.development.catalystappsail.com/zoho-data")
+      .then(response => {
+        setColumnMapping(response.data.columnMapping);
+        const responseData = response.data;
+        if (responseData && responseData.dataRows && Array.isArray(responseData.dataRows)) {
+          const filtered = responseData.dataRows.filter(item => isTorontoHub(item.From_Address));
+          setBookingsData(filtered);
+          setFilteredData(filtered);
+        } else {
+          console.error("dataRows is not an array or missing", responseData);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }, [zipcodeRanges]);
+
+  const isZipcodeInRange = (zipcode, range) => {
+    const start = range.Start.replace(/\s/g, "");
+    const end = range.End.replace(/\s/g, "");
+    const zip = zipcode.replace(/\s/g, "");
+    return zip >= start && zip <= end;
+  };
+
+  const extractZipcode = (address) => {
+    const match = address.match(/([A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)/);
+    return match ? match[0] : "";
+  };
+
+  const isTorontoHub = (address) => {
+    const itemZipcode = extractZipcode(address);
+    const inLondon = zipcodeRanges.some((range) => 
+      isZipcodeInRange(itemZipcode, range) && range.Location === "Toronto"
+    );
+    return inLondon;
+  };
+
+  const searchBookingData = (booking) => {
+    const valuesToSearch = Object.values(booking).map(value => {
+      if (value === booking.MoveDate) {
+        return formatDate(value); 
+      }
+      return value;
+    }).join(" ").toLowerCase();
+    return valuesToSearch.includes(query.toLowerCase());
+  };
+
+  useEffect(() => {
+    const filtered = bookingsData.filter(
+      (booking) => searchBookingData(booking) && isFutureOrToday(booking.MoveDate)
+    ).sort((a, b) => parseDate(a.MoveDate) - parseDate(b.MoveDate));
+    setFilteredData(filtered); 
+  }, [query, bookingsData]);
+ 
   const [totalBookings, setTotalBookings] = useState(0);
-  
+
   const handleMarkerClick = (bookingId) => {
     handleBookingClick1(bookingId);
     setViewMode("list");
@@ -48,9 +107,9 @@ const Trabooking = () => {
     <div className="bookings-my">
       <div className="main-content-my">
         <div className="header-my">
-          {/* <h1>Trailer Bookings ({totalBookings})</h1> */}
+          {/* <h1>Toronto Hub Bookings ({totalBookings})</h1> */}
           <div className="totalmoves">
-          <h1>Trailer Moves </h1><p>Total Moves: {totalBookings}</p> 
+            <h1>Toronto Hub Moves </h1><p>Total Moves: {totalBookings}</p> 
           </div>
           <div className="search-bar">
             <input
@@ -93,7 +152,8 @@ const Trabooking = () => {
             renderBookingDetails={renderBookingDetails}
             handleBookingClick1={handleBookingClick1}
             getLastTwoLetters={getLastTwoLetters}
-            setTotalBookings={setTotalBookings}/>
+            setTotalBookings={setTotalBookings}
+          />
         )}
 
         {viewMode === "grid" && (
@@ -123,4 +183,4 @@ const Trabooking = () => {
   );
 };
 
-export default Trabooking;
+export default Toronto;

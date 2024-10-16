@@ -69,7 +69,9 @@ function App12({ userDetails }) { // Accept userDetails as a prop
 
     return (
         <div className="container">
-            <Header toggleSidebar={toggleSidebar} firstName={userDetails.firstName} /> {/* Pass firstName to Header */}
+            <Header toggleSidebar={toggleSidebar} 
+            // firstName={userDetails.firstName} 
+            /> 
             <div className={`sidebar-container ${isSidebarOpen ? 'open' : ''}`}>
                 <Sidebar12 onMenuItemClick={handleMenuItemClick} closeSidebar={closeSidebar} />
             </div>

@@ -1,0 +1,56 @@
+/* Header styles */
+.header {
+    height: 80px;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header .reset-button {
+    margin-right: 20px; /* Spacing between button and text */
+  }
+  
+  /* Movedate styles */
+  .movedate {
+    position: absolute;
+    /* top: -10px; Start slightly above the header */
+    /* left: 0; */
+    z-index: 1;
+    /* height: calc(120vh - 60px); Adjusted for the new start position */
+    height: auto;
+    width: 140px;
+    color: black;
+    align-items: center;
+    margin-top: 50px;
+    /* background-color: #f8f9fa; */
+    /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    flex-direction: column;
+   /* Adjusted padding for spacing */
+  }
+  
+  .movedate .axsdc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align items at the start */
+  }
+  
+  /* Map styles */
+  #map {
+    /* position: absolute; */
+    
+    top: -10px; /* Adjusted for the header height */
+    width: calc(100% - 200px);
+    height: calc(100vh - 80px); /* Adjusted for the header height */
+  }
+
+  .asdf{
+    margin-top: 30px;
+    display: flex;
+    margin-left: 50px;
+  }

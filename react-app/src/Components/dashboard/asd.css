@@ -3,13 +3,12 @@ a {
     text-decoration: none;
     color: black;
 }
-
 .body {
     font-family: 'Poppins', sans-serif;
 }
-
 .navbar {
     position: fixed;
+  
     top: 0;
     left: 0;
     width: 100%;
@@ -18,7 +17,6 @@ a {
     padding: 1px;
     z-index: 1000; /* Ensure navbar is on top */
 }
-
 .company-logo {
     margin-left: 50px;
     width: 200px;
@@ -30,67 +28,26 @@ a {
     margin-left: 40px;
 
 }
-
 .container-fluid {
     display: flex;
+   
     justify-content: space-between;
     align-items: center; 
     /* margin-top: 10px; */
     height: 78px;
 }
-
 .profile {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-right: 20px;
-    
+    margin-right: 20px;   
 }
-
 .profile img {
     width: 36px;
     height: 36px;
     object-fit: cover;
     border-radius: 50%;
-} .header-content-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
 }
-.btn-close {
-    background: none;
-    border: none;
-    font-size: 60px;
-    line-height: 1;
-    color: #000;
-    cursor: pointer;
-    position: absolute;
-    left: 0;
-}
-  
-
-/* .profile-letter {
-    width: 40px;
-    height: 40px;
-    background-color: red;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .profile-container {
-    position: relative;
-  }
-  
-  .profile {
-    cursor: pointer;
-  } */
-  
   .profile-letter {
     background-color: red; /* or your desired background color */
     border-radius: 50%;
@@ -102,8 +59,7 @@ a {
     font-size: 20px;
     font-weight: bold;
     color: white; /* or your desired text color */
-  }
-  
+  } 
   .dropdown-menu {
     position: absolute;
     top: 60px; /* adjust based on your layout */
@@ -116,6 +72,7 @@ a {
   
   .dropdown-item {
     display: block;
+    /* z-index: 1000; */
     padding: 10px 20px;
     text-decoration: none;
     color: #333;
@@ -126,12 +83,11 @@ a {
     border-radius: 50PX;
   } 
 
-/* Search Form Styling */
 .search-form {
     display: flex;
     align-items: center;
     width: 50%;
-    max-width: 500px; /* Adjust based on your preference */
+    max-width: 500px; 
     margin-right: auto;
     margin-left: 50px; 
     position: relative;
@@ -294,10 +250,14 @@ button {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, box-shadow 0.3s; */
 }
-
+@media (max-width: 480px){
+    .company-logo {
+        margin-left: 0px;
+     
+    }
+    
+}
 
 /* Responsive styles */
 /* @media (max-width: 768px) {

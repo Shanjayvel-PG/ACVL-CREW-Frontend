@@ -11,6 +11,10 @@ export const UserProvider = ({ children }) => {
     mailid: "",
     timeZone: "",
     createdTime: "",
+    roledetails: {
+      rolename: "",
+      roleid: ""
+    }
   });
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -28,6 +32,10 @@ export const UserProvider = ({ children }) => {
           mailid: result.content.email_id,
           timeZone: result.content.time_zone,
           createdTime: result.content.created_time,
+          roledetails: {
+            rolename: result.content.role_details.role_name,
+            roleid: result.content.role_details.role_id,
+        }
         };
         setUserDetails(userDetails);
         setIsUserAuthenticated(true);

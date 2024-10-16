@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import img_logo from '../images/trucklogo.png';
-
+import "../dashboard/My Bookings/mybook.css"
 function MobileApp12() {
   const navigate = useNavigate();
 
