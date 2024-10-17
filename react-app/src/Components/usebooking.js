@@ -186,6 +186,13 @@ const useBookings = () => {
 
 
   const getLastTwoLetters = (str) => str.slice(-2);
+  // const getLastTwoLetters = (location) => {
+  //   if (!location || location.length < 2) {
+  //     return "";
+  //   }
+  //   return location.slice(-2).toUpperCase();
+  // };
+  
 
   const formatDate = (dateStr) => {
     const monthNames = [
@@ -435,854 +442,7 @@ if (origin && destination) {
   googleMapsLink = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}`;
 }
 
-const renderEditableField = (label, field, type = "text", value, key) => (
-  <div key={key} className="editable-field-container">
-    <div className='editable-field-container2'>
-      <div className="editable-field-container1">
-        <label>{label} :</label>
-      </div>
-    </div>
-    <div ref={tabRef} className="input-with-button">
-      {editStates[field] && field !== "Invoicelink1" ? (
-        field === "Assigned_To" ? (
-          <Select
-            name="Assigned_To"
-            value={options2.find(option => option.value === value)}
-            onChange={(selectedOption) => {
-              handleInputChange(field, selectedOption?.value);
-              setActiveField(field);  
-            }}
-            options={options2}
-            placeholder="Assigned To"
-            isClearable
-          />
-        ) : field === "Move_Size" ? (
-          <>
-            <Select
-              name="Move_Size"
-              value={options12.find(option => option.value === value)}
-              onChange={(selectedOption) => {
-                if (selectedOption?.value === 'Other') {
-                  setIsOtherSelected(true);
-                  setCustomMoveSize('');
-                  handleInputChange("Move_Size", 'Other');
-                } else {
-                  setIsOtherSelected(false);
-                  handleInputChange("Move_Size", selectedOption?.value);
-                }
-              }}
-              options={options12}
-              placeholder="Move Size"
-              isClearable
-            />
-            {isOtherSelected && (
-              <input
-                type="text"
-                value={customMoveSize}
-                onChange={(event) => {
-                  setCustomMoveSize(event.target.value);
-                  handleInputChange("Move_Size", event.target.value);
-                }}
-                placeholder="Enter custom move size"
-              />
-            )}
-          </>
-        ) : 
-          field === "Start_Time_from_Hub" ||
-          field === "Time_reached_Pick_location" ||
-          field === "Loading_Start_Time" ||
-          field === "Loading_End_time" ||
-          field === "Travel_Start_from_Pick_up_Location" ||
-          field === "Travel_End_at_destination" ||
-          field === "Unloading_Start_Time" ||
-          field === "Unloading_End_Time" ||
-          field === "Return_start_Time" ||
-          field === "Arrival_Time_Hub_Next_Job" ? (
-            <DatePicker
-              selected={value ? new Date(`1970-01-01T${value}:00`) : null}
-              onChange={(time) => {
-                const formattedTime = time
-                  ? `${time.getHours()}:${String(time.getMinutes()).padStart(2, "0")}`
-                  : "";
-                handleInputChange(field, formattedTime);
-              }}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={15}
-              timeCaption="Time"
-              dateFormat="HH:mm"
-            />
-          
-        )
-        // : field === "Move_From" || field === "Move_To" ? (
-        //   <Select
-        //     name={field}
-        //     value={options.find(option => option.value === value)}
-        //     onChange={(selectedOption) => handleInputChange(field, selectedOption?.value)}
-        //     options={field === "Move_From" ? filteredOptions1 : filteredOptions2}
-        //     inputValue={field === "Move_From" ? inputValue : inputValue1}
-        //     onInputChange={field === "Move_From" ? setInputValue : setInputValue1}
-        //     menuIsOpen={(field === "Move_From" ? inputValue : inputValue1).length > 0}
-        //     placeholder={`Type to search ${field}`}
-        //     isClearable
-        //   />
-        // ) 
-        :field === "Move_From" || field === "Move_To" ? (
-          <CreatableSelect
-            name={field}
-            value={options.find(option => option.value === value) || { label: value, value }} // Support custom input
-            onChange={(selectedOption) => handleInputChange(field, selectedOption?.value)}
-            options={field === "Move_From" ? filteredOptions1 : filteredOptions2}
-            inputValue={field === "Move_From" ? inputValue : inputValue1}
-            onInputChange={field === "Move_From" ? setInputValue : setInputValue1}
-            menuIsOpen={(field === "Move_From" ? inputValue : inputValue1).length > 0}
-            placeholder={`Type to search ${field}`}
-            isClearable
-            createOptionPosition="first" // Allow new option creation at the top
-          />
-        ) : field === "MoveDate" || field === "Booked_Date" ? (
-          <DatePicker
-            selected={parseDate(editableBooking[field]) || null}
-            onChange={(date) => {
-              handleInputChange(field, date ? `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}` : "");
-              setActiveField(field);  
-            }}
-            dateFormat="d MMM, yyyy"
-          />
-        )  :field === "Dispatch_Date" ? (
-          <DatePicker
-          selected={
-            editableBooking[field] 
-              ? new Date(editableBooking[field].split('-').reverse().join('-')) 
-              : null
-          }
-          onChange={(date) =>{
-            handleInputChange(
-              field,
-              date
-                ? `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`
-                : ""
-            )
-            setActiveField(field); }
-          }
-          dateFormat="d MMM, yyyy"
-        />
-        )
-        :field === "Move_Co_Ordinators" ? (
-        <Select
-        name="Move_Co_Ordinators"
-        value={options5.find(option => option.value === value)}
-        onChange={(selectedOption) => {
-          handleInputChange(field, selectedOption?.value); 
-        }}
-        options={options5} 
-        placeholder="Select Move Coordinators"
-        isClearable 
-      />
-      ) : field === "Dispatch_Agent" ? (
-        <Select
-        name="Dispatch_Agent"
-        value={options4.find(option => option.value === value)}
-        onChange={(selectedOption) => {
-          handleInputChange(field, selectedOption?.value); 
-        }}
-        options={options4} 
-        placeholder="Select Dispatch Agent"
-        isClearable 
-      />
-      ) : field === "Status" ? (
-        <Select
-        name="Status"
-        value={options3.find(option => option.value === value)}
-        onChange={(selectedOption) => {
-          handleInputChange(field, selectedOption?.value); 
-        }}
-        options={options3} 
-        placeholder="Select Status"
-        isClearable 
-      />
-      ):field === "Truck_Details" ? (
-        <Select
-          name="Truck_Details"
-          value={options11.find(option => option.value === formData.Truck_Details)}
-          onChange={handleTruckDetailsChange}
-          options={options11}
-          placeholder="Select Truck Details"
-          isClearable
-        />
-      ) : field === "Truck_Owner" ? (
-        <>
-          {formData.Truck_Owner ? (
-            <Select
-              name="Truck_Owner"
-              value={options9.find(option => option.value === formData.Truck_Owner)}
-              onChange={(selectedOption) => {
-                handleInputChange("Truck_Owner", selectedOption?.value);
-              }}
-              options={options9}
-              placeholder="Select Truck Owner"
-              isClearable
-            />
-          ) : (
-            <input
-              type="text"
-              value={manualInputs.Truck_Owner}
-              onChange={(e) => handleInputChange("Truck_Owner", e.target.value)}
-              placeholder="Enter Truck Owner"
-            />
-          )}
-        </>
-      ) : field === "Truck_Types" ? (
-        <>
-          {formData.Truck_Types ? (
-            <Select
-              name="Truck_Types"
-              value={options6.find(option => option.value === formData.Truck_Types)}
-              onChange={(selectedOption) => {
-                handleInputChange("Truck_Types", selectedOption?.value);
-              }}
-              options={options6}
-              placeholder="Select Truck Types"
-              isClearable
-            />
-          ) : (
-            <input
-              type="text"
-              value={manualInputs.Truck_Types}
-              onChange={(e) => handleInputChange("Truck_Types", e.target.value)}
-              placeholder="Enter Truck Types"
-            />
-          )}
-        </>
-      ) :  field === "Hub" ? (
-        <>
-          {formData.Hub ? (
-            <Select
-              name="Hub"
-              value={options8.find(option => option.value === formData.Hub)}
-              onChange={(selectedOption) => {
-                handleInputChange("Hub", selectedOption?.value);
-              }}
-              options={options8}
-              placeholder="Select Hub"
-              isClearable
-            />
-          ) : (
-            <input
-              type="text"
-              value={manualInputs.Hub}
-              onChange={(e) => handleInputChange("Hub", e.target.value)}
-              placeholder="Enter Hub"
-            />
-          )}
-        </>
-      ) : field === "Truck_Capacity" ? (
-        <>
-          {formData.Truck_Capacity ? (
-            <Select
-              name="Truck_Capacity"
-              value={options7.find(option => option.value === formData.Truck_Capacity)}
-              onChange={(selectedOption) => {
-                handleInputChange("Truck_Capacity", selectedOption?.value);
-              }}
-              options={options7}
-              placeholder="Select Truck Capacity"
-              isClearable
-              />
-          ) : (
-            <input
-              type="text"
-              value={manualInputs.Truck_Capacity}
-              onChange={(e) => handleInputChange("Truck_Capacity", e.target.value)}
-              placeholder="Enter Truck Capacity"
-            />
-          )}
-        </>
-      ) : field === "From_Address" || field === "To_Address" || field === "Crew_Comments" || field === "CUSTOMER_REVIEW" || field === "Google_Reviews" ? (
-        <textarea
-        type={type}
-        value={value}
-        onChange={(e) => handleInputChange(field, e.target.value)}
-        onClick={() => {
-          toggleEditState(field);
-          setPreviousValue(value); 
-          setActiveField(field); 
-        }}
-        />
-      ) : (
-        <input
-        type={type}
-        value={value}
-        onChange={(e) => handleInputChange(field, e.target.value)}
-        onClick={() => {
-          toggleEditState(field);
-          setPreviousValue(value); 
-          setActiveField(field); 
-        }}
-        autoFocus
-      />
-        )
-      ) :field === "MoveDate" || field === "Dispatch_Date" || field === "Booked_Date" ? (
-        <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} onClick={() => {
-          toggleEditState(field);
-          setActiveField(field); 
-          setPreviousValue(value); 
-        }} />
-      ) : field === "Crew_Comments" || field === "Google_Reviews" || field === "CUSTOMER_REVIEW" || field === "To_Address" || field === "From_Address" ? (
-        <textarea readOnly
-        onClick={() => {
-          toggleEditState(field);
-          setActiveField(field); 
-          setPreviousValue(value); 
-        }} >{editableBooking[field]}</textarea>
-      ) : field === "Email_Address" ? (
-        <div className="email-container" style={{ display: 'flex', alignItems: 'center' }}>
-          <input 
-            type="text" 
-            value={editableBooking[field] ? editableBooking[field] : "N/A"} 
-            className="email-input" 
-            onClick={() => {
-              toggleEditState(field);
-              setActiveField(field); 
-              setPreviousValue(value); 
-            }}
-            readOnly
-          />
-          <a href={`mailto:${editableBooking[field]}`} className="email-link" style={{ textDecoration: 'none' }}>
-            <i className="fas fa-envelope" style={{ fontSize: '16px', color: 'red',marginLeft:'-40px',marginTop:'5px' }}></i>
-          </a>
-        </div>
-      ) : field === "Phone_Number" || field === "Alt_Phone_Number" ? (
-        <div className="phone-container" style={{ display: 'flex', alignItems: 'center' }}>
-          <input 
-            type="text" 
-            onClick={() => toggleEditState(field)} 
-            value={editableBooking[field] ? editableBooking[field] : "N/A"} 
-            className="phone-input" 
-            readOnly 
-          />
-          <a href={`tel:${editableBooking[field]}`} className="phone-link" style={{ textDecoration: 'none' }}>
-            <i className="fas fa-phone" style={{ fontSize: '16px', color: 'red',marginLeft:'-40px' }}></i>
-          </a>
-        </div>
-      ) : field === "Invoicelink1" ? (
-        <a
-          href={`https://web.2go.com/invoices/${editableBooking.Invoicelink}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="google-route-link"
-        >
-          View Invoice
-        </a>
-      ) : field === "Google_Route_Link" ? (
-          <div>
-            <a
-              href={googleMapsLink}
-              className="google-route-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get Route
-            </a>
-          </div>
-      ) : (
-        <input
-        type={type}
-        value={value}
-        readOnly
-        onClick={() => {
-          toggleEditState(field);
-          setActiveField(field); 
-          setPreviousValue(value);
-        }}
-      />
-      )}
-          {/* {field !== "Invoicelink1" && field !== "Google_Route_Link" && (
-        <button
-          className={`edit-button1 ${editStates[field] ? 'active' : ''}`}  // Apply an 'active' class to style the button when editing
-          onClick={() => {
-            if (editStates[field]) {
-              // Only allow saving if in edit mode
-              handleSave(field, value);  
-              setActiveField(null);  // Clear the active field after saving
-            } else {
-              // Set the field as active for editing
-              setActiveField(field);  
-            }
-            toggleEditState(field);  // Toggle edit state after clicking save or edit
-          }}
-        >
-          {editStates[field] ? <FaSave className="save-icon" /> : <FaPen />}
-        </button>
-      )} */}
 
-        {/* {editStates[field] ? (
-        <>
-      
-          <button1
-            className={`edit-button1 ${editStates[field] ? "active" : ""}`}
-            onClick={() => {
-              handleSave(field, value);
-              toggleEditState(field); 
-              setActiveField(null); 
-            }}
-          >
-            <i className="fas fa-check"></i>
-          </button1>
-
-          <button1
-            className={`edit-button2 ${editStates[field] ? "active" : ""}`}
-            onClick={() => {
-              handleInputChange(field, previousValue); 
-              toggleEditState(field); 
-              setActiveField(null); 
-            }}
-          >
-            <i className="fas fa-times"></i>
-          </button1>
-        </>
-      ) : (
-        field !== "Invoicelink1" && field !== "Google_Route_Link" && (
-          <button1
-            className={`edit-button1 ${editStates[field] ? "active" : ""}`}
-            onClick={() => {
-              toggleEditState(field);
-              setPreviousValue(value); 
-              setActiveField(field); 
-            }}
-          >
-            <i className="fas fa-pen"></i>
-          </button1>
-        )
-      )}
-     */}
-       {editStates[field] ? (
-        <>
-          <button1
-            className={`edit-button3 ${editStates[field] ? 'active' : ''}`}
-            // className='save-button'
-            onClick={() => {
-              handleSave(field, value);
-              toggleEditState(field); 
-              setActiveField(null);  
-            }}
-          >
-            <i className="fas fa-check"></i> 
-          </button1>
-          <button1
-            className={`edit-button2 ${editStates[field] ? 'active' : ''}`}
-            onClick={() => {
-              handleInputChange(field, previousValue);  
-              toggleEditState(field);  
-              setActiveField(null);
-            }}
-          >
-            <i className="fas fa-times"></i> 
-          </button1>
-        </>
-      ) : (
-        field !== "Invoicelink1" && field !== "Google_Route_Link" && (
-        <button1
-          className={`edit-button1 ${editStates[field] ? 'active' : ''}`}
-          onClick={() => {
-            toggleEditState(field); 
-            setPreviousValue(value); 
-            setActiveField(field);  
-          }}
-        >
-          <i className="fas fa-pen"></i> 
-        </button1>
-        )
-      )}
-       {/* {field !== "Invoicelink1" && field !== "Google_Route_Link" && (
-        <button
-          className="edit-button1"
-          onClick={() => {
-            if (editStates[field]) {
-              handleSave(field, value);  
-              setActiveField(null);  
-            } else {
-              setActiveField(field);  
-            }
-            toggleEditState(field);  
-          }}
-        >
-          {editStates[field] ? <FaSave className="save-icon" /> : <FaPen />}
-        </button>
-      )} */}
-    </div>
-  </div>
-);
-
-  // const renderEditableField = (label,  field, type = "text", value, key) => (
-  //   <div key={key} className="editable-field-container">
-  //     <div  className='editable-field-container2'>
-  //     <div className="editable-field-container1">
-  //       <label>{label} :</label>
-  //     </div>
-  //     </div>
-  //     <div className="input-with-button">
-  //       {editStates[field] && field !== "Invoicelink1"  ? (
-  //       field === "Assigned_To" ? (
-  //         <Select
-  //         name="Assigned_To"
-  //         value={options2.find(option => option.value === value)}
-  //         onChange={(selectedOption) => {
-  //           handleInputChange(field, selectedOption?.value); 
-  //         }}
-  //         options={options2} 
-  //         placeholder="Assigned To"
-  //         isClearable 
-  //       />
-  //       ) 
-  //       :field === "Move_Size" ? (
-  //         <>
-  //         <Select
-  //           name="Move_Size"
-  //           value={options12.find(option => option.value === value)} // Maintain this logic
-  //           onChange={(selectedOption) => {
-  //             if (selectedOption?.value === 'Other') {
-  //               setIsOtherSelected(true); // Show custom input field
-  //               setCustomMoveSize('');    // Clear previous custom input
-  //               handleInputChange("Move_Size", 'Other'); // Send "Other" as selected value
-  //             } else {
-  //               setIsOtherSelected(false); // Hide custom input field
-  //               handleInputChange("Move_Size", selectedOption?.value); // Send selected value
-  //             }
-  //           }}
-  //           options={options12} 
-  //           placeholder="Move Size"
-  //           isClearable 
-  //         />
-      
-  //         {isOtherSelected && (
-  //           <input
-  //             type="text"
-  //             value={customMoveSize}
-  //             onChange={(event) => {
-  //               setCustomMoveSize(event.target.value); // Update custom input value
-  //               handleInputChange("Move_Size", event.target.value); // Send custom value
-  //             }}
-  //             placeholder="Enter custom move size"
-  //           />
-  //         )}
-  //       </>
-  //       )  
-  //       :field === "Move_From" ? (
-  //         <Select
-  //           name="Move_From"
-  //           value={options.find(option => option.value === value)} 
-  //           onChange={(selectedOption) => {
-  //             handleInputChange(field, selectedOption?.value); 
-  //           }}
-  //           options={filteredOptions1} 
-  //           inputValue={inputValue} 
-  //           onInputChange={(newValue) => setInputValue(newValue)} 
-  //           menuIsOpen={inputValue.length > 0} 
-  //           placeholder="Type to search"
-  //           isClearable 
-  //         />
-  //       )  
-  //       :field === "Move_To" ? (
-  //         <Select
-  //           name="Move_To"
-  //           value={options.find(option => option.value === value)} 
-  //           onChange={(selectedOption) => {
-  //             handleInputChange(field, selectedOption?.value); 
-  //           }}
-  //           options={filteredOptions2} 
-  //           inputValue={inputValue1} 
-  //           onInputChange={(newValue) => setInputValue1(newValue)}
-  //           menuIsOpen={inputValue1.length > 0} 
-  //           placeholder="Type to search"
-  //           isClearable 
-  //         />
-  //       )  :field === "Move_Co_Ordinators" ? (
-  //         <Select
-  //         name="Move_Co_Ordinators"
-  //         value={options5.find(option => option.value === value)}
-  //         onChange={(selectedOption) => {
-  //           handleInputChange(field, selectedOption?.value); 
-  //         }}
-  //         options={options5} 
-  //         placeholder="Select Move Coordinators"
-  //         isClearable 
-  //       />
-  //       ) : field === "Dispatch_Agent" ? (
-  //         <Select
-  //         name="Dispatch_Agent"
-  //         value={options4.find(option => option.value === value)}
-  //         onChange={(selectedOption) => {
-  //           handleInputChange(field, selectedOption?.value); 
-  //         }}
-  //         options={options4} 
-  //         placeholder="Select Dispatch Agent"
-  //         isClearable 
-  //       />
-  //       ) : field === "Status" ? (
-  //         <Select
-  //         name="Status"
-  //         value={options3.find(option => option.value === value)}
-  //         onChange={(selectedOption) => {
-  //           handleInputChange(field, selectedOption?.value); 
-  //         }}
-  //         options={options3} 
-  //         placeholder="Select Status"
-  //         isClearable 
-  //       />
-  //       ):field === "Truck_Details" ? (
-  //         <Select
-  //           name="Truck_Details"
-  //           value={options11.find(option => option.value === formData.Truck_Details)}
-  //           onChange={handleTruckDetailsChange}
-  //           options={options11}
-  //           placeholder="Select Truck Details"
-  //           isClearable
-  //         />
-  //       ) : field === "Truck_Owner" ? (
-  //         <>
-  //           {formData.Truck_Owner ? (
-  //             <Select
-  //               name="Truck_Owner"
-  //               value={options9.find(option => option.value === formData.Truck_Owner)}
-  //               onChange={(selectedOption) => {
-  //                 handleInputChange("Truck_Owner", selectedOption?.value);
-  //               }}
-  //               options={options9}
-  //               placeholder="Select Truck Owner"
-  //               isClearable
-  //             />
-  //           ) : (
-  //             <input
-  //               type="text"
-  //               value={manualInputs.Truck_Owner}
-  //               onChange={(e) => handleInputChange("Truck_Owner", e.target.value)}
-  //               placeholder="Enter Truck Owner"
-  //             />
-  //           )}
-  //         </>
-  //       ) : field === "Truck_Types" ? (
-  //         <>
-  //           {formData.Truck_Types ? (
-  //             <Select
-  //               name="Truck_Types"
-  //               value={options6.find(option => option.value === formData.Truck_Types)}
-  //               onChange={(selectedOption) => {
-  //                 handleInputChange("Truck_Types", selectedOption?.value);
-  //               }}
-  //               options={options6}
-  //               placeholder="Select Truck Types"
-  //               isClearable
-  //             />
-  //           ) : (
-  //             <input
-  //               type="text"
-  //               value={manualInputs.Truck_Types}
-  //               onChange={(e) => handleInputChange("Truck_Types", e.target.value)}
-  //               placeholder="Enter Truck Types"
-  //             />
-  //           )}
-  //         </>
-  //       ) : field === "Hub" ? (
-  //         <>
-  //           {formData.Hub ? (
-  //             <Select
-  //               name="Hub"
-  //               value={options8.find(option => option.value === formData.Hub)}
-  //               onChange={(selectedOption) => {
-  //                 handleInputChange("Hub", selectedOption?.value);
-  //               }}
-  //               options={options8}
-  //               placeholder="Select Hub"
-  //               isClearable
-  //             />
-  //           ) : (
-  //             <input
-  //               type="text"
-  //               value={manualInputs.Hub}
-  //               onChange={(e) => handleInputChange("Hub", e.target.value)}
-  //               placeholder="Enter Hub"
-  //             />
-  //           )}
-  //         </>
-  //       ) : field === "Truck_Capacity" ? (
-  //         <>
-  //           {formData.Truck_Capacity ? (
-  //             <Select>
-  //               name="Truck_Capacity"
-  //               value={options7.find(option => option.value === formData.Truck_Capacity)}
-  //               onChange={(selectedOption) => {
-  //                 handleInputChange("Truck_Capacity", selectedOption?.value);
-  //               }}
-  //               options={options7}
-  //               placeholder="Select Truck Capacity"
-  //               isClearable
-  //               </Select>
-  //           ) : (
-  //             <input
-  //               type="text"
-  //               value={manualInputs.Truck_Capacity}
-  //               onChange={(e) => handleInputChange("Truck_Capacity", e.target.value)}
-  //               placeholder="Enter Truck Capacity"
-  //             />
-  //           )}
-  //         </>
-  //       ) 
-  //       : field === "MoveDate" ? (
-  //           <DatePicker
-  //             selected={parseDate(editableBooking[field]) || null}
-  //             onChange={(date) =>
-  //               handleInputChange(
-  //                 field,
-  //                 date
-  //                   ? `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-  //                   : ""
-  //               )
-  //             }
-  //             dateFormat="dd-MM-yyyy"
-  //           />
-  //         ) :field === "Dispatch_Date" ? (
-  //           <DatePicker
-  //           selected={
-  //             editableBooking[field] 
-  //               ? new Date(editableBooking[field].split('-').reverse().join('-')) // Convert 'dd-MM-yyyy' to 'yyyy-MM-dd' and create a Date object
-  //               : null
-  //           }
-  //           onChange={(date) =>
-  //             handleInputChange(
-  //               field,
-  //               date
-  //                 ? `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`
-  //                 : ""
-  //             )
-  //           }
-  //           dateFormat="d MMM, yyyy"
-  //         />
-  //         ) : field === "Booked_Date" ? (
-  //           <DatePicker
-  //             selected={parseDate(editableBooking[field]) || null}
-  //             onChange={(date) =>
-  //               handleInputChange(
-  //                 field,
-  //                 date
-  //                   ? `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-  //                   : ""
-  //               )
-  //             }
-  //             dateFormat="d MMM, yyyy"
-  //           />
-          // ): field === "From_Address" ? (
-          //   <textarea
-          //   type={type}
-          //   value={value}
-          //   onChange={(e) => handleInputChange(field, e.target.value)}
-          //   />
-          // ): field === "To_Address" ? (
-          //   <textarea
-          //   type={type}
-          //   value={value}
-          //   onChange={(e) => handleInputChange(field, e.target.value)}
-          //   />
-          // ) : field === "Crew_Comments" ? (
-          //   <textarea
-          //   type={type}
-          //   value={value}
-          //   onChange={(e) => handleInputChange(field, e.target.value)}
-          //   />
-          // ) : field === "CUSTOMER_REVIEW" ? (
-          //   <textarea
-          //   type={type}
-          //   value={value}
-          //   onChange={(e) => handleInputChange(field, e.target.value)}
-          //   />
-          // ) : field === "Google_Reviews" ? (
-          //   <textarea
-          //   type={type}
-          //   value={value}
-          //   onChange={(e) => handleInputChange(field, e.target.value)}
-          //   />
-          // )   : (
-          //   <input
-          //     type={type}
-          //     value={value}
-          //     onChange={(e) => handleInputChange(field, e.target.value)}
-          //   />
-          // )
-  //       ) 
-        // :field === "MoveDate" ? (
-        //   <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} />
-        // ) : field === "Dispatch_Date" ? (
-        //   <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} />
-        // ) : field === "Booked_Date" ? (
-        //   <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} />
-        // ) 
-        // : field === "Crew_Comments" ? (
-        //   <textarea readOnly>{editableBooking[field]}</textarea>
-        // ) : field === "From_Address" ? (
-        //   <textarea readOnly>{editableBooking[field]}</textarea>
-        // ) : field === "To_Address" ? (
-        //   <textarea readOnly>{editableBooking[field]}</textarea>
-        // ) :  field === "Google_Reviews" ? (
-        //   <textarea readOnly>{editableBooking[field]}</textarea>
-        // ) : field === "CUSTOMER_REVIEW" ? (
-        //   <textarea readOnly>{editableBooking[field]}</textarea>
-        // ) : field === "Email_Address" ? (
-        //   <div className="email-container" style={{ display: 'flex', alignItems: 'center' }}>
-        //     <input 
-        //       type="text" 
-        //       value={editableBooking[field] ? editableBooking[field] : "N/A"} 
-        //       className="email-input" 
-        //       readOnly
-        //       // style={{ marginRight: '10px' }}
-        //     />
-        //     <a href={`mailto:${editableBooking[field]}`} className="email-link" style={{ textDecoration: 'none' }}>
-        //       <i className="fas fa-envelope" style={{ fontSize: '16px', color: 'red',marginLeft:'-50px',marginTop:'5px' }}></i>
-        //     </a>
-        //   </div>
-        // ) : field === "Phone_Number" || field === "Alt_Phone_Number" ? (
-        //   <div className="phone-container" style={{ display: 'flex', alignItems: 'center' }}>
-        //     <input 
-        //       type="text" 
-        //       value={editableBooking[field] ? editableBooking[field] : "N/A"} 
-        //       className="phone-input" 
-        //       readOnly 
-        //       // style={{ marginRight: '7px' }}
-        //     />
-        //     <a href={`tel:${editableBooking[field]}`} className="phone-link" style={{ textDecoration: 'none' }}>
-        //       <i className="fas fa-phone" style={{ fontSize: '16px', color: 'red',marginLeft:'-50px' }}></i>
-        //     </a>
-        //   </div>
-        // ) : field === "Invoicelink1" ? (
-        //   <a
-        //     href={`https://web.2go.com/invoices/${editableBooking.Invoicelink}`}
-        //     target="_blank"
-        //     rel="noopener noreferrer"
-        //     className="google-route-link"
-        //   >
-        //     View Invoice
-        //   </a>
-        // ) : field === "Google_Route_Link" ? (
-        //     <div>
-        //       <a
-        //         href={googleMapsLink}
-        //         className="google-route-link"
-        //         target="_blank"
-        //         rel="noopener noreferrer"
-        //       >
-        //         Get Route
-        //       </a>
-        //     </div>
-        // ) : (
-  //         <input type={type} value={value} readOnly />
-  //       ) }
-  //       {field !== "Invoicelink1" && field !== "Google_Route_Link" && (
-  //         <button3 className="edit-button1" onClick={() => toggleEditState(field)}>
-  //           {editStates[field] ? <FaSave className="save-icon" /> : <FaPen />}  
-  //         </button3>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
 
   const fetchApiKey = async () => {
     try {
@@ -1373,6 +533,403 @@ const renderEditableField = (label, field, type = "text", value, key) => (
     }
   };
 
+  const renderEditableField = (label, field, type = "text", value, key) => (
+    <div key={key} className="editable-field-container">
+      <div className='editable-field-container2'>
+        <div className="editable-field-container1">
+          <label>{label}:</label>
+        </div>
+      </div>
+      <div ref={tabRef} className="input-with-button">
+        {editStates[field] && field !== "Invoicelink1" ? (
+          field === "Assigned_To" ? (
+            <Select
+              name="Assigned_To"
+              value={options2.find(option => option.value === value)}
+              onChange={(selectedOption) => {
+                handleInputChange(field, selectedOption?.value);
+                setActiveField(field);  
+              }}
+              options={options2}
+              placeholder="Assigned To"
+              isClearable
+            />
+          ) : field === "Move_Size" ? (
+            <>
+              <Select
+                name="Move_Size"
+                value={options12.find(option => option.value === value)}
+                onChange={(selectedOption) => {
+                  if (selectedOption?.value === 'Other') {
+                    setIsOtherSelected(true);
+                    setCustomMoveSize('');
+                    handleInputChange("Move_Size", 'Other');
+                  } else {
+                    setIsOtherSelected(false);
+                    handleInputChange("Move_Size", selectedOption?.value);
+                  }
+                }}
+                options={options12}
+                placeholder="Move Size"
+                isClearable
+              />
+              {isOtherSelected && (
+                <input
+                  type="text"
+                  value={customMoveSize}
+                  onChange={(event) => {
+                    setCustomMoveSize(event.target.value);
+                    handleInputChange("Move_Size", event.target.value);
+                  }}
+                  placeholder="Enter custom move size"
+                />
+              )}
+            </>
+          ) : 
+            field === "Start_Time_from_Hub" ||
+            field === "Time_reached_Pick_location" ||
+            field === "Loading_Start_Time" ||
+            field === "Loading_End_time" ||
+            field === "Travel_Start_from_Pick_up_Location" ||
+            field === "Travel_End_at_destination" ||
+            field === "Unloading_Start_Time" ||
+            field === "Unloading_End_Time" ||
+            field === "Return_start_Time" ||
+            field === "Arrival_Time_Hub_Next_Job" ? (
+              <DatePicker
+                selected={value ? new Date(`1970-01-01T${value}:00`) : null}
+                onChange={(time) => {
+                  const formattedTime = time
+                    ? `${time.getHours()}:${String(time.getMinutes()).padStart(2, "0")}`
+                    : "";
+                  handleInputChange(field, formattedTime);
+                }}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="HH:mm"
+              />
+            
+          ): field === "Move_From" || field === "Move_To" ? (
+            <CreatableSelect
+              name={field}
+              value={options.find(option => option.value === value) || { label: value, value }} // Support custom input
+              onChange={(selectedOption) => handleInputChange(field, selectedOption?.value)}
+              options={field === "Move_From" ? filteredOptions1 : filteredOptions2}
+              inputValue={field === "Move_From" ? inputValue : inputValue1}
+              onInputChange={field === "Move_From" ? setInputValue : setInputValue1}
+              menuIsOpen={(field === "Move_From" ? inputValue : inputValue1).length > 0}
+              placeholder={`Type to search ${field}`}
+              isClearable
+              createOptionPosition="first" // Allow new option creation at the top
+            />
+          ) : field === "MoveDate" || field === "Booked_Date" ? (
+            <DatePicker
+              selected={parseDate(editableBooking[field]) || null}
+              onChange={(date) => {
+                handleInputChange(field, date ? `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}` : "");
+                setActiveField(field);  
+              }}
+              dateFormat="d MMM, yyyy"
+            />
+          ) : field === "Dispatch_Date" ? (
+            <DatePicker
+            selected={
+              editableBooking[field] 
+                ? new Date(editableBooking[field].split('-').reverse().join('-')) 
+                : null
+            }
+            onChange={(date) =>{
+              handleInputChange(
+                field,
+                date
+                  ? `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`
+                  : ""
+              )
+              setActiveField(field); }
+            }
+            dateFormat="d MMM, yyyy"
+          />
+          )
+          :field === "Move_Co_Ordinators" ? (
+          <Select
+          name="Move_Co_Ordinators"
+          value={options5.find(option => option.value === value)}
+          onChange={(selectedOption) => {
+            handleInputChange(field, selectedOption?.value); 
+          }}
+          options={options5} 
+          placeholder="Select Move Coordinators"
+          isClearable 
+        />
+        ) : field === "Dispatch_Agent" ? (
+          <Select
+          name="Dispatch_Agent"
+          value={options4.find(option => option.value === value)}
+          onChange={(selectedOption) => {
+            handleInputChange(field, selectedOption?.value); 
+          }}
+          options={options4} 
+          placeholder="Select Dispatch Agent"
+          isClearable 
+        />
+        ) : field === "Status" ? (
+          <Select
+          name="Status"
+          value={options3.find(option => option.value === value)}
+          onChange={(selectedOption) => {
+            handleInputChange(field, selectedOption?.value); 
+          }}
+          options={options3} 
+          placeholder="Select Status"
+          isClearable 
+        />
+        ):field === "Truck_Details" ? (
+          <Select
+            name="Truck_Details"
+            value={options11.find(option => option.value === formData.Truck_Details)}
+            onChange={handleTruckDetailsChange}
+            options={options11}
+            placeholder="Select Truck Details"
+            isClearable
+          />
+        ) : field === "Truck_Owner" ? (
+          <>
+            {formData.Truck_Owner ? (
+              <Select
+                name="Truck_Owner"
+                value={options9.find(option => option.value === formData.Truck_Owner)}
+                onChange={(selectedOption) => {
+                  handleInputChange("Truck_Owner", selectedOption?.value);
+                }}
+                options={options9}
+                placeholder="Select Truck Owner"
+                isClearable
+              />
+            ) : (
+              <input
+                type="text"
+                value={manualInputs.Truck_Owner}
+                onChange={(e) => handleInputChange("Truck_Owner", e.target.value)}
+                placeholder="Enter Truck Owner"
+              />
+            )}
+          </>
+        ) : field === "Truck_Types" ? (
+          <>
+            {formData.Truck_Types ? (
+              <Select
+                name="Truck_Types"
+                value={options6.find(option => option.value === formData.Truck_Types)}
+                onChange={(selectedOption) => {
+                  handleInputChange("Truck_Types", selectedOption?.value);
+                }}
+                options={options6}
+                placeholder="Select Truck Types"
+                isClearable
+              />
+            ) : (
+              <input
+                type="text"
+                value={manualInputs.Truck_Types}
+                onChange={(e) => handleInputChange("Truck_Types", e.target.value)}
+                placeholder="Enter Truck Types"
+              />
+            )}
+          </>
+        ) :  field === "Hub" ? (
+          <>
+            {formData.Hub ? (
+              <Select
+                name="Hub"
+                value={options8.find(option => option.value === formData.Hub)}
+                onChange={(selectedOption) => {
+                  handleInputChange("Hub", selectedOption?.value);
+                }}
+                options={options8}
+                placeholder="Select Hub"
+                isClearable
+              />
+            ) : (
+              <input
+                type="text"
+                value={manualInputs.Hub}
+                onChange={(e) => handleInputChange("Hub", e.target.value)}
+                placeholder="Enter Hub"
+              />
+            )}
+          </>
+        ) : field === "Truck_Capacity" ? (
+          <>
+            {formData.Truck_Capacity ? (
+              <Select
+                name="Truck_Capacity"
+                value={options7.find(option => option.value === formData.Truck_Capacity)}
+                onChange={(selectedOption) => {
+                  handleInputChange("Truck_Capacity", selectedOption?.value);
+                }}
+                options={options7}
+                placeholder="Select Truck Capacity"
+                isClearable
+                />
+            ) : (
+              <input
+                type="text"
+                value={manualInputs.Truck_Capacity}
+                onChange={(e) => handleInputChange("Truck_Capacity", e.target.value)}
+                placeholder="Enter Truck Capacity"
+              />
+            )}
+          </>
+        ) :field === "Crew_Comments" || field === "Google_Reviews" || field === "CUSTOMER_REVIEW" || field === "To_Address" || field === "From_Address"  ? (
+          <textarea
+          type={type}
+          value={value}
+          onChange={(e) => handleInputChange(field, e.target.value)}
+          />
+        ): (
+          <input
+          type={type}
+          value={value}
+          onChange={(e) => handleInputChange(field, e.target.value)}
+          onFocus={() => setActiveField(field)} 
+          onClick={() => {
+            setPreviousValue(value); 
+          }}
+          autoFocus
+        />
+          )
+        ) :field === "MoveDate" ? (
+          <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} onClick={() => {
+            toggleEditState(field);
+            setActiveField(field); 
+            setPreviousValue(value); 
+          }} />
+        ) : field === "Dispatch_Date" ? (
+          <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} onClick={() => {
+            toggleEditState(field);
+            setActiveField(field); 
+            setPreviousValue(value); 
+          }} />
+        ) : field === "Booked_Date" ? (
+          <input type="text" value={editableBooking[field] ? editableBooking[field] : "N/A"} onClick={() => {
+            toggleEditState(field);
+            setActiveField(field); 
+            setPreviousValue(value); 
+          }} />
+        ) 
+        : field === "Crew_Comments" || field === "Google_Reviews" || field === "CUSTOMER_REVIEW" || field === "To_Address" || field === "From_Address" ? (
+          <textarea readOnly
+          onClick={() => {
+            toggleEditState(field);
+            setActiveField(field); 
+            setPreviousValue(value); 
+          }} >{editableBooking[field]}</textarea>
+        ) : field === "Email_Address" ? (
+          <div className="email-container" style={{ display: 'flex', alignItems: 'center' }}>
+            <input 
+              type="text" 
+              value={editableBooking[field] ? editableBooking[field] : "N/A"} 
+              className="email-input" 
+              onClick={() => {
+                toggleEditState(field);
+                setActiveField(field); 
+                setPreviousValue(value); 
+              }}
+              readOnly
+            />
+            <a href={`mailto:${editableBooking[field]}`} className="email-link" style={{ textDecoration: 'none' }}>
+              <i className="fas fa-envelope" style={{ fontSize: '16px', color: 'red',marginLeft:'-40px',marginTop:'5px' }}></i>
+            </a>
+          </div>
+        ) : field === "Phone_Number" || field === "Alt_Phone_Number" ? (
+          <div className="phone-container" style={{ display: 'flex', alignItems: 'center' }}>
+            <input 
+              type="text" 
+              onClick={() => toggleEditState(field)} 
+              value={editableBooking[field] ? editableBooking[field] : "N/A"} 
+              className="phone-input" 
+              readOnly 
+            />
+            <a href={`tel:${editableBooking[field]}`} className="phone-link" style={{ textDecoration: 'none' }}>
+              <i className="fas fa-phone" style={{ fontSize: '16px', color: 'red',marginLeft:'-40px' }}></i>
+            </a>
+          </div>
+        ) : field === "Invoicelink1" ? (
+          <a
+            href={`https://web.2go.com/invoices/${editableBooking.Invoicelink}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="google-route-link"
+          >
+            View Invoice
+          </a>
+        ) : field === "Google_Route_Link" ? (
+            <div>
+              <a
+                href={googleMapsLink}
+                className="google-route-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get Route
+              </a>
+            </div>
+        ) : (
+          <input
+          type={type}
+          value={value}
+          readOnly
+          onClick={() => {
+            toggleEditState(field);
+            setActiveField(field); 
+            setPreviousValue(value);
+          }}
+        />
+        )}
+        {editStates[field] ? (
+          <>
+            <button1
+              className={`edit-button3 ${editStates[field] ? "active" : ""}`}
+              onClick={() => {
+                handleSave(field, value);
+                toggleEditState(field); 
+                setActiveField(null); 
+              }}
+            >
+              <i className="fas fa-check"></i>
+            </button1>
+            <button1
+              className={`edit-button2 ${editStates[field] ? "active" : ""}`}
+              onClick={() => {
+                handleInputChange(field, previousValue);
+                toggleEditState(field); 
+                setActiveField(null);
+              }}
+            >
+              <i className="fas fa-times"></i>
+            </button1>
+          </>
+        ) : (
+          field !== "Invoicelink1" && field !== "Google_Route_Link" && (
+            <button1
+              className={`edit-button1 ${editStates[field] ? "active" : ""}`}
+              onClick={() => {
+                toggleEditState(field);
+                setPreviousValue(value); 
+                setActiveField(field); 
+              }}
+            >
+              <i className="fas fa-pen"></i>
+            </button1>
+          )
+        )}
+  
+      </div>
+    </div>
+  );
+  
   const renderTabContent = () => {
     if (!editableBooking) return null;
       switch (activeTab) {
@@ -1454,7 +1011,7 @@ const renderEditableField = (label, field, type = "text", value, key) => (
               {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
               {renderEditableField("Pick Up Crew Leader Assigned", "Pick_Up_Crew_Leader_Assigned", "text", editableBooking.Pick_Up_Crew_Leader_Assigned, "Pick_Up_Crew_Leader_Assigned")}
               {renderEditableField("Drop Crew Leader Assigned", "Drop_Crew_Leader_Assigned", "text", editableBooking.Drop_Crew_Leader_Assigned, "Drop_Crew_Leader_Assigned")}
-              {/* {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}             */}
+
             </div>
           </div>
           </div>

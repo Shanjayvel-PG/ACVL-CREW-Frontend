@@ -263,7 +263,7 @@ function Sidebar12({ onMenuItemClick, closeSidebar, isSidebarOpen }) {
                                 </a>
                             </div>
                         </div>
-                        <div className="dropdown1">
+                        <div className="dropdown1">     
                             <a 
                                 href="#" 
                                 className={activeItem === 'hubs' ? 'active' : ''} 

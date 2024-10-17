@@ -12,6 +12,7 @@ import Toronto from './Toronto Hubs/Toronto.js';
 import Addmoves from './Addmoves.js';
 import Storage from './Storage.js';
 import Finance from './Finance/Finance.js';
+import TaskCalendar from './Taskcalendar/Taskcalendar.js';
 
 function Content12({ selectedContent }) {
     const getContent = () => {
@@ -26,6 +27,12 @@ function Content12({ selectedContent }) {
                 return (
                     <>
                      <Allbookings/>
+                    </>
+                );
+            case 'taskcalender':
+                return (
+                    <>
+                     <TaskCalendar/>
                     </>
                 );
             case 'postbookings':
