@@ -10,6 +10,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import jsPDF from 'jspdf';
 import { useUserContext } from './UserContext';
 import CreatableSelect from 'react-select/creatable';
+import Ptd from './dashboard/Taskjobs/Pickuptask';
+import TaskManager from './dashboard/Taskjobs/TaskManager';
+import Transit from './dashboard/Taskjobs/Transit';
+import Drop from './dashboard/Taskjobs/Droptask';
 
 const useBookings = () => {
   const tabRef = useRef(null);
@@ -1290,64 +1294,48 @@ if (origin && destination) {
                 </div>
                )}
               </div>
-            {/* <div className='details-header'>
-              <h1>Move Requirement</h1>
-              <div className="team-details-my details-content-my">
-                {renderEditableField("Move Coordinators", "Move_Co_Ordinators", "text", editableBooking.Move_Co_Ordinators, "Move_Co_Ordinators")}
-                {renderEditableField("Move Type", "Move_Type", "text", editableBooking.Move_Type, "Move_Type")}
-                {renderEditableField("Contract Reviewed", "Contract_Reviewed", "text", editableBooking.Contract_Reviewed, "Contract_Reviewed")}
-                {renderEditableField("Clubbed Move", "Clubbed_Move", "text", editableBooking.Clubbed_Move, "Clubbed_Move")}
-             
+           
+               <div className='details-header'>
+                  <h1>
+                    Move Requirement{' '}
+                    <span
+                      className='toggle-icon'
+                      onClick={toggleCustomerRequirement1}
+                      style={{ cursor: 'pointer', marginLeft: '10px' }}
+                    >
+                      {isCustomerRequirementExpanded1 ? '-' : '+'}
+                    </span>
+                  </h1>
+                  {isCustomerRequirementExpanded1 && (
+                    <>
+                      <div className='team-details-my details-content-my'>
+                        {renderEditableField("Move Coordinators", "Move_Co_Ordinators", "text", editableBooking.Move_Co_Ordinators, "Move_Co_Ordinators")}
+                        {renderEditableField("Move Type", "Move_Type", "text", editableBooking.Move_Type, "Move_Type")}
+                        {renderEditableField("Contract Reviewed", "Contract_Reviewed", "text", editableBooking.Contract_Reviewed, "Contract_Reviewed")}
+                        {renderEditableField("Clubbed Move", "Clubbed_Move", "text", editableBooking.Clubbed_Move, "Clubbed_Move")}
+                        {renderEditableField("Invoice", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")}
+                      </div>
+                      <div>
+                        <TaskManager currentInvoice={editableBooking.INVOICE} /> 
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className='details-header'>
+                  <h1>Pick Up Tasks</h1>
+                  <Ptd currentInvoice={editableBooking.INVOICE}/>
+                  
+                </div>
+                <div className='details-header'>
+                  <h1>Transit Tasks</h1>
+                  <Transit currentInvoice={editableBooking.INVOICE}/>
+                </div>
+                <div className='details-header'>
+                  <h1>Drop Tasks</h1>
+                  <Drop currentInvoice={editableBooking.INVOICE}/>
+                </div>
                 
-                <label>Type Of Job :</label>
-                <select
-                  value={editableBooking.Type_Of_Job}
-                  onChange={(e) => handleTypeOfJobChange(e.target.value)}
-                >
-                  <option value="0">Clear</option>
-                  <option value="1">1 Job</option>
-                  <option value="2">2 Jobs</option>
-                </select>
-              </div>
-            </div>
-
-            
-            {editableBooking.Type_Of_Job === "1" && (
-              <div className='details-header'>
-                <h1>Pick Up & Drop Team Details</h1>
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                  {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                  {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                  {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-                </div>
-              </div>
-            )}
-
-            {editableBooking.Type_Of_Job === "2" && (
-              <>
-                <div className='details-header'>
-                  <h1>Pick Up Job Team Details</h1>
-                  <div className="team-details-my details-content-my">
-                  {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                  {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                  {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                  {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-                  </div>
-                </div>
-
-                <div className='details-header'>
-                  <h1>Drop Job Team Details</h1>
-                  <div className="team-details-my details-content-my">
-                  {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                  {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                  {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                  {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-                  </div>
-                </div>
-              </>
-            )} */}
-            <div  className='details-header'>
+            {/* <div  className='details-header'>
               <h1>Move Requirement <span
                     className="toggle-icon"
                     onClick={toggleCustomerRequirement1}
@@ -1365,76 +1353,7 @@ if (origin && destination) {
                   {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
                 </div>
                )}
-                </div>
-                <div className="booking-details-my"style={{margin:"15px", marginTop:"none"}} >
-                  <div className="details-tabs-my" style={{ background:"white", borderRadius:"10px"}} >
-                    {["Pick Up & Drop Team in Same", "Pick Up & Drop Team in different", "Truck Details", "Storage Details"].map((tab) => (
-                      <button
-                        key={tab}
-                        className={`tab-button-my ${activeTab2 === tab ? "active" : ""}`}
-                        onClick={() => setActiveTab2(tab)}
-                        style={{ marginRight:"0px"}}
-                      >
-                        {tab}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="details-content-container-my">{renderTabContentmovecoordination()}</div>
-                </div>
-              {/* </div> */}
-            {/* </div> */}
-            {/* <div  className='details-header'>
-            <h1>Pick Up & Drop Team Details</h1>
-              <div className="team-details-my details-content-my">
-                {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-              </div>
-            </div>
-            <div  className='details-header'>
-            <h1>Pick Up Job Team Details</h1>
-              <div className="team-details-my details-content-my">
-                {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-              </div>
-            </div>
-            <div  className='details-header'>
-            <h1>Drop Job Team Details</h1>
-              <div className="team-details-my details-content-my">
-                {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-              </div>
-            </div> */}
-            {/* <div  className='details-header'>
-              <h1>Truck Details</h1>
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Truck Details", "Truck_Details", "text", editableBooking.Truck_Details, "Truck_Details")}
-                  {renderEditableField("Truck Owner", "Truck_Owner", "text", editableBooking.Truck_Owner, "Truck_Owner")}
-                  {renderEditableField("Truck Size", "Truck_Types", "text", editableBooking.Truck_Types, "Truck_Types")}
-                  {renderEditableField("Hub", "Hub", "text", editableBooking.Hub, "Hub")}
-                  {renderEditableField("Truck Capacity", "Truck_Capacity", "text", editableBooking.Truck_Capacity, "Truck_Capacity")}
-                </div>
-            </div>
-            <div  className='details-header'>
-              <h1>Storage</h1>
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Storage", "Storage", "text", editableBooking.Storage, "Storage")}
-                  {renderEditableField("Storage Duration", "Storage_Duration", "text", editableBooking.Storage_Duration, "Storage_Duration")}
-                  {renderEditableField("Storage Location", "Storage_Location", "text", editableBooking.Storage_Location, "Storage_Location")}
-                  {renderEditableField("Storage Holder Name", "Storage_Holder_Name", "text", editableBooking.Storage_Holder_Name, "Storage_Holder_Name")}
-                  {renderEditableField("Storage Address", "Storage_Address", "text", editableBooking.Storage_Address, "Storage_Address")}
-                  {renderEditableField("Storage Start Date", "Storage_Start_date", "text", editableBooking.Storage_Start_date, "Storage_Start_date")}
-                  {renderEditableField("Storage End Date", "Storage_End_date", "text", editableBooking.Storage_End_date, "Storage_End_date")}
-                  {renderEditableField("Storage Invoice", "Storage_Invoice", "text", editableBooking.Storage_Invoice, "Storage_Invoice")}
-                  {renderEditableField("Storage Unit", "Storage_Unit", "text", editableBooking.Storage_Unit, "Storage_Unit")}
-                  {renderEditableField("Storage Acess", "Storage_Acess", "text", editableBooking.Storage_Acess, "Storage_Acess")}
-                </div>
-            </div> */}
+               </div> */}
             </>
           );
         case "Move Reviews":
