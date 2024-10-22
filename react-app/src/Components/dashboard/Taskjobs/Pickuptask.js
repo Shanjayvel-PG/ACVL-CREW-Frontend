@@ -13,22 +13,18 @@ const Ptd = ({ currentInvoice }) => {
     const fetchTaskData = async () => {
       try {
         const response = await axios.get('http://localhost:9000/zoho-data/Task');
-        // console.log('API Response:', response.data); 
         const { dataRows, columnMapping } = response.data;
-
-        // Ensure columnMapping exists
         if (!columnMapping) {
           console.error('API did not return columnMapping');
         } else {
           setColumnMapping(columnMapping);
         }
 
-        // Find all tasks that match the invoice and "Pick up" task type
         const matchingTasks = dataRows.filter(task => task.INVOICE === currentInvoice && task.Task_Type === 'pickUp');
         if (matchingTasks.length > 0) {
           setTasks(matchingTasks);
-          setIsEditing(new Array(matchingTasks.length).fill(false)); // Initialize editing state
-          setEditedData(new Array(matchingTasks.length).fill({})); // Initialize edited data for each task
+          setIsEditing(new Array(matchingTasks.length).fill(false));
+          setEditedData(new Array(matchingTasks.length).fill({}));
         } else {
           console.warn('No matching tasks found for the invoice with Task_Type "Pick up".');
         }

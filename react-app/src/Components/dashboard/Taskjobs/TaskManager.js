@@ -478,7 +478,7 @@ const TaskManager = ({ currentInvoice }) => {
   const checkTaskIdExists = async (taskId) => {
     try {
       const response = await axios.get(`http://localhost:9000/zoho-data/Task/${taskId}`);
-      return response.data.exists;  // Assuming the backend returns a boolean under 'exists'
+      return response.data.exists;  
     } catch (error) {
       console.error('Error checking task ID:', error);
       return false;
@@ -603,7 +603,7 @@ const TaskManager = ({ currentInvoice }) => {
           const invoice = booking.INVOICE;
 
           return (
-            <div key={invoice} style={{ marginBottom: '30px', border: '1px solid #ddd', padding: '10px' }}>
+            <div key={invoice} style={{ background:'#fff',margin:"0 15px",borderRadius:'10px', border: '1px solid #ddd', padding: '10px' }}>
               <div style={{display:'flex'}}>
                 <label style={{ marginLeft: '20px', alignContent:'center'}}> Create Tasks :</label>
                 <div className='view-editbutton' style={{ padding: '10px', display: 'flex' }}>

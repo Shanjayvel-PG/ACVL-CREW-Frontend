@@ -1165,80 +1165,7 @@ if (origin && destination) {
         <label>{label}:  </label><span>{value || "N/A"}</span> 
       </div>
     );
-    const renderTabContentmovecoordination =() =>{
-      switch (activeTab2){
-        case "Pick Up & Drop Team in Same":
-          return(
-            <>
-            <div className='details-header'>
-                <h1>Pick Up & Drop Team Details</h1>
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-                  {renderEditableField("Crew Leader Contact Info", "Crew_Leader_Contact_Info", "text", editableBooking.Crew_Leader_Contact_Info, "Crew_Leader_Contact_Info")}
-                  {renderEditableField("Crew Contacts", "Crew_Contacts", "text", editableBooking.Crew_Contacts, "Crew_Contacts")}
-                </div>
-              </div>
-            </>
-          )
-        case "Pick Up & Drop Team in different":
-          return(
-            <>
-                <div className='details-header'>
-                  <h1>Pick Up Job Team Details</h1>
-                  <div className="team-details-my details-content-my">
-                  {renderEditableField("Pick Up Crew Leader Assigned", "Pick_Up_Crew_Leader_Assigned", "text", editableBooking.Pick_Up_Crew_Leader_Assigned, "Pick_Up_Crew_Leader_Assigned")}
-                  {renderEditableField("Pick Up Crew Leader Contact Info", "Pick_Up_Crew_Leader_Contact_Info", "text", editableBooking.Pick_Up_Crew_Leader_Contact_Info, "Pick_Up_Crew_Leader_Contact_Info")}
-                  {renderEditableField("Pick Up Crew Contacts", "Pick_Up_Crew_Contacts", "text", editableBooking.Pick_Up_Crew_Contacts, "Pick_Up_Crew_Contacts")}
-                  </div>
-                </div>
 
-                <div className='details-header'>
-                  <h1>Drop Job Team Details</h1>
-                  <div className="team-details-my details-content-my">
-                  {renderEditableField("Drop Crew Leader Assigned", "Drop_Crew_Leader_Assigned", "text", editableBooking.Drop_Crew_Leader_Assigned, "Drop_Crew_Leader_Assigned")}
-                  {renderEditableField("Drop Crew Leader Contact Info", "Drop_Crew_Leader_Contact_Info", "text", editableBooking.Drop_Crew_Leader_Contact_Info, "Drop_Crew_Leader_Contact_Info")}
-                  {renderEditableField("Drop Crew Contacts", "Drop_Crew_Contacts", "text", editableBooking.Drop_Crew_Contacts, "Drop_Crew_Contacts")}
-                  </div>
-                </div>
-              </>
-          )
-        case "Truck Details":
-          return(
-            <>
-            <div  className='details-header'>
-              <h1>Truck Details</h1>
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Truck Details", "Truck_Details", "text", editableBooking.Truck_Details, "Truck_Details")}
-                  {renderEditableField("Truck Owner", "Truck_Owner", "text", editableBooking.Truck_Owner, "Truck_Owner")}
-                  {renderEditableField("Truck Size", "Truck_Types", "text", editableBooking.Truck_Types, "Truck_Types")}
-                  {renderEditableField("Hub", "Hub", "text", editableBooking.Hub, "Hub")}
-                  {renderEditableField("Truck Capacity", "Truck_Capacity", "text", editableBooking.Truck_Capacity, "Truck_Capacity")}
-                </div>
-            </div>
-            </>
-          )
-        case "Storage Details":
-          return(
-            <>
-             <div  className='details-header'>
-              <h1>Storage</h1>
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Storage", "Storage", "text", editableBooking.Storage, "Storage")}
-                  {renderEditableField("Storage Duration", "Storage_Duration", "text", editableBooking.Storage_Duration, "Storage_Duration")}
-                  {renderEditableField("Storage Location", "Storage_Location", "text", editableBooking.Storage_Location, "Storage_Location")}
-                  {renderEditableField("Storage Holder Name", "Storage_Holder_Name", "text", editableBooking.Storage_Holder_Name, "Storage_Holder_Name")}
-                  {renderEditableField("Storage Address", "Storage_Address", "text", editableBooking.Storage_Address, "Storage_Address")}
-                  {renderEditableField("Storage Start Date", "Storage_Start_date", "text", editableBooking.Storage_Start_date, "Storage_Start_date")}
-                  {renderEditableField("Storage End Date", "Storage_End_date", "text", editableBooking.Storage_End_date, "Storage_End_date")}
-                  {renderEditableField("Storage Invoice", "Storage_Invoice", "text", editableBooking.Storage_Invoice, "Storage_Invoice")}
-                  {renderEditableField("Storage Unit", "Storage_Unit", "text", editableBooking.Storage_Unit, "Storage_Unit")}
-                  {renderEditableField("Storage Acess", "Storage_Acess", "text", editableBooking.Storage_Acess, "Storage_Acess")}
-                </div>
-            </div>
-            </>
-          )
-      }
-    }
     const renderTabContentforUpdate = () => {
       switch (activeTab1) {
         case "Job Details":
@@ -1257,6 +1184,7 @@ if (origin && destination) {
                 {renderEditableField("severity", "severity", "text", editableBooking.severity, "severity")}
                 {renderEditableField("Connection Type", "Connection_Type", "text", editableBooking.Connection_Type, "Connection_Type")}
                 {renderEditableField("Estimate No", "Estimate_No", "text", editableBooking.Estimate_No, "Estimate_No")}
+                {renderEditableField("Estimate Amount", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
                 {renderEditableField("Move From", "Move_From", "text", editableBooking.Move_From, "Move_From")}
                 {renderEditableField("Move To", "Move_To", "text", editableBooking.Move_To, "Move_To")}
                 {renderEditableField("From Address", "From_Address", "text", editableBooking.From_Address, "From_Address",handleInputChange4)}
@@ -1285,7 +1213,9 @@ if (origin && destination) {
                 {renderEditableField("Dispatch Date", "Dispatch_Date", "text", editableBooking.Dispatch_Date, "Dispatch_Date")}
                 {renderEditableField("Dispatch Comments", "Dispatch_Comments", "text", editableBooking.Dispatch_Comments, "Dispatch_Comments")}
                 {renderEditableField("Special Instruction", "Special_Instruction", "text", editableBooking.Special_Instruction, "Special_Instruction")}
+                {renderEditableField("Estimate Amount", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
                 {renderEditableField("Customer Name", "Customer_Name", "text", editableBooking.Customer_Name, "Customer_Name")}
+                
                 {renderEditableField("Phone Number", "Phone_Number", "text", editableBooking.Phone_Number, "Phone_Number")}
                 {renderEditableField("Alt Phone Number", "Alt_Phone_Number", "text", editableBooking.Alt_Phone_Number, "Alt_Phone_Number")}
                 {renderEditableField("Email Address", "Email_Address", "text", editableBooking.Email_Address, "Email_Address")}

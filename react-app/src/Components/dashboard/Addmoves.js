@@ -39,6 +39,7 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
   const [formData, setFormData] = useState({
     Sales_Agent: '',
     Dispatch_Agent: '',
+    Estimate_Amount_$: '',
     Move_Size: '',
     Customer_Name: '',
     MoveDate: '',
@@ -150,7 +151,8 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
       { name: 'From_City', label: 'From City' },
       { name: 'From_Province', label: 'From Province' },
       { name: 'To_City', label: 'To City' },
-      { name: 'To_Province', label: 'To Province' }
+      { name: 'To_Province', label: 'To Province' },
+      { name: 'Estimate_Amount_$', label: 'Estimate Amount ' }
     ];
   
     let isValid = true;
@@ -368,10 +370,7 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
           <label>Customer Name</label>
           <input type="text" name="Customer_Name" value={formData.Customer_Name} onChange={handleInputChange2} />
         </div>
-        <div>
-          <label>Banner</label>
-          <input type="text" name="Banner" value={formData.Banner} onChange={handleInputChange2} />
-        </div>
+
       <div>
           <label>Move Size</label>
           <Select
@@ -414,10 +413,23 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
           )}
         </div>
         <div>
+          <label>Banner</label>
+          <input type="text" name="Banner" value={formData.Banner} onChange={handleInputChange2} />
+        </div>
+
+        <div>
           <label>Move Date</label>
           <DatePicker
             selected={formData.MoveDate ? new Date(formData.MoveDate) : null}
             onChange={handleDateChange}
+            dateFormat="dd/MM/yyyy"
+          />
+        </div>
+        <div>
+          <label>Booked Date</label>
+          <DatePicker
+            selected={formData.Booked_Date ? new Date(formData.Booked_Date) : null}
+            onChange={handleDateChange1}
             dateFormat="dd/MM/yyyy"
           />
         </div>
@@ -439,6 +451,24 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
           <input type="text" name="Invoicelink" value={formData.Invoicelink} onChange={handleInputChange2} placeholder="Example:  ed3c5eb1-abcd-418d-af53-520c51e91d8b"/>
         </div>
         <div>
+          <label>Estimate No</label>
+          <input type="text" name="Estimate_No" value={formData.Estimate_No} onChange={handleInputChange2} />
+        </div>
+        <div>
+          <label>Estimate Amount</label>
+          <input
+            type="text"
+            name="Estimate_Amount_$"
+            value={formData.Estimate_Amount_$ ? `CA$ ${formData.Estimate_Amount_$}` : ''}
+            onChange={(e) => handleInputChange2({
+              target: {
+                name: 'Estimate_Amount_$',
+                value: e.target.value.replace(/[^0-9.]/g, '')
+              }
+            })}
+          />
+        </div>
+        <div>
           <label>Severity</label>
           <input type="text" name="severity" value={formData.severity} onChange={handleInputChange2} />
         </div>
@@ -447,64 +477,26 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
           <input type="text" name="Connection_Type" value={formData.Connection_Type} onChange={handleInputChange2} />
         </div>
         <div>
-          <label>Estimate No</label>
-          <input type="text" name="Estimate_No" value={formData.Estimate_No} onChange={handleInputChange2} />
-        </div>
-        {/* <div>
+          {!isValidCityStateFormat(inputValue1) && inputValue1.trim() !== '' && (
+              <p style={{ color: 'red' }}>Please enter a valid location in the format: "City, XX"</p>
+            )}
           <label>Move From</label>
-        
           <CreatableSelect
             name="Move_From"
-            value={options1.find(option => option.value === formData.Move_From) || { label: formData.Move_From, value: formData.Move_From }} // This supports custom input
+            value={options1.find(option => option.value === formData.Move_From) || { label: formData.Move_From, value: formData.Move_From }}
             onChange={(selectedOption) => handleInputChange2({
               target: { name: 'Move_From', value: selectedOption?.value }
             })}
-            options={filteredOptions1} 
-            inputValue={inputValue1} 
-            onInputChange={(value) => setInputValue1(value)} 
-            menuIsOpen={inputValue1.length > 0} 
+            options={filteredOptions1}
+            inputValue={inputValue1}
+            onInputChange={(value) => setInputValue1(value)}
+            menuIsOpen={inputValue1.length > 0}
             placeholder="Example: Georgetown, ON"
             isClearable
-            isValidNewOption={(inputValue) => inputValue.trim() !== ''} // Allow non-empty input
+            isValidNewOption={(inputValue) => inputValue.trim() !== '' && isValidCityStateFormat(inputValue)}
+            formatCreateLabel={(inputValue) => isValidCityStateFormat(inputValue) ? `Create "${inputValue}"` : 'Invalid format, use "City, XX"'}
           />
-        </div> */}
-    <div>
-      {!isValidCityStateFormat(inputValue1) && inputValue1.trim() !== '' && (
-          <p style={{ color: 'red' }}>Please enter a valid location in the format: "City, XX"</p>
-        )}
-      <label>Move From</label>
-      <CreatableSelect
-        name="Move_From"
-        value={options1.find(option => option.value === formData.Move_From) || { label: formData.Move_From, value: formData.Move_From }}
-        onChange={(selectedOption) => handleInputChange2({
-          target: { name: 'Move_From', value: selectedOption?.value }
-        })}
-        options={filteredOptions1}
-        inputValue={inputValue1}
-        onInputChange={(value) => setInputValue1(value)}
-        menuIsOpen={inputValue1.length > 0}
-        placeholder="Example: Georgetown, ON"
-        isClearable
-        isValidNewOption={(inputValue) => inputValue.trim() !== '' && isValidCityStateFormat(inputValue)}
-        formatCreateLabel={(inputValue) => isValidCityStateFormat(inputValue) ? `Create "${inputValue}"` : 'Invalid format, use "City, XX"'}
-      />
-    </div>
-        {/* <div>
-          <label>Move From</label>
-          <Select
-            name="Move_From"
-            value={options1.find(option => option.value === formData.Move_From)}
-            onChange={(selectedOption) => handleInputChange2({
-              target: { name: 'Move_From', value: selectedOption?.value }
-            })}
-            options={filteredOptions1} 
-            inputValue1={inputValue1} 
-            onInputChange={(value) => setInputValue1(value)} 
-            menuIsOpen={inputValue1.length > 0} 
-            placeholder="Example: Georgetown, ON"
-            isClearable 
-          />
-        </div> */}
+        </div>
         <div>
           <label>Move To</label>
           <CreatableSelect
@@ -612,6 +604,10 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
           </div>
         </div>
       </div>
+      {/* <div>
+          <label>Banner</label>
+          <input type="text" name="Banner" value={formData.Banner} onChange={handleInputChange2} />
+        </div>
         <div>
           <label>Booked Date</label>
           <DatePicker
@@ -619,7 +615,7 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
             onChange={handleDateChange1}
             dateFormat="dd/MM/yyyy"
           />
-        </div>
+        </div> */}
         <div>
           <label>Assigned To</label>
             <Select
