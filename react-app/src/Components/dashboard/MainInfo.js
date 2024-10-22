@@ -13,6 +13,7 @@ import Addmoves from './Addmoves.js';
 import Storage from './Storage.js';
 import Finance from './Finance/Finance.js';
 import TaskCalendar from './Taskcalendar/Taskcalendar.js';
+import AllMoves from './Allmoves/Allmoves.js';
 
 function Content12({ selectedContent }) {
     const getContent = () => {
@@ -29,10 +30,10 @@ function Content12({ selectedContent }) {
                      <Allbookings/>
                     </>
                 );
-            case 'taskcalender':
+            case 'allmoves':
                 return (
                     <>
-                     <TaskCalendar/>
+                     <AllMoves/>
                     </>
                 );
             case 'postbookings':
@@ -78,17 +79,23 @@ function Content12({ selectedContent }) {
                     </>
                 );
             case 'Storage':
-               return (
+                return (
                     <>
                       <Storage/>
                     </>
-                ); 
+                );
+            case 'jobcalendar':
+                return (
+                    <>
+                      <TaskCalendar/>
+                    </>
+                );
             case 'finance':
-               return (
+                return (
                     <>
                       <Finance/>
                     </>
-                ); 
+                );
             default:
                 return (
                     <>
@@ -105,4 +112,5 @@ function Content12({ selectedContent }) {
 }
 
 export default Content12;
+
 

@@ -16,6 +16,9 @@ import Transit from './dashboard/Taskjobs/Transit';
 import Drop from './dashboard/Taskjobs/Droptask';
 
 const useBookings = () => {
+
+
+
   const tabRef = useRef(null);
   const [columnMapping, setColumnMapping] = useState({});
   const [previousValue, setPreviousValue] = useState(null);
@@ -24,7 +27,7 @@ const useBookings = () => {
   const [bookingsData, setBookingsData] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [editableBooking, setEditableBooking] = useState(null);
-  const [activeTab, setActiveTab] = useState("Customer Details");
+  const [activeTab, setActiveTab] = useState("Notes & Updates");
   const [activeInventoryTab, setActiveInventoryTab] = useState("Updates");
   const [loading, setLoading] = useState(true);
   const [originalBooking, setOriginalBooking] = useState(null);
@@ -45,8 +48,9 @@ const useBookings = () => {
   const [CapacityOptions, setCapacityOptions] = useState([]);
   const [TruckTypeOptions, setTruckTypeOptions] = useState([]);
   const [MoveSizeOption, setMoveSizeOption] = useState([]);
+  const [cancelledReasonOption, setcancelledReasonOption] = useState([]);
   const [assignedToOptions, setAssignedToOptions] = useState([]);
-  const [activeTab1, setActiveTab1] = useState("Job Details");
+  const [activeTab1, setActiveTab1] = useState("Move coordination");
   const [activeTab2, setActiveTab2] = useState();
   const { userDetails, isUserAuthenticated } = useUserContext();
   const rolename = userDetails.roledetails.rolename.toLowerCase(); 
@@ -158,7 +162,9 @@ const useBookings = () => {
         const Hub = response.data.records.map(record => record.Hub);
         const Capacity = response.data.records.map(record => record.Capacity);
         const MoveSize = response.data.records.map(record => record.MoveSize);
+        const cancelledReason = response.data.records.map(record => record.Cancelled_reason);
         setMoveSizeOption(MoveSize);
+        setcancelledReasonOption(cancelledReason);
         setmovecoordinates(name)
         setdispatchagent(Dispatch)
         setStatus_Assigned(Status)
@@ -358,6 +364,10 @@ const useBookings = () => {
   .filter(option => option && option.trim() !== '')
   .map(option => ({ label: option, value: option }));
 
+  const options13 = cancelledReasonOption
+  .filter(option => option && option.trim() !== '')
+  .map(option => ({ label: option, value: option }));
+
   const options6 = TruckTypeOptions
   .filter(option => option && option.trim() !== '')
   .map(option => ({ label: option, value: option }));
@@ -537,11 +547,13 @@ if (origin && destination) {
     }
   };
 
+  const [showCancelledReasonFields, setShowCancelledReasonFields] = useState(false); 
+  const [cancelledReason, setCancelledReason] = useState('');
   const renderEditableField = (label, field, type = "text", value, key) => (
     <div key={key} className="editable-field-container">
       <div className='editable-field-container2'>
         <div className="editable-field-container1">
-          <label>{label}:</label>
+        {!(editStates[field] && field === "Status") && <label>{label}:</label>}
         </div>
       </div>
       <div ref={tabRef} className="input-with-button">
@@ -655,8 +667,7 @@ if (origin && destination) {
             }
             dateFormat="d MMM, yyyy"
           />
-          )
-          :field === "Move_Co_Ordinators" ? (
+          ):field === "Move_Co_Ordinators" ? (
           <Select
           name="Move_Co_Ordinators"
           value={options5.find(option => option.value === value)}
@@ -678,18 +689,97 @@ if (origin && destination) {
           placeholder="Select Dispatch Agent"
           isClearable 
         />
-        ) : field === "Status" ? (
-          <Select
-          name="Status"
-          value={options3.find(option => option.value === value)}
-          onChange={(selectedOption) => {
-            handleInputChange(field, selectedOption?.value); 
-          }}
-          options={options3} 
-          placeholder="Select Status"
-          isClearable 
-        />
-        ):field === "Truck_Details" ? (
+        ) 
+        // : field === "Status" ? (
+        //   <Select
+        //   name="Status"
+        //   value={options3.find(option => option.value === value)}
+        //   onChange={(selectedOption) => {
+        //     handleInputChange(field, selectedOption?.value); 
+        //   }}
+        //   options={options3} 
+        //   placeholder="Select Status"
+        //   isClearable 
+        // />
+        // ) 
+        : field === "Status" ? (
+        <>
+          <div className="editable-field-container">
+            <div className='editable-field-container2' style={{width:'0'}}>
+              <div className="editable-field-container1">
+                <label>Status: </label>
+              </div>
+            </div>
+            <div className='input-with-button'>
+                <Select
+                styles={{width:"400px"}}
+                  name="Status"
+                  value={options3.find(option => option.value === value)}
+                  onChange={(selectedOption) => {
+                    handleInputChange(field, selectedOption?.value);
+                    setShowCancelledReasonFields(selectedOption?.value === "Move Cancelled");
+                  }}
+                  options={options3}
+                  placeholder="Select Status"
+                  isClearable
+                />
+            </div>
+          </div>
+          {showCancelledReasonFields && (
+          <>
+            <div className="editable-field-container">
+              <div className='editable-field-container2' style={{width:'0'}}>
+                <div className="editable-field-container1">
+                  <label>Cancelled reason:</label>
+                </div>
+              </div>
+              <div className='input-with-button'>
+                <Select
+                  id="Cancelled_reason"
+                  name="Cancelled_reason"
+                  value={options13.find(option => option.value === cancelledReason.cancelledReason)}
+                  onChange={(selectedOption) => {
+                  const updatedReason = `${selectedOption?.value}, ${cancelledReason.extraReason}`;
+                    setCancelledReason({
+                        ...cancelledReason,
+                      cancelledReason: selectedOption?.value,
+                    });
+                  handleInputChange('Cancelled_reason', updatedReason); 
+                  }}
+                  options={options13}
+                  placeholder="Select Cancelled Reason"
+                  isClearable
+                />
+              </div>
+            </div>
+            <div className="editable-field-container">
+              <div className='editable-field-container2' style={{width:'0'}}>
+                <div className="editable-field-container1">
+                  <label>Enter extra reason:</label>
+                </div>
+              </div>
+              <div className='input-with-button'>
+                <textarea
+                  id="extraReason"
+                  name="Cancelled_reason"
+                  placeholder="Enter extra reason"
+                  value={cancelledReason.extraReason}
+                  onChange={(e) => {
+                  const updatedReason = `${cancelledReason.cancelledReason}, ${e.target.value}`;
+                    setCancelledReason({
+                        ...cancelledReason,
+                      extraReason: e.target.value,
+                    });
+                  handleInputChange('Cancelled_reason', updatedReason); 
+                  }}
+                  />
+                </div>
+              </div>
+            </> 
+            )}
+        </>
+          ) 
+        : field === "Truck_Details" ? (
           <Select
             name="Truck_Details"
             value={options11.find(option => option.value === formData.Truck_Details)}
@@ -1042,10 +1132,13 @@ if (origin && destination) {
             return (
               <div>  
                 <div className='abcdef'>  
-                    <div className="team-details-my details-content">
-                    {renderEditableField("Assigned To", "Assigned_To", "text", editableBooking.Assigned_To, "Assigned_To")}   
-                    {renderEditableField("Status", "Status", "text", editableBooking.Status, "Status")}   
-                  </div>         
+                <div className="team-details-my details-content"> 
+                  {renderEditableField("Status", "Status", "text", editableBooking.Status, "Status")}
+                  {renderEditableField("Assigned To", "Assigned_To", "text", editableBooking.Assigned_To, "Assigned_To")}
+                  
+                  {editableBooking.Status === "Move Cancelled" && ( 
+                  renderEditableField("Cancelled reason", "Cancelled_reason", "text", editableBooking.Cancelled_reason, "Cancelled_reason") )}
+                 </div>
                   </div> 
                 <div className="booking-details"> 
                   <div className="details-tabs">
@@ -1315,23 +1408,24 @@ if (origin && destination) {
                         {renderEditableField("Clubbed Move", "Clubbed_Move", "text", editableBooking.Clubbed_Move, "Clubbed_Move")}
                         {renderEditableField("Invoice", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")}
                       </div>
-                      <div>
-                        <TaskManager currentInvoice={editableBooking.INVOICE} /> 
-                      </div>
+                     
                     </>
                   )}
                 </div>
+                <div>
+                  <TaskManager currentInvoice={editableBooking.INVOICE} /> 
+                </div>
                 <div className='details-header'>
-                  <h1>Pick Up Tasks</h1>
+                  {/* <h1>Pick Up Tasks</h1> */}
                   <Ptd currentInvoice={editableBooking.INVOICE}/>
                   
                 </div>
                 <div className='details-header'>
-                  <h1>Transit Tasks</h1>
+                  {/* <h1>Transit Tasks</h1> */}
                   <Transit currentInvoice={editableBooking.INVOICE}/>
                 </div>
                 <div className='details-header'>
-                  <h1>Drop Tasks</h1>
+                  {/* <h1>Drop Tasks</h1> */}
                   <Drop currentInvoice={editableBooking.INVOICE}/>
                 </div>
                 

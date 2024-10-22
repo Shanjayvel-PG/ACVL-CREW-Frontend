@@ -1,210 +1,74 @@
-// // import React, { useState } from "react";
-// // import { Calendar, momentLocalizer } from "react-big-calendar";
-// // import moment from "moment";
-// // import useBookings from '../../usebooking';
-// // import "react-big-calendar/lib/css/react-big-calendar.css";
 
-
-// // const localizer = momentLocalizer(moment);
-
-// // const TaskCalendar = () => {
-// //     const {
-// //         bookingsData, selectedBooking, editableBooking, activeTab, activeInventoryTab,
-// //         loading, error, query, viewMode, editStates, isPopupVisible, popupContent,
-// //         setQuery, setViewMode, setEditStates, setIsPopupVisible, setPopupContent,
-// //         handleClosePopup, handlePopupOpen, parseDate, getLastTwoLetters, formatDate,
-// //         handleBookingClick, isFutureOrToday, generateGoogleMapsLink, handleSave,
-// //         handleBookingClick1, toggleEditState, handleInputChange, navigate,parsedDate,
-// //         renderBookingDetails,renderCrewnotesBookingDetails,handleInputChange1,downloadPDF,
-// //       } = useBookings();
-
-// //   const [events, setEvents] = useState([
-// //     {
-// //       title: "ActionController::RoutingError",
-// //       start: new Date(2024, 3, 5, 11, 34), 
-// //       end: new Date(2024, 3, 5, 13, 0),
-// //       desc: "Supersterra",
-// //       color: "red", 
-// //     },
-// //     {
-// //       title: "Przycisk Pobierz",
-// //       start: new Date(2024, 3, 1, 12, 31),
-// //       end: new Date(2024, 3, 1, 13, 30),
-// //       desc: "Automatyzacja",
-// //       color: "green",
-// //     },
-// //     {
-// //       title: "Zalozenie Chata",
-// //       start: new Date(2024, 3, 23, 8, 24),
-// //       end: new Date(2024, 3, 23, 9, 0),
-// //       color: "red",
-// //     },
-// //     {
-// //       title: "Blad statusów",
-// //       start: new Date(2024, 3, 10, 17, 59),
-// //       end: new Date(2024, 3, 10, 19, 0),
-// //       color: "orange",
-// //     },
-// //   ]);
-
-// //   const eventStyleGetter = (event) => {
-// //     let backgroundColor = event.color || "#3174ad"; 
-// //     let style = {
-// //       backgroundColor: backgroundColor,
-// //       borderRadius: "5px",
-// //       opacity: 0.8,
-// //       color: "white",
-// //       border: "0px",
-// //       display: "block",
-// //     };
-// //     return {
-// //       style: style,
-// //     };
-// //   };
-
-// //   return (
-// //     <div className="App">
-// //       <h2>Task Calendar</h2>
-// //       <Calendar
-// //         localizer={localizer}
-// //         events={events}
-// //         startAccessor="start"
-// //         endAccessor="end"
-// //         style={{ height: 600, margin: "50px" }}
-// //         eventPropGetter={eventStyleGetter}
-// //         defaultDate={new Date} 
-// //       />
-// //     </div>
-// //   );
-// // };
-
-// // export default TaskCalendar;
-// import React, { useState, useEffect } from "react";
-// import { Calendar, momentLocalizer } from "react-big-calendar";
-// import moment from "moment";
-// import useBookings from "../../usebooking";  // Assuming you are using a custom hook to get booking data
-// import "react-big-calendar/lib/css/react-big-calendar.css";
-
-// // Initialize localizer for react-big-calendar using moment
-// const localizer = momentLocalizer(moment);
-
-// const TaskCalendar = () => {
-//   const {
-//     bookingsData,parseDate,  // Assuming bookingsData has data like MoveDate, Customer_Name, MoveFrom, MoveTo
-//   } = useBookings();
-
-// //   Helper function to assign colors based on MoveFrom and MoveTo values
-//   const getColorByLocation = (moveFrom, moveTo) => {
-//     if (moveFrom === "London" && moveTo === "Manchester") return "blue";
-//     if (moveFrom === "Birmingham" && moveTo === "London") return "green";
-//     // Add more logic based on locations if needed
-//     return "purple"; // Default color
-//   };
-
-//   const [events, setEvents] = useState([]);
-
-//   useEffect(() => {
-//     if (bookingsData && bookingsData.length > 0) {
-//       const newEvents = bookingsData.map((booking) => {
-//         const { MoveDate, Customer_Name, MoveFrom, MoveTo } = booking;
-//         const startDate = parseDate(MoveDate);  
-
-//         return {
-//           title: Customer_Name,  
-//           start: startDate, 
-//           end: startDate,  
-//           color: getColorByLocation(MoveFrom, MoveTo),
-//         };
-//       });
-//       setEvents(newEvents);
-//     }
-//   }, [bookingsData]);
-
-//   // Custom event style function for different colors
-//   const eventStyleGetter = (event) => {
-//     let backgroundColor = event.color || "#3174ad"; // Default color
-//     let style = {
-//       backgroundColor: backgroundColor,
-//       borderRadius: "5px",
-//       opacity: 0.8,
-//       color: "white",
-//       border: "0px",
-//       display: "block",
-//     };
-//     return {
-//       style: style,
-//     };
-//   };
-
-//   return (
-//     <div className="App">
-//       <h2>Task Calendar</h2>
-//       <Calendar
-//         localizer={localizer}
-//         events={events}
-//         startAccessor="start"
-//         endAccessor="end"
-//         style={{ height: 600, margin: "50px" }}
-//         eventPropGetter={eventStyleGetter}
-//         defaultDate={new Date()}  // Set the default date to today's date
-//       />
-//     </div>
-//   );
-// };
-
-// export default TaskCalendar;
 import React, { useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import useBookings from "../../usebooking"; 
+import useBookings from "../../usebooking";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
 const TaskCalendar = () => {
-  const {
-    bookingsData, parseDate, handleBookingClick1,getLastTwoLetters 
-  } = useBookings();
+  const { bookingsData, parseDate, handleBookingClick1, getLastTwoLetters } =
+    useBookings();
 
-const getColorByLocation = (Move_From) => {
+  const getColorByLocation = (Move_From) => {
     const moveFromLastTwo = getLastTwoLetters(Move_From);
-    if (moveFromLastTwo === "BC") return "blue";       
-    if (moveFromLastTwo === "ON") return "forestgreen"; 
-    if (moveFromLastTwo === "AB") return "crimson";     
-    if (moveFromLastTwo === "SK") return "darkgray";   
-    if (moveFromLastTwo === "QC") return "gold";        
-    if (moveFromLastTwo === "NB") return "lightgreen"; 
-    if (moveFromLastTwo === "NL") return "darkgreen";   
-    if (moveFromLastTwo === "NS") return "teal";        
-    if (moveFromLastTwo === "YT") return "darkblue";   
-    if (moveFromLastTwo === "MB") return "orange";      
-    if (moveFromLastTwo === "NT") return "red";      
-    if (moveFromLastTwo === "PE") return "coral";  
-    
+    if (moveFromLastTwo === "BC") return "blue";
+    if (moveFromLastTwo === "ON") return "forestgreen";
+    if (moveFromLastTwo === "AB") return "crimson";
+    if (moveFromLastTwo === "SK") return "darkgray";
+    if (moveFromLastTwo === "QC") return "gold";
+    if (moveFromLastTwo === "NB") return "lightgreen";
+    if (moveFromLastTwo === "NL") return "darkgreen";
+    if (moveFromLastTwo === "NS") return "teal";
+    if (moveFromLastTwo === "YT") return "darkblue";
+    if (moveFromLastTwo === "MB") return "orange";
+    if (moveFromLastTwo === "NT") return "red";
+    if (moveFromLastTwo === "PE") return "coral";
+
     return "purple"; 
   };
 
+  const locationColors = {
+    BC: "blue",
+    ON: "forestgreen",
+    AB: "crimson",
+    SK: "darkgray",
+    QC: "gold",
+    NB: "lightgreen",
+    NL: "darkgreen",
+    NS: "teal",
+    YT: "darkblue",
+    MB: "orange",
+    NT: "red",
+    PE: "coral",
+    default: "purple",
+  };
+
   const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState(null);
 
   useEffect(() => {
     if (bookingsData && bookingsData.length > 0) {
       const newEvents = bookingsData.map((booking) => {
-        const { MoveDate, Customer_Name, Move_From, Move_To, row_index } = booking;
-        const startDate = parseDate(MoveDate);  
+        const { MoveDate, Customer_Name,INVOICE, Move_From, row_index } = booking;
+        const startDate = parseDate(MoveDate); 
 
         return {
-          title: Customer_Name,  
-          start: startDate, 
-          end: startDate,  
-          color: getColorByLocation(Move_From, Move_To),
+          title:`${Customer_Name} - ${INVOICE}`,
+          start: startDate,
+          end: startDate,
+          color: getColorByLocation(Move_From),
+          moveFrom: getLastTwoLetters(Move_From),
           rowIndex: row_index,
         };
       });
       setEvents(newEvents);
+      setFilteredEvents(newEvents); // Initially show all events
     }
   }, [bookingsData]);
 
-  
   const eventStyleGetter = (event) => {
     let backgroundColor = event.color || "#3174ad"; 
     let style = {
@@ -224,18 +88,64 @@ const getColorByLocation = (Move_From) => {
     handleBookingClick1(event.rowIndex);
   };
 
+  const handleRegionClick = (regionCode) => {
+    if (regionCode === "ALL") {
+      setFilteredEvents(events); 
+      setSelectedRegion(null);  
+    } else {
+      const filtered = events.filter((event) => event.moveFrom === regionCode);
+      setFilteredEvents(filtered);
+      setSelectedRegion(regionCode); 
+    }
+  };
+
   return (
     <div className="App">
-      <h2>Task Calendar</h2>
+      <h1>Job Calendar</h1>
+
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+        {Object.keys(locationColors).map((regionCode) => (
+          <div
+            key={regionCode}
+            onClick={() => handleRegionClick(regionCode)}
+            style={{
+              backgroundColor: locationColors[regionCode],
+              color: "white",
+              padding: "5px 10px",
+              margin: "0 5px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              opacity: selectedRegion === regionCode ? 1 : 0.6,
+            }}
+          >
+            {regionCode}
+          </div>
+        ))}
+        <div
+          onClick={() => handleRegionClick("ALL")}
+          style={{
+            backgroundColor: "gray",
+            color: "white",
+            padding: "5px 10px",
+            margin: "0 5px",
+            cursor: "pointer",
+            borderRadius: "5px",
+            opacity: selectedRegion === null ? 1 : 0.6,
+          }}
+        >
+          Show All
+        </div>
+      </div>
+
       <Calendar
         localizer={localizer}
-        events={events}
+        events={filteredEvents} 
         startAccessor="start"
         endAccessor="end"
         style={{ height: 600, margin: "50px" }}
         eventPropGetter={eventStyleGetter}
-        defaultDate={new Date()}  
-        onSelectEvent={handleEventClick}  
+        defaultDate={new Date()} 
+        onSelectEvent={handleEventClick} 
       />
     </div>
   );

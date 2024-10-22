@@ -77,12 +77,14 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
+
   border-bottom: 1px solid #ccc;
 }
 
 .bookings-header-my {
   background-color: red;
   border-radius: 50px;
+  color: #fff;
   font-weight: bold;
   position: -webkit-sticky; 
   position: sticky;
@@ -743,4 +745,9 @@ justify-content: center;
 width: 100%; 
 border-radius: 10px;
 border: 2px solid black;
+}
+.arrow-icon {
+  margin-right: 8px;
+  color: #000; /* Change the color as needed */
+  font-size: 12px; /* Adjust the size as needed */
 }

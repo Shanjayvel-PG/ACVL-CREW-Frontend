@@ -530,3 +530,33 @@ float: right;
   }
 }
 
+.status1 label {
+  position: relative;
+  width: 50%;
+  display: block;
+  text-align: right;
+  align-items: center;
+  justify-content: center;
+}
+
+.xcvb {
+  position: relative; 
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  /* margin-left: 15px; */
+  width: 100%; 
+}
+
+.xcvb input,
+.xcvb select,
+.xcvb textarea {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 100%; 
+  border-radius: 10px;
+  border: 2px solid #fff;
+}

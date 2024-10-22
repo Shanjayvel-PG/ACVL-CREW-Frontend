@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../My Bookings/mybook.css';
 
-const Ptd = ({ currentInvoice }) => {
+const Drop = ({ currentInvoice }) => {
   const [tasks, setTasks] = useState([]); // Stores an array of matching tasks
   const [isEditing, setIsEditing] = useState([]); // Tracks editing state for each task
   const [editedData, setEditedData] = useState([]); // Stores the edited fields for each task
@@ -13,7 +13,7 @@ const Ptd = ({ currentInvoice }) => {
     const fetchTaskData = async () => {
       try {
         const response = await axios.get('http://localhost:9000/zoho-data/Task');
-        console.log('API Response:', response.data); // Log the response data for debugging
+        // console.log('API Response:', response.data); 
         const { dataRows, columnMapping } = response.data;
 
         // Ensure columnMapping exists
@@ -114,9 +114,9 @@ const Ptd = ({ currentInvoice }) => {
     }
   };
 
-  if (tasks.length === 0) {
-    return <div>Loading task data...</div>;
-  }
+  // if (tasks.length === 0) {
+  //   return <div>Loading task data...</div>;
+  // }
 
   return (
     <>
@@ -170,4 +170,4 @@ const Ptd = ({ currentInvoice }) => {
   );
 };
 
-export default Ptd;
+export default Drop;

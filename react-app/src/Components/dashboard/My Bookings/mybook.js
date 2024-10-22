@@ -79,7 +79,8 @@ const filteredBookingsData = bookingsData
     return parseDate(a.MoveDate) - parseDate(b.MoveDate);
   });
 
-  const totalBookings = filteredBookingsData.length; 
+  // const totalBookings = filteredBookingsData.length; 
+  const [totalBookings, setTotalBookings] = useState(0);
 
   const handleMarkerClick = (bookingId) => {
     handleBookingClick1(bookingId);
@@ -136,6 +137,7 @@ const filteredBookingsData = bookingsData
             renderBookingDetails={renderBookingDetails}
             handleBookingClick1={handleBookingClick1}
             getLastTwoLetters={getLastTwoLetters}
+            setTotalBookings={setTotalBookings}
           />
         )}
 
