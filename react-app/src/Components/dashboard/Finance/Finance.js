@@ -182,19 +182,24 @@ const Finance = () => {
               </tr>
             </thead>
             <tbody>
-              {completedBookings.concat(yetToCompleteBookings).map((booking) => (
-                <tr key={booking.row_index}>
-                  <td onClick={() => handleBookingClick1(booking.row_index)}>
-                    {booking.MoveDate}
-                  </td>
-                  <td>{booking.INVOICE ? booking.INVOICE : '-'}</td>
-                  <td>{booking.Move_Type ? booking.Move_Type : '-'}</td>
-                  <td>{booking.Estimate_Amount_$ ? `CA$ ${booking.Estimate_Amount_$}` : '-'}</td>
-                  <td>{booking.Final_Invoice_Amt_Including_Tax ? `CA$ ${booking.Final_Invoice_Amt_Including_Tax}` : '-'}</td>
-                  <td>{booking.Final_Invoice_Amt_Excluding_Tax ? `CA$ ${booking.Final_Invoice_Amt_Excluding_Tax}` : '-'}</td>
-                </tr>
-              ))}
+              {completedBookings
+                .concat(yetToCompleteBookings)
+                .sort((a, b) => new Date(a.MoveDate) - new Date(b.MoveDate)) // Sort by MoveDate
+                .map((booking) => (
+                  <tr key={booking.row_index}>
+                    <td onClick={() => handleBookingClick1(booking.row_index)}>
+                      {booking.MoveDate}
+                    </td>
+                    <td>{booking.INVOICE ? booking.INVOICE : '-'}</td>
+                    <td>{booking.Move_Type ? booking.Move_Type : '-'}</td>
+                    <td>{booking.Estimate_Amount_$ ? `CA$ ${booking.Estimate_Amount_$}` : '-'}</td>
+                    <td>{booking.Final_Invoice_Amt_Including_Tax ? `CA$ ${booking.Final_Invoice_Amt_Including_Tax}` : '-'}</td>
+                    <td>{booking.Final_Invoice_Amt_Excluding_Tax ? `CA$ ${booking.Final_Invoice_Amt_Excluding_Tax}` : '-'}</td>
+                  </tr>
+                ))}
             </tbody>
+
+           
           </table>
         </div>)}
       </div>

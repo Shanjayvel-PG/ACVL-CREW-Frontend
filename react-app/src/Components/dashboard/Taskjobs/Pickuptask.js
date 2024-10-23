@@ -196,14 +196,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../My Bookings/mybook.css';
-import DatePicker from 'react-datepicker'; // Assuming you're using react-datepicker
+import DatePicker from 'react-datepicker'; 
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Ptd = ({ currentInvoice, refreshPtd }) => {
   const [tasks, setTasks] = useState([]);
-  const [isEditing, setIsEditing] = useState([]); // Track whether the task is in edit mode
-  const [editedData, setEditedData] = useState([]); // Track edited data
+  const [isEditing, setIsEditing] = useState([]); 
+  const [editedData, setEditedData] = useState([]);
   const [columnMapping, setColumnMapping] = useState({});
+  const [collapsed, setCollapsed] = useState([]);
 
   useEffect(() => {
     const fetchTaskData = async () => {
@@ -266,12 +267,21 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
 
       await axios.post('http://localhost:9000/customer-detail/Task', savePayload);
 
-      toggleEdit(taskIndex); // Turn off edit mode after saving
+      toggleEdit(taskIndex); 
       alert('Task details updated successfully.');
     } catch (error) {
       console.error('Error saving task data:', error);
     }
   };
+
+  const toggleCollapse = (taskIndex) => {
+    setCollapsed((prevCollapsed) => {
+      const newCollapsed = [...prevCollapsed];
+      newCollapsed[taskIndex] = !newCollapsed[taskIndex];
+      return newCollapsed;
+    });
+  };
+
   const renderEditableField = (label, field, type = "text", value, taskIndex) => (
     <div key={field} className="editable-field-container">
       <div className="editable-field-container2">
@@ -288,16 +298,33 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
               <input
                 type="text"
                 name={field}
-                value={editedData[taskIndex][field] !== undefined 
-                        ? editedData[taskIndex][field] 
-                        : value} // Use the raw value during editing
+                value={`CA$ ${editedData[taskIndex][field] !== undefined && editedData[taskIndex][field] !== ''
+                  ? editedData[taskIndex][field]
+                  : (value !== undefined && value !== '' ? value : "0.00")}`}
                 onChange={(e) => {
                   const amount = e.target.value.replace(/[^0-9.]/g, ''); 
-                  handleInputChange(taskIndex, field, amount); // Pass raw value here
+                  handleInputChange(taskIndex, field, amount); 
                 }}
                 placeholder="CA$ 0.00"
               />
             </div>
+          ) :   field === "Pick_up_Pick_up_location_reached_time" || field === "Pick_up_start_time_from_Hub" ? (
+            <DatePicker
+              selected={editedData[taskIndex][field] 
+                ? new Date(`1970-01-01T${editedData[taskIndex][field]}:00`)
+                : (value ? new Date(`1970-01-01T${value}:00`) : null)} 
+              onChange={(time) => {
+                const formattedTime = time
+                  ? `${time.getHours()}:${String(time.getMinutes()).padStart(2, "0")}`
+                  : "";
+                handleInputChange(taskIndex, field, formattedTime); 
+              }}
+              showTimeSelect
+              showTimeSelectOnly
+              timeIntervals={15}
+              timeCaption="Time"
+              dateFormat="HH:mm"
+            />
           ) : (
             <input
               type={type}
@@ -305,90 +332,111 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
               onChange={(e) => handleInputChange(taskIndex, field, e.target.value)}
             />
           )
+        ) : field === "Pick_up_Pick_up_location_reached_time" || field === "Pick_up_start_time_from_Hub" ? (
+            <span>{value ? value : 'No time set'}</span>
+        ) : field === "Pick_up_Supply_charges" || field === "Pick_up_Food" || 
+            field === "Pick_up_Truck_cost" || field === "Pick_up_Scaling_fee" || 
+            field === "Pick_up_Fuel_cost" ? (
+            <input 
+                type="text" 
+                value={value ? `CA$ ${value}` : 'CA$ 0.00'} 
+                readOnly 
+            />
         ) : (
-          // Format the value when not in edit mode
-          <span>{value ? `CA$ ${parseFloat(value).toFixed(2)}` : ''}</span>
+          <input
+          type={type}
+          value={value}
+          readOnly
+        />
         )}
       </div>
     </div>
   );
-  
-  // const renderEditableField = (label, field, type = "text", value, taskIndex) => (
-  //   <div key={field} className="editable-field-container">
-  //     <div className="editable-field-container2">
-  //       <div className="editable-field-container1">
-  //         <label>{label}:</label>
-  //       </div>
-  //     </div>
-  //     <div className="input-with-button">
-  //       {isEditing[taskIndex] ? (
-  //         field === "Pick_up_Supply_charges" || field === "Pick_up_Food" ||field === "Pick_up_Truck_cost" ||field === "Pick_up_Scaling_fee" || field === "Pick_up_Fuel_cost" ? (
-  //           <div className="currency-input">
-  //             <input
-  //               type="text"
-  //               name={field}
-  //               value={value ? `CA$ ${value}` : ''}
-  //               onChange={(e) => {
-  //                 const amount = e.target.value.replace(/[^0-9.]/g, ''); 
-  //                 handleInputChange(taskIndex, field, amount); 
-  //               }}
-  //               placeholder="CA$ 0.00"
-  //             />
-  //           </div>
-  //         ) : (
-  //           <input
-  //             type={type}
-  //             value={editedData[taskIndex][field] || value}
-  //             onChange={(e) => handleInputChange(taskIndex, field, e.target.value)}
-  //           />
-  //         )
-  //       ) : (
-  //         <span>{value}</span>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
-  
-
-
+ 
   return (
     <>
       {tasks.map((task, taskIndex) => (
         <div key={task.Task_Id} className="detail-container" style={{ marginBottom: '20px' }}>
-          <div className="detail-header">
-            <h1>{task.Task_Id}</h1>
-            <div className="button-group" style={{marginLeft:'15px'}}>
+          <div className="detail-header" >
+            <h1>{task.Task_Id} 
+              <span 
+                onClick={() => toggleCollapse(taskIndex)} 
+                style={{ cursor: 'pointer', marginLeft: 'auto' }}
+              >
+                {collapsed[taskIndex] ? '-' : '+'}
+            </span>
+            </h1>
+            </div>
+            <div className="button-group" style={{ marginLeft: '15px', display: 'flex', alignItems: 'center' }}>
               <button onClick={() => toggleEdit(taskIndex)}>
                 {isEditing[taskIndex] ? 'Cancel' : 'Edit'}
               </button>
               {isEditing[taskIndex] && (
-                <button onClick={() => handleSave(taskIndex)}>
+                <button onClick={() => handleSave(taskIndex)} style={{ marginLeft: '5px' }}>
                   Save
                 </button>
               )}
             </div>
-          </div>
-          <div className="team-details-my details-content-my">
-            {renderEditableField("Customer Instructions", "Pick_up_Customer_Instructions", "text", task.Pick_up_Customer_Instructions, taskIndex)}
-            {renderEditableField("Crew Leader Assigned", "Pick_up_Crew_Leader_Assigned", "text", task.Pick_up_Crew_Leader_Assigned, taskIndex)}
-            {renderEditableField("Crew Leader Contact", "Pick_up_Crew_Leader_Contact", "text", task.Pick_up_Crew_Leader_Contact, taskIndex)}
-            {renderEditableField("Crew members", "Pick_up_Crew_members", "text", task.Pick_up_Crew_members, taskIndex)}
-            {renderEditableField("Truck Details", "Pick_up_Truck_Details", "text", task.Pick_up_Truck_Details, taskIndex)}
-            {renderEditableField("Truck Owner", "Pick_up_Truck_Owner", "text", task.Pick_up_Truck_Owner, taskIndex)}
-            {renderEditableField("Truck size", "Pick_up_Truck_size", "text", task.Pick_up_Truck_size, taskIndex)}
-            {renderEditableField("Hub", "Pick_up_Hub", "text", task.Pick_up_Hub, taskIndex)}
-            {renderEditableField("Truck Capacity", "Pick_up_Truck_Capacity", "text", task.Pick_up_Truck_Capacity, taskIndex)}
-            {renderEditableField("start time from Hub", "Pick_up_start_time_from_Hub", "text", task.Pick_up_start_time_from_Hub, taskIndex)}
-            {renderEditableField("Pick up location reached time", "Pick_up_Pick_up_location_reached_time", "text", task.Pick_up_Pick_up_location_reached_time, taskIndex)}
-            {renderEditableField("Truck cost", "Pick_up_Truck_cost", "text", task.Pick_up_Truck_cost, taskIndex)}
-            {renderEditableField("Food Cost", "Pick_up_Food", "text", task.Pick_up_Food, taskIndex)}
-            {renderEditableField("Fuel cost", "Pick_up_Fuel_cost", "text", task.Pick_up_Fuel_cost, taskIndex)}
-            {renderEditableField("Scaling fee", "Pick_up_Scaling_fee", "text", task.Pick_up_Scaling_fee, taskIndex)}
-            {renderEditableField("Supply charges", "Pick_up_Supply_charges", "text", task.Pick_up_Supply_charges, taskIndex)}
-          </div>
+          {!collapsed[taskIndex] && ( // Conditionally render task details if not collapsed
+            <div className="team-details-my details-content-my">
+              {renderEditableField("Customer Instructions", "Pick_up_Customer_Instructions", "text", task.Pick_up_Customer_Instructions, taskIndex)}
+              {renderEditableField("Crew Leader Assigned", "Pick_up_Crew_Leader_Assigned", "text", task.Pick_up_Crew_Leader_Assigned, taskIndex)}
+              {renderEditableField("Crew Leader Contact", "Pick_up_Crew_Leader_Contact", "text", task.Pick_up_Crew_Leader_Contact, taskIndex)}
+              {renderEditableField("Crew members", "Pick_up_Crew_members", "text", task.Pick_up_Crew_members, taskIndex)}
+              {renderEditableField("Truck Details", "Pick_up_Truck_Details", "text", task.Pick_up_Truck_Details, taskIndex)}
+              {renderEditableField("Truck Owner", "Pick_up_Truck_Owner", "text", task.Pick_up_Truck_Owner, taskIndex)}
+              {renderEditableField("Truck size", "Pick_up_Truck_size", "text", task.Pick_up_Truck_size, taskIndex)}
+              {renderEditableField("Hub", "Pick_up_Hub", "text", task.Pick_up_Hub, taskIndex)}
+              {renderEditableField("Truck Capacity", "Pick_up_Truck_Capacity", "text", task.Pick_up_Truck_Capacity, taskIndex)}
+              {renderEditableField("start time from Hub", "Pick_up_start_time_from_Hub", "text", task.Pick_up_start_time_from_Hub, taskIndex)}
+              {renderEditableField("Pick up location reached time", "Pick_up_Pick_up_location_reached_time", "text", task.Pick_up_Pick_up_location_reached_time, taskIndex)}
+              {renderEditableField("Truck cost", "Pick_up_Truck_cost", "text", task.Pick_up_Truck_cost, taskIndex)}
+              {renderEditableField("Food Cost", "Pick_up_Food", "text", task.Pick_up_Food, taskIndex)}
+              {renderEditableField("Fuel cost", "Pick_up_Fuel_cost", "text", task.Pick_up_Fuel_cost, taskIndex)}
+              {renderEditableField("Scaling fee", "Pick_up_Scaling_fee", "text", task.Pick_up_Scaling_fee, taskIndex)}
+              {renderEditableField("Supply charges", "Pick_up_Supply_charges", "text", task.Pick_up_Supply_charges, taskIndex)}
+            </div>
+          )}
         </div>
       ))}
     </>
+    // <>
+    //   {tasks.map((task, taskIndex) => (
+    //     <div key={task.Task_Id} className="detail-container" style={{ marginBottom: '20px' }}>
+    //       <div className="detail-header">
+    //         <h1>{task.Task_Id}</h1>
+    //         <div className="button-group" style={{marginLeft:'15px'}}>
+    //           <button onClick={() => toggleEdit(taskIndex)}>
+    //             {isEditing[taskIndex] ? 'Cancel' : 'Edit'}
+    //           </button>
+    //           {isEditing[taskIndex] && (
+    //             <button onClick={() => handleSave(taskIndex)}>
+    //               Save
+    //             </button>
+    //           )}
+    //         </div>
+    //       </div>
+    //       <div className="team-details-my details-content-my">
+    //         {renderEditableField("Customer Instructions", "Pick_up_Customer_Instructions", "text", task.Pick_up_Customer_Instructions, taskIndex)}
+    //         {renderEditableField("Crew Leader Assigned", "Pick_up_Crew_Leader_Assigned", "text", task.Pick_up_Crew_Leader_Assigned, taskIndex)}
+    //         {renderEditableField("Crew Leader Contact", "Pick_up_Crew_Leader_Contact", "text", task.Pick_up_Crew_Leader_Contact, taskIndex)}
+    //         {renderEditableField("Crew members", "Pick_up_Crew_members", "text", task.Pick_up_Crew_members, taskIndex)}
+    //         {renderEditableField("Truck Details", "Pick_up_Truck_Details", "text", task.Pick_up_Truck_Details, taskIndex)}
+    //         {renderEditableField("Truck Owner", "Pick_up_Truck_Owner", "text", task.Pick_up_Truck_Owner, taskIndex)}
+    //         {renderEditableField("Truck size", "Pick_up_Truck_size", "text", task.Pick_up_Truck_size, taskIndex)}
+    //         {renderEditableField("Hub", "Pick_up_Hub", "text", task.Pick_up_Hub, taskIndex)}
+    //         {renderEditableField("Truck Capacity", "Pick_up_Truck_Capacity", "text", task.Pick_up_Truck_Capacity, taskIndex)}
+    //         {renderEditableField("start time from Hub", "Pick_up_start_time_from_Hub", "text", task.Pick_up_start_time_from_Hub, taskIndex)}
+    //         {renderEditableField("Pick up location reached time", "Pick_up_Pick_up_location_reached_time", "text", task.Pick_up_Pick_up_location_reached_time, taskIndex)}
+    //         {renderEditableField("Truck cost", "Pick_up_Truck_cost", "text", task.Pick_up_Truck_cost, taskIndex)}
+    //         {renderEditableField("Food Cost", "Pick_up_Food", "text", task.Pick_up_Food, taskIndex)}
+    //         {renderEditableField("Fuel cost", "Pick_up_Fuel_cost", "text", task.Pick_up_Fuel_cost, taskIndex)}
+    //         {renderEditableField("Scaling fee", "Pick_up_Scaling_fee", "text", task.Pick_up_Scaling_fee, taskIndex)}
+    //         {renderEditableField("Supply charges", "Pick_up_Supply_charges", "text", task.Pick_up_Supply_charges, taskIndex)}
+    //       </div>
+    //     </div>
+    //   ))}
+    // </>
   );
 };
 
