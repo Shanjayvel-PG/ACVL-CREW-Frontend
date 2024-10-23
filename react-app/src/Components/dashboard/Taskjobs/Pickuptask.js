@@ -272,7 +272,6 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
       console.error('Error saving task data:', error);
     }
   };
-
   const renderEditableField = (label, field, type = "text", value, taskIndex) => (
     <div key={field} className="editable-field-container">
       <div className="editable-field-container2">
@@ -282,15 +281,19 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
       </div>
       <div className="input-with-button">
         {isEditing[taskIndex] ? (
-          field === "Pick_up_Supply_charges" || field === "Pick_up_Food" ||field === "Pick_up_Truck_cost" ||field === "Pick_up_Scaling_fee" || field === "Pick_up_Fuel_cost" ? (
+          field === "Pick_up_Supply_charges" || field === "Pick_up_Food" || 
+          field === "Pick_up_Truck_cost" || field === "Pick_up_Scaling_fee" || 
+          field === "Pick_up_Fuel_cost" ? (
             <div className="currency-input">
               <input
                 type="text"
                 name={field}
-                value={value ? `CA$ ${value}` : ''}
+                value={editedData[taskIndex][field] !== undefined 
+                        ? editedData[taskIndex][field] 
+                        : value} // Use the raw value during editing
                 onChange={(e) => {
                   const amount = e.target.value.replace(/[^0-9.]/g, ''); 
-                  handleInputChange(taskIndex, field, amount); 
+                  handleInputChange(taskIndex, field, amount); // Pass raw value here
                 }}
                 placeholder="CA$ 0.00"
               />
@@ -303,11 +306,48 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
             />
           )
         ) : (
-          <span>{value}</span>
+          // Format the value when not in edit mode
+          <span>{value ? `CA$ ${parseFloat(value).toFixed(2)}` : ''}</span>
         )}
       </div>
     </div>
   );
+  
+  // const renderEditableField = (label, field, type = "text", value, taskIndex) => (
+  //   <div key={field} className="editable-field-container">
+  //     <div className="editable-field-container2">
+  //       <div className="editable-field-container1">
+  //         <label>{label}:</label>
+  //       </div>
+  //     </div>
+  //     <div className="input-with-button">
+  //       {isEditing[taskIndex] ? (
+  //         field === "Pick_up_Supply_charges" || field === "Pick_up_Food" ||field === "Pick_up_Truck_cost" ||field === "Pick_up_Scaling_fee" || field === "Pick_up_Fuel_cost" ? (
+  //           <div className="currency-input">
+  //             <input
+  //               type="text"
+  //               name={field}
+  //               value={value ? `CA$ ${value}` : ''}
+  //               onChange={(e) => {
+  //                 const amount = e.target.value.replace(/[^0-9.]/g, ''); 
+  //                 handleInputChange(taskIndex, field, amount); 
+  //               }}
+  //               placeholder="CA$ 0.00"
+  //             />
+  //           </div>
+  //         ) : (
+  //           <input
+  //             type={type}
+  //             value={editedData[taskIndex][field] || value}
+  //             onChange={(e) => handleInputChange(taskIndex, field, e.target.value)}
+  //           />
+  //         )
+  //       ) : (
+  //         <span>{value}</span>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
   
 
 
