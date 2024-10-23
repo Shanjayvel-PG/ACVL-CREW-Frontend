@@ -689,20 +689,20 @@ if (origin && destination) {
           placeholder="Select Dispatch Agent"
           isClearable 
         />
-        ) 
-        // : field === "Status" ? (
-        //   <Select
-        //   name="Status"
-        //   value={options3.find(option => option.value === value)}
-        //   onChange={(selectedOption) => {
-        //     handleInputChange(field, selectedOption?.value); 
-        //   }}
-        //   options={options3} 
-        //   placeholder="Select Status"
-        //   isClearable 
-        // />
-        // ) 
-        : field === "Status" ? (
+        ):field === "Estimate_Amount_$"  || field === "Final_Invoice_Amt_Excluding_Tax" || field === "Final_Invoice_Amt_Including_Tax" ? (
+          <div className="currency-input">
+            <input
+              type="text"
+              name={field}
+              value={value ? `CA$ ${value}` : ''}
+              onChange={(e) => {
+                const amount = e.target.value.replace(/[^0-9.]/g, ''); 
+                handleInputChange(field, amount);
+              }}
+              placeholder="CA$ 0.00"
+            />
+          </div>
+        ): field === "Status" ? (
         <>
           <div className="editable-field-container">
             <div className='editable-field-container2' style={{width:'0'}}>
@@ -912,7 +912,13 @@ if (origin && destination) {
             setActiveField(field); 
             setPreviousValue(value); 
           }} />
-        ) 
+        )  : field === "Estimate_Amount_$" || field === "Final_Invoice_Amt_Excluding_Tax" || field === "Final_Invoice_Amt_Including_Tax" ? (
+          <input 
+              type="text" 
+              value={value ? `CA$ ${value}` : 'CA$ 0.00'} 
+              readOnly 
+          />
+        )
         : field === "Crew_Comments" || field === "Google_Reviews" || field === "CUSTOMER_REVIEW" || field === "To_Address" || field === "From_Address" ? (
           <textarea readOnly
           onClick={() => {
@@ -1172,27 +1178,26 @@ if (origin && destination) {
           return (
             <>
             <div  className='details-header'>
-            <h1>Job Details </h1>
-            <div className="team-details-my details-content-my">
-                {renderEditableField("Sales Agent", "Sales_Agent", "text", editableBooking.Sales_Agent, "Sales_Agent")}
-                {renderEditableField("Dispatch Agent", "Dispatch_Agent", "text", editableBooking.Dispatch_Agent, "Dispatch_Agent")}
-                {renderEditableField("Move Size", "Move_Size", "text", editableBooking.Move_Size, "Move_Size")}
-                {renderEditableField("Move Date", "MoveDate", "date", editableBooking.MoveDate, "MoveDate")}
-                {renderEditableField("Banner", "Banner", "text", editableBooking.Banner, "Banner")}
-                {renderEditableField("Invoice No", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")}
-                {renderEditableField("Invoice Link", "Invoicelink1", "text", editableBooking.Invoicelink1, "Invoicelink1")}
-                {renderEditableField("severity", "severity", "text", editableBooking.severity, "severity")}
-                {renderEditableField("Connection Type", "Connection_Type", "text", editableBooking.Connection_Type, "Connection_Type")}
-                {renderEditableField("Estimate No", "Estimate_No", "text", editableBooking.Estimate_No, "Estimate_No")}
-                {renderEditableField("Estimate Amount", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
-                {renderEditableField("Move From", "Move_From", "text", editableBooking.Move_From, "Move_From")}
-                {renderEditableField("Move To", "Move_To", "text", editableBooking.Move_To, "Move_To")}
-                {renderEditableField("From Address", "From_Address", "text", editableBooking.From_Address, "From_Address",handleInputChange4)}
-                {renderEditableField("To Address", "To_Address", "text", editableBooking.To_Address, "To_Address",handleInputChange4)}
-                {renderEditableField("Booked Date", "Booked_Date", "text", editableBooking.Booked_Date, "Booked_Date")}
-                {renderEditableField("Assigned To", "Assigned_To", "text", editableBooking.Assigned_To, "Assigned_To")}
-            </div>
-           
+              <h1>Job Details </h1>
+              <div className="team-details-my details-content-my">
+                  {renderEditableField("Sales Agent", "Sales_Agent", "text", editableBooking.Sales_Agent, "Sales_Agent")}
+                  {renderEditableField("Dispatch Agent", "Dispatch_Agent", "text", editableBooking.Dispatch_Agent, "Dispatch_Agent")}
+                  {renderEditableField("Move Size", "Move_Size", "text", editableBooking.Move_Size, "Move_Size")}
+                  {renderEditableField("Banner", "Banner", "text", editableBooking.Banner, "Banner")}
+                  {renderEditableField("Move Date", "MoveDate", "date", editableBooking.MoveDate, "MoveDate")}
+                  {renderEditableField("Booked Date", "Booked_Date", "text", editableBooking.Booked_Date, "Booked_Date")}
+                  {renderEditableField("Invoice No", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")}
+                  {renderEditableField("Invoice Link", "Invoicelink1", "text", editableBooking.Invoicelink1, "Invoicelink1")}
+                  {renderEditableField("severity", "severity", "text", editableBooking.severity, "severity")}
+                  {renderEditableField("Connection Type", "Connection_Type", "text", editableBooking.Connection_Type, "Connection_Type")}
+                  {renderEditableField("Estimate No", "Estimate_No", "text", editableBooking.Estimate_No, "Estimate_No")}
+                  {renderEditableField("Estimate Amount", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
+                  {renderEditableField("Move From", "Move_From", "text", editableBooking.Move_From, "Move_From")}
+                  {renderEditableField("Move To", "Move_To", "text", editableBooking.Move_To, "Move_To")}
+                  {renderEditableField("From Address", "From_Address", "text", editableBooking.From_Address, "From_Address",handleInputChange4)}
+                  {renderEditableField("To Address", "To_Address", "text", editableBooking.To_Address, "To_Address",handleInputChange4)}
+                  {renderEditableField("Assigned To", "Assigned_To", "text", editableBooking.Assigned_To, "Assigned_To")}
+              </div>
             </div>
             </>
           );
@@ -1215,7 +1220,6 @@ if (origin && destination) {
                 {renderEditableField("Special Instruction", "Special_Instruction", "text", editableBooking.Special_Instruction, "Special_Instruction")}
                 {renderEditableField("Estimate Amount", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
                 {renderEditableField("Customer Name", "Customer_Name", "text", editableBooking.Customer_Name, "Customer_Name")}
-                
                 {renderEditableField("Phone Number", "Phone_Number", "text", editableBooking.Phone_Number, "Phone_Number")}
                 {renderEditableField("Alt Phone Number", "Alt_Phone_Number", "text", editableBooking.Alt_Phone_Number, "Alt_Phone_Number")}
                 {renderEditableField("Email Address", "Email_Address", "text", editableBooking.Email_Address, "Email_Address")}
@@ -1435,7 +1439,7 @@ if (origin && destination) {
                 </h1>
                {isCustomerRequirementExpanded1 && (
                     <div className="team-details-my details-content-my">
-                    {renderEditableField("Estimate Amount ($)", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
+                    {renderEditableField("Estimate Amount", "Estimate_Amount_$", "text", editableBooking.Estimate_Amount_$, "Estimate_Amount_$")}
                     {renderEditableField("Final Invoice Amt (Including Tax)", "Final_Invoice_Amt_Including_Tax", "text", editableBooking.Final_Invoice_Amt_Including_Tax, "Final_Invoice_Amt_Including_Tax")}
                     {renderEditableField("Final Invoice Amt (Excluding Tax)", "Final_Invoice_Amt_Excluding_Tax", "text", editableBooking.Final_Invoice_Amt_Excluding_Tax, "Final_Invoice_Amt_Excluding_Tax")}
                     {renderEditableField("Truck Cost", "Truck_Cost", "text", editableBooking.Truck_Cost, "Truck_Cost")}

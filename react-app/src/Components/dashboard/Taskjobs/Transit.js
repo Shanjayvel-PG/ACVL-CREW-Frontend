@@ -164,31 +164,27 @@ import axios from 'axios';
 import '../My Bookings/mybook.css';
 
 const Transit = ({ currentInvoice }) => {
-  const [tasks, setTasks] = useState([]); // Stores an array of matching tasks
-  const [isEditing, setIsEditing] = useState([]); // Tracks editing state for each task
-  const [editedData, setEditedData] = useState([]); // Stores the edited fields for each task
+  const [tasks, setTasks] = useState([]); 
+  const [isEditing, setIsEditing] = useState([]); 
+  const [editedData, setEditedData] = useState([]); 
   const [columnMapping, setColumnMapping] = useState({});
 
   useEffect(() => {
     const fetchTaskData = async () => {
       try {
         const response = await axios.get('http://localhost:9000/zoho-data/Task');
-        // console.log('API Response:', response.data);
         const { dataRows, columnMapping } = response.data;
-
-        // Ensure columnMapping exists
         if (!columnMapping) {
           console.error('API did not return columnMapping');
         } else {
           setColumnMapping(columnMapping);
         }
 
-        // Find all tasks that match the invoice and "Pick up" task type
         const matchingTasks = dataRows.filter(task => task.INVOICE === currentInvoice && task.Task_Type === 'transit');
         if (matchingTasks.length > 0) {
           setTasks(matchingTasks);
-          setIsEditing(new Array(matchingTasks.length).fill(false)); // Initialize editing state
-          setEditedData(new Array(matchingTasks.length).fill({})); // Initialize edited data for each task
+          setIsEditing(new Array(matchingTasks.length).fill(false));
+          setEditedData(new Array(matchingTasks.length).fill({}));
         } else {
           console.warn('No matching tasks found for the invoice with Task_Type "Pick up".');
         }

@@ -4,9 +4,9 @@ import axios from 'axios';
 import '../My Bookings/mybook.css';
 
 const Ptd = ({ currentInvoice }) => {
-  const [tasks, setTasks] = useState([]); // Stores an array of matching tasks
-  const [isEditing, setIsEditing] = useState([]); // Tracks editing state for each task
-  const [editedData, setEditedData] = useState([]); // Stores the edited fields for each task
+  const [tasks, setTasks] = useState([]);
+  const [isEditing, setIsEditing] = useState([]);
+  const [editedData, setEditedData] = useState([]);
   const [columnMapping, setColumnMapping] = useState({});
 
   useEffect(() => {
@@ -48,7 +48,6 @@ const Ptd = ({ currentInvoice }) => {
     });
   };
 
-  // Toggle between edit and view mode for a specific task
   const toggleEdit = (taskIndex) => {
     setIsEditing((prevIsEditing) => {
       const newIsEditing = [...prevIsEditing];
@@ -57,7 +56,6 @@ const Ptd = ({ currentInvoice }) => {
     });
   };
 
-  // Save changes for a specific task
   const handleSave = async (taskIndex) => {
     try {
       const task = tasks[taskIndex];
@@ -79,7 +77,6 @@ const Ptd = ({ currentInvoice }) => {
 
       await axios.post('http://localhost:9000/customer-detail/Task', savePayload);
 
-      // Save successful, exit edit mode
       toggleEdit(taskIndex);
       alert('Task details updated successfully.');
     } catch (error) {
@@ -87,7 +84,6 @@ const Ptd = ({ currentInvoice }) => {
     }
   };
 
-  // Handle task deletion for a specific task
   const handleDelete = async (taskIndex) => {
     try {
       const task = tasks[taskIndex];
@@ -102,7 +98,7 @@ const Ptd = ({ currentInvoice }) => {
       await axios.delete('http://localhost:9000/zoho-data/Task', { data: deletePayload });
 
       alert('Task deleted successfully.');
-      // Remove the deleted task from the state
+
       setTasks(tasks.filter((_, index) => index !== taskIndex));
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -110,9 +106,6 @@ const Ptd = ({ currentInvoice }) => {
     }
   };
 
-  // if (tasks.length === 0) {
-  //   return <div>Loading task data...</div>;
-  // }
 
   return (
     <>
