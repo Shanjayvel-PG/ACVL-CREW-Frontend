@@ -10,10 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import jsPDF from 'jspdf';
 import { useUserContext } from './UserContext';
 import CreatableSelect from 'react-select/creatable';
-import Ptd from './dashboard/Taskjobs/Pickuptask';
-import TaskManager from './dashboard/Taskjobs/TaskManager';
-import Transit from './dashboard/Taskjobs/Transit';
-import Drop from './dashboard/Taskjobs/Droptask';
+import Merg from './dashboard/Taskjobs/Merg';
 
 const useBookings = () => {
 
@@ -1347,22 +1344,9 @@ if (origin && destination) {
                   )}
                 </div>
                 <div>
-                  <TaskManager currentInvoice={editableBooking.INVOICE} /> 
+                  <Merg currentInvoice={editableBooking.INVOICE}/>
                 </div>
-                <div className='details-header'>
-                  {/* <h1>Pick Up Tasks</h1> */}
-                  <Ptd currentInvoice={editableBooking.INVOICE}/>
-                  
-                </div>
-                <div className='details-header'>
-                  {/* <h1>Transit Tasks</h1> */}
-                  <Transit currentInvoice={editableBooking.INVOICE}/>
-                </div>
-                <div className='details-header'>
-                  {/* <h1>Drop Tasks</h1> */}
-                  <Drop currentInvoice={editableBooking.INVOICE}/>
-                </div>
-                
+
             {/* <div  className='details-header'>
               <h1>Move Requirement <span
                     className="toggle-icon"

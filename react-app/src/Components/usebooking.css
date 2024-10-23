@@ -184,9 +184,10 @@ body {
   position: relative; 
   padding: 8px;
   border-radius: 10px;
+  font-weight: bold;
   border: none;
   margin-left: 15px;
-  width: 100%; 
+  width: 50%; 
 }
 
 .input-with-button input,
