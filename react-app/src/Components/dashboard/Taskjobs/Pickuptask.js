@@ -603,6 +603,7 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
       return newEditing;
     });
   };
+  
   const handleSave = async (taskIndex) => {
     setLoading(true);
     try {

@@ -22,19 +22,57 @@ const Pickdrop = ({ currentInvoice, refreshPtd }) => {
     try {
       const response = await axios.get('http://localhost:9000/zoho-data/Task');
       const { dataRows, columnMapping } = response.data;
-
+  
       setColumnMapping(columnMapping);
       const matchingTasks = dataRows.filter(task => task.ID === currentInvoice && task.Task_Type === 'PickUp_Drop');
       if (matchingTasks.length > 0) {
-        setTasks(matchingTasks);
-        setIsEditing(new Array(matchingTasks.length).fill(false)); 
-        setEditedData(new Array(matchingTasks.length).fill({})); 
-        setCollapsed(new Array(matchingTasks.length).fill(false)); 
+        const updatedTasks = matchingTasks.map(task => {
+          if (task.Task_Date) {
+            const [datePart, timePart] = task.Task_Date.split(' ');
+
+            const formattedDate = formatDateToISO(datePart);
+  
+            return {
+              ...task,
+              PickUp_Schedule_Date: formattedDate || '',  
+              PickUp_Schedule_Time: timePart || '',       
+            };
+          }
+          return task;
+        });
+  
+        setTasks(updatedTasks);
+        setIsEditing(new Array(updatedTasks.length).fill(false)); 
+        setEditedData(new Array(updatedTasks.length).fill({})); 
+        setCollapsed(new Array(updatedTasks.length).fill(false)); 
       }
     } catch (error) {
       console.error('Error fetching task data:', error);
     }
   };
+
+  const formatDateToISO = (dateString) => {
+    const [day, month, year] = dateString.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  };
+
+//   const fetchTaskData = async () => {
+//     try {
+//       const response = await axios.get('http://localhost:9000/zoho-data/Task');
+//       const { dataRows, columnMapping } = response.data;
+
+//       setColumnMapping(columnMapping);
+//       const matchingTasks = dataRows.filter(task => task.ID === currentInvoice && task.Task_Type === 'PickUp_Drop');
+//       if (matchingTasks.length > 0) {
+//         setTasks(matchingTasks);
+//         setIsEditing(new Array(matchingTasks.length).fill(false)); 
+//         setEditedData(new Array(matchingTasks.length).fill({})); 
+//         setCollapsed(new Array(matchingTasks.length).fill(false)); 
+//       }
+//     } catch (error) {
+//       console.error('Error fetching task data:', error);
+//     }
+//   };
 
   useEffect(() => {
     fetchTaskData();
@@ -92,32 +130,81 @@ const Pickdrop = ({ currentInvoice, refreshPtd }) => {
     try {
       const task = tasks[taskIndex];
       const updatedFields = {};
-
+  
       for (const [columnName, value] of Object.entries(editedData[taskIndex])) {
-        const columnIndex = columnMapping[columnName];
+        let fieldToSave = columnName;
+        let fieldValue = value;
+
+        if (columnName === 'PickUp_Schedule_Date' || columnName === 'PickUp_Schedule_Time') {
+          const date = editedData[taskIndex]['PickUp_Schedule_Date'];
+          const time = editedData[taskIndex]['PickUp_Schedule_Time'];
+  
+          if (date && time) {
+            const combinedDateTime = `${date} ${time}`;
+            fieldToSave = 'Task_Date'; 
+            fieldValue = combinedDateTime;
+          } else {
+            continue;
+          }
+        }
+  
+        const columnIndex = columnMapping[fieldToSave];
         if (columnIndex === undefined) {
-          console.error(`Column mapping not found for: ${columnName}`);
+          console.error(`Column mapping not found for: ${fieldToSave}`);
           continue;
         }
-        updatedFields[columnIndex] = { columnName, value };
+  
+        updatedFields[columnIndex] = { columnName: fieldToSave, value: fieldValue };
       }
-
+  
       const savePayload = {
         rowIndex: task.row_index,
         updatedFields,
       };
-
+  
       await axios.post('http://localhost:9000/customer-detail/Task', savePayload);
-
+  
       toggleEdit(taskIndex); 
       alert('Task details updated successfully.');
       fetchTaskData();
     } catch (error) {
       console.error('Error saving task data:', error);
-    }finally {
+    } finally {
       setLoading(false); 
     }
   };
+
+//   const handleSave = async (taskIndex) => {
+//     setLoading(true);
+//     try {
+//       const task = tasks[taskIndex];
+//       const updatedFields = {};
+
+//       for (const [columnName, value] of Object.entries(editedData[taskIndex])) {
+//         const columnIndex = columnMapping[columnName];
+//         if (columnIndex === undefined) {
+//           console.error(`Column mapping not found for: ${columnName}`);
+//           continue;
+//         }
+//         updatedFields[columnIndex] = { columnName, value };
+//       }
+
+//       const savePayload = {
+//         rowIndex: task.row_index,
+//         updatedFields,
+//       };
+
+//       await axios.post('http://localhost:9000/customer-detail/Task', savePayload);
+
+//       toggleEdit(taskIndex); 
+//       alert('Task details updated successfully.');
+//       fetchTaskData();
+//     } catch (error) {
+//       console.error('Error saving task data:', error);
+//     }finally {
+//       setLoading(false); 
+//     }
+//   };
 
   const toggleCollapse = (taskIndex) => {
     setCollapsed((prevCollapsed) => {
@@ -278,6 +365,8 @@ const Pickdrop = ({ currentInvoice, refreshPtd }) => {
                   {renderEditableField("Truck size", "Truck_size", "text", task.Truck_size, taskIndex)}
                   {renderEditableField("Hub", "Hub", "text", task.Hub, taskIndex)}
                   {renderEditableField("Truck Capacity", "Truck_Capacity", "text", task.Truck_Capacity, taskIndex)}
+                  {renderEditableField("PickUp Schedule Date", "PickUp_Schedule_Date", "date", task.PickUp_Schedule_Date, taskIndex)}
+                  {renderEditableField("PickUp Schedule Time", "PickUp_Schedule_Time", "time", task.PickUp_Schedule_Time, taskIndex)}
                 </div>
                 <hr/>
                 <div  className="team-details-my details-content-my">
