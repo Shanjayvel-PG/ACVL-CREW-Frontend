@@ -275,7 +275,7 @@ const TaskManager = ({ currentInvoice, onCreateSuccess }) => {
 
       return response.data.dataRows.map(row => ({
         taskId: row.Task_Id,
-        invoice: row.INVOICE
+        invoice: row.ID
       }));
     } catch (error) {
       console.error('Error fetching tasks from backend:', error);
@@ -322,7 +322,7 @@ const TaskManager = ({ currentInvoice, onCreateSuccess }) => {
     setTaskData((prevData) => ({
       ...prevData,
       [newTaskId]: {
-        INVOICE: invoice,
+        ID: invoice,
         Task_Id: newTaskId,
         Task_Type: type,
       },
@@ -354,71 +354,54 @@ const TaskManager = ({ currentInvoice, onCreateSuccess }) => {
   return (
     <div>
       {bookingsData
-        .filter((booking) => booking.INVOICE === currentInvoice) 
+        .filter((booking) => booking.ID === currentInvoice) 
         .map((booking) => {
-          const invoice = booking.INVOICE;
+          const invoice = booking.ID;
 
           return (
             <div key={invoice} style={{ background:'#fff', margin:"0 15px", borderRadius:'10px', border: '1px solid #ddd', padding: '10px' }}>
               <div style={{ display:'flex' }}>
-                <label style={{ marginLeft: '20px', alignContent:'center' }}> Create Tasks :</label>
+                <h1 style={{alignContent:'center'}}>Tasks :</h1>
                 <div className='view-editbutton' style={{ padding: '10px', display: 'flex' }}>
                   <button
-                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '100px' }}
-                    onClick={() => createTask(invoice, 'pickUp')}
+                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '150px' }}
+                    onClick={() => createTask(invoice, 'PickUp_Drop')}
+                  >
+                    Pick Up & Drop
+                  </button>
+                  <button
+                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '150px' }}
+                    onClick={() => createTask(invoice, 'PickUp')}
                   >
                     Pick Up
                   </button>
                   <button
-                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '100px' }}
-                    onClick={() => createTask(invoice, 'transit')}
+                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '150px' }}
+                    onClick={() => createTask(invoice, 'Transit')}
                   >
                     Transit
                   </button>
                   <button
-                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '100px' }}
-                    onClick={() => createTask(invoice, 'drop')}
+                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '150px' }}
+                    onClick={() => createTask(invoice, 'Drop')}
                   >
                     Drop
                   </button>
+                  <button
+                    style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '150px' }}
+                    onClick={() => createTask(invoice, 'Storage')}
+                  >
+                    Storage
+                  </button>
                 </div>
               </div>
-
-              {['pickUp', 'transit', 'drop'].map((type) => (
+              {['PickUp_Drop','PickUp', 'Transit', 'Drop','Storage'].map((type) => (
                 <div key={type}>
                   <ul>
                     {tasks[invoice]?.[type]?.map((task) => (
                       <li key={task.id}>
                         {task.name}{' '}
-                        <div className="team-details-my details-content-my3">
-                          <div>
-                            <label>Invoice</label>
-                            <input
-                              type="text"
-                              name="INVOICE"
-                              value={taskData[task.id]?.INVOICE || ''}
-                              readOnly
-                            />
-                          </div>
-                          <div>
-                            <label>Task Id</label>
-                            <input
-                              type="text"
-                              name="Task_Id"
-                              value={taskData[task.id]?.Task_Id || ''}
-                              readOnly
-                            />
-                          </div>
-                          <div>
-                            <label>Task Type</label>
-                            <input
-                              type="text"
-                              name="Task_Type"
-                              value={taskData[task.id]?.Task_Type || ''}
-                              readOnly
-                            />
-                          </div>
-                        </div>
+                        {/*   */}
                         <button
                           onClick={handleCreate}
                           style={{ marginTop: '20px', padding: '10px 20px', background: 'red', color: 'white', borderRadius: '10px' }}

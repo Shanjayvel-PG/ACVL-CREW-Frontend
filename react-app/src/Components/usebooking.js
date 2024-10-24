@@ -441,6 +441,7 @@ const handleTruckDetailsChange = (selectedOption) => {
     }
   }
 };
+
 const handleTypeOfJobChange = (value) => {
   setEditableBooking((prevBooking) => ({
     ...prevBooking,
@@ -1337,14 +1338,14 @@ if (origin && destination) {
                         {renderEditableField("Move Type", "Move_Type", "text", editableBooking.Move_Type, "Move_Type")}
                         {renderEditableField("Contract Reviewed", "Contract_Reviewed", "text", editableBooking.Contract_Reviewed, "Contract_Reviewed")}
                         {renderEditableField("Clubbed Move", "Clubbed_Move", "text", editableBooking.Clubbed_Move, "Clubbed_Move")}
-                        {renderEditableField("Invoice", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")}
+                        {/* {renderEditableField("Invoice", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")} */}
                       </div>
                      
                     </>
                   )}
                 </div>
                 <div>
-                  <Merg currentInvoice={editableBooking.INVOICE}/>
+                  <Merg currentInvoice={editableBooking.ID}/>
                 </div>
 
             {/* <div  className='details-header'>

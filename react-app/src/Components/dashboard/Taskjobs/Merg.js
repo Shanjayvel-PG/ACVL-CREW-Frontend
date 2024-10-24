@@ -4,6 +4,7 @@ import TaskManager from './TaskManager';
 import Ptd from './Pickuptask';
 import Transit from './Transit';
 import Drop from './Droptask';
+import Pickdrop from './Pickupdrop';
 
 const Merg = ({ currentInvoice }) => {
   const [refreshPtd, setRefreshPtd] = useState(false); 
@@ -16,6 +17,9 @@ const Merg = ({ currentInvoice }) => {
     <>
     <div>
       <TaskManager currentInvoice={currentInvoice} onCreateSuccess={handleRefreshPtd} />
+    </div>
+    <div className='details-header'>
+      <Pickdrop currentInvoice={currentInvoice} refreshPtd={refreshPtd} />
     </div>
     <div className='details-header'>
       <Ptd currentInvoice={currentInvoice} refreshPtd={refreshPtd} />

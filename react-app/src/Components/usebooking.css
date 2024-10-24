@@ -297,6 +297,7 @@ body {
   border: 3px solid;
   border-bottom: none;
   border-right: none;
+  width: 100%;
   border-left: none;
 }
 .details-content-container-my h1{
