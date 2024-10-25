@@ -24,7 +24,7 @@ const Pickdrop = ({ currentInvoice, refreshPtd }) => {
       const { dataRows, columnMapping } = response.data;
   
       setColumnMapping(columnMapping);
-      const matchingTasks = dataRows.filter(task => task.ID === currentInvoice && task.Task_Type === 'PickUp_Drop');
+      const matchingTasks = dataRows.filter(task => task.ID === currentInvoice && task.Task_Type === 'PickUp&Drop');
       if (matchingTasks.length > 0) {
         const updatedTasks = matchingTasks.map(task => {
           if (task.Task_Date) {

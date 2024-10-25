@@ -130,8 +130,18 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
     setIsDuplicateInvoice(isDuplicate);
     console.log("Invoice entered:", value, "Is duplicate:", isDuplicate);
   };
+
+  const generateUniqueId = () => {
+    const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+    return `ACVL${randomPart}`;
+  };
+  
   const handleSubmit = async () => {
     setIsLoading(true);
+  
+    // Generate unique ID
+    const uniqueId = generateUniqueId();
+    
     const requiredFields = [
       { name: 'Sales_Agent', label: 'Sales Agent' },
       { name: 'Dispatch_Agent', label: 'Dispatch Agent' },
@@ -157,7 +167,7 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
   
     let isValid = true;
     let missingFields = [];
-
+  
     requiredFields.forEach(field => {
       if (field.name === 'From_City' && !From_City) {
         isValid = false;
@@ -182,16 +192,16 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
         }
       }
     });
-
+  
     const normalizedInvoice = formData.INVOICE.toLowerCase().trim();
     const isDuplicate = existingInvoices.includes(normalizedInvoice);
-
+  
     if (isDuplicate) {
       alert("The invoice number already exists. Please enter a unique invoice number.");
       setIsLoading(false);
       return;
     }
-
+  
     if (!isValid) {
       const newErrors = {
         From_City: !From_City,
@@ -209,7 +219,6 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
         From_Province: false,
         To_City: false,
         To_Province: false,
-        // Reset other errors if needed
       });
     }
   
@@ -218,6 +227,7 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
   
     const updatedFormData = {
       ...formData,
+      ID: uniqueId, // Add the unique ID here
       From_Address,
       To_Address,
       Coordinates_Origin: '', 
@@ -225,7 +235,6 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
     };
   
     try {
-      // Fetch coordinates for From_Address and To_Address asynchronously
       const [fromAddressCoords, toAddressCoords] = await Promise.all([
         fetchCoordinates(From_Address),
         fetchCoordinates(To_Address)
@@ -233,7 +242,7 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
   
       updatedFormData.Coordinates_Origin = fromAddressCoords ? `${fromAddressCoords.lat},${fromAddressCoords.lng}` : '';
       updatedFormData.Coordinates_Destn = toAddressCoords ? `${toAddressCoords.lat},${toAddressCoords.lng}` : '';
-      console.log('Updated FormData with Coordinates:', updatedFormData);
+      
       const response = await fetch('http://localhost:9000/zoho-data/add-row', {
         method: 'POST',
         headers: {
@@ -253,7 +262,132 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
     } finally {
       setIsLoading(false);
     }
- };
+  };
+  
+//   const handleSubmit = async () => {
+//     setIsLoading(true);
+//     const requiredFields = [
+//       { name: 'Sales_Agent', label: 'Sales Agent' },
+//       { name: 'Dispatch_Agent', label: 'Dispatch Agent' },
+//       { name: 'Move_Size', label: 'Move Size' },
+//       { name: 'Customer_Name', label: 'Customer Name' },
+//       { name: 'MoveDate', label: 'Move Date' },
+//       { name: 'INVOICE', label: 'Invoice No' },
+//       { name: 'Invoicelink', label: 'Invoice Link' },
+//       { name: 'Connection_Type', label: 'Connection Type' },
+//       { name: 'Estimate_No', label: 'Estimate No' },
+//       { name: 'Move_From', label: 'Move From' },
+//       { name: 'Move_To', label: 'Move To' },
+//       { name: 'Banner', label: 'Banner' },
+//       { name: 'Booked_Date', label: 'Booked Date' },
+//       { name: 'Status', label: 'Status' },
+//       { name: 'Assigned_To', label: 'Assigned To' },
+//       { name: 'From_City', label: 'From City' },
+//       { name: 'From_Province', label: 'From Province' },
+//       { name: 'To_City', label: 'To City' },
+//       { name: 'To_Province', label: 'To Province' },
+//       { name: 'Estimate_Amount_$', label: 'Estimate Amount ' }
+//     ];
+  
+//     let isValid = true;
+//     let missingFields = [];
+
+//     requiredFields.forEach(field => {
+//       if (field.name === 'From_City' && !From_City) {
+//         isValid = false;
+//         missingFields.push(field.label);
+//       }
+//       if (field.name === 'From_Province' && !From_Province) {
+//         isValid = false;
+//         missingFields.push(field.label);
+//       }
+//       if (field.name === 'To_City' && !To_City) {
+//         isValid = false;
+//         missingFields.push(field.label);
+//       }
+//       if (field.name === 'To_Province' && !To_Province) {
+//         isValid = false;
+//         missingFields.push(field.label);
+//       }
+//       if (['Sales_Agent', 'Dispatch_Agent', 'Move_Size', 'Customer_Name', 'MoveDate', 'INVOICE', 'Invoicelink', 'Connection_Type', 'Estimate_No', 'Move_From', 'Move_To', 'Banner', 'Booked_Date', 'Status', 'Assigned_To'].includes(field.name)) {
+//         if (!formData[field.name]) {
+//           isValid = false;
+//           missingFields.push(field.label);
+//         }
+//       }
+//     });
+
+//     const normalizedInvoice = formData.INVOICE.toLowerCase().trim();
+//     const isDuplicate = existingInvoices.includes(normalizedInvoice);
+
+//     if (isDuplicate) {
+//       alert("The invoice number already exists. Please enter a unique invoice number.");
+//       setIsLoading(false);
+//       return;
+//     }
+
+//     if (!isValid) {
+//       const newErrors = {
+//         From_City: !From_City,
+//         From_Province: !From_Province,
+//         To_City: !To_City,
+//         To_Province: !To_Province,
+//       };
+//       setErrors(newErrors);
+//       alert(`Please fill in the following required fields: ${missingFields.join(', ')}`);
+//       setIsLoading(false);
+//       return;
+//     } else {
+//       setErrors({
+//         From_City: false,
+//         From_Province: false,
+//         To_City: false,
+//         To_Province: false,
+//         // Reset other errors if needed
+//       });
+//     }
+  
+//     const From_Address = `${From_Address_Line}, ${From_City}, ${From_Province}, ${From_Zip_Code}`;
+//     const To_Address = `${To_Address_Line}, ${To_City}, ${To_Province}, ${To_Zip_Code}`;
+  
+//     const updatedFormData = {
+//       ...formData,
+//       From_Address,
+//       To_Address,
+//       Coordinates_Origin: '', 
+//       Coordinates_Destn: ''
+//     };
+  
+//     try {
+//       // Fetch coordinates for From_Address and To_Address asynchronously
+//       const [fromAddressCoords, toAddressCoords] = await Promise.all([
+//         fetchCoordinates(From_Address),
+//         fetchCoordinates(To_Address)
+//       ]);
+  
+//       updatedFormData.Coordinates_Origin = fromAddressCoords ? `${fromAddressCoords.lat},${fromAddressCoords.lng}` : '';
+//       updatedFormData.Coordinates_Destn = toAddressCoords ? `${toAddressCoords.lat},${toAddressCoords.lng}` : '';
+//       console.log('Updated FormData with Coordinates:', updatedFormData);
+//       const response = await fetch('http://localhost:9000/zoho-data/add-row', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify([updatedFormData])
+//       });
+  
+//       if (response.ok) {
+//         alert("Add Moves saved successfully!");
+//         window.location.reload();
+//       } else {
+//         alert("Failed to save Add Moves. Please try again.");
+//       }
+//     } catch (error) {
+//       console.error('Error:', error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//  };
   
   const fetchApiKey = async () => {
     try {
@@ -604,18 +738,6 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
           </div>
         </div>
       </div>
-      {/* <div>
-          <label>Banner</label>
-          <input type="text" name="Banner" value={formData.Banner} onChange={handleInputChange2} />
-        </div>
-        <div>
-          <label>Booked Date</label>
-          <DatePicker
-            selected={formData.Booked_Date ? new Date(formData.Booked_Date) : null}
-            onChange={handleDateChange1}
-            dateFormat="dd/MM/yyyy"
-          />
-        </div> */}
         <div>
           <label>Assigned To</label>
             <Select

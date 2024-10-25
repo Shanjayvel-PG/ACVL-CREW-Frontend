@@ -11,10 +11,9 @@ import jsPDF from 'jspdf';
 import { useUserContext } from './UserContext';
 import CreatableSelect from 'react-select/creatable';
 import Merg from './dashboard/Taskjobs/Merg';
+import Team from './dashboard/Taskjobs/Team';
 
 const useBookings = () => {
-
-
 
   const tabRef = useRef(null);
   const [columnMapping, setColumnMapping] = useState({});
@@ -38,6 +37,7 @@ const useBookings = () => {
   const [movecoordinates, setmovecoordinates] = useState([]);
   const [Status_Assigned, setStatus_Assigned] = useState([]);
   const [MoveOptions, setMoveOptions] = useState([]);
+  const [Movetypeoption, setMovetypeoption] = useState([]);
   const [dispatchagent, setdispatchagent] = useState([]);
   const [TruckDetailsOptions, setTruckDetailsOptions] = useState([]);
   const [OwnerOptions, setOwnerOptions] = useState([]);
@@ -80,31 +80,6 @@ const useBookings = () => {
     Hub: "",
     Truck_Capacity: "",
   });
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (activeField && tabRef.current && !tabRef.current.contains(event.target)) {
-  //       // Save the active field value when clicked outside
-  //       handleSave(activeField, editableBooking[activeField]);
-  //       setActiveField(null); // Reset the active field
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [activeField, editableBooking]);
-
-  // const [activeSection, setActiveSection] = useState("Details"); 
-
-  // const toggleEditState = (field, isEditing = false) => {
-  //   setEditStates((prevStates) => ({
-  //     ...prevStates,
-  //     [field]: isEditing,
-  //   }));
-  // };
 
   const toggleEditState = (field) => {
     setEditStates((prevState) => {
@@ -160,6 +135,8 @@ const useBookings = () => {
         const Capacity = response.data.records.map(record => record.Capacity);
         const MoveSize = response.data.records.map(record => record.MoveSize);
         const cancelledReason = response.data.records.map(record => record.Cancelled_reason);
+        const Movetype = response.data.records.map(record => record.Move_Type);
+        setMovetypeoption(Movetype);
         setMoveSizeOption(MoveSize);
         setcancelledReasonOption(cancelledReason);
         setmovecoordinates(name)
@@ -191,15 +168,7 @@ const useBookings = () => {
     setIsPopupVisible(true);
   };
 
-
   const getLastTwoLetters = (str) => str.slice(-2);
-  // const getLastTwoLetters = (location) => {
-  //   if (!location || location.length < 2) {
-  //     return "";
-  //   }
-  //   return location.slice(-2).toUpperCase();
-  // };
-  
 
   const formatDate = (dateStr) => {
     const monthNames = [
@@ -374,6 +343,10 @@ const useBookings = () => {
   .map(option => ({ label: option, value: option }));
 
   const options8 = HubOptions
+  .filter(option => option && option.trim() !== '')
+  .map(option => ({ label: option, value: option }));
+
+  const options14 = Movetypeoption
   .filter(option => option && option.trim() !== '')
   .map(option => ({ label: option, value: option }));
 
@@ -674,6 +647,17 @@ if (origin && destination) {
           }}
           options={options5} 
           placeholder="Select Move Coordinators"
+          isClearable 
+        />
+        ) :field === "Move_Type" ? (
+          <Select
+          name="Move_Type"
+          value={options14.find(option => option.value === value)}
+          onChange={(selectedOption) => {
+            handleInputChange(field, selectedOption?.value); 
+          }}
+          options={options14} 
+          placeholder="Select Move Type"
           isClearable 
         />
         ) : field === "Dispatch_Agent" ? (
@@ -1095,25 +1079,26 @@ if (origin && destination) {
           </>
         );
       case "Team":
-        return (            <>
+        return (            
+        <>
           <div  className='details-header'>
            <h1>Team</h1>
             <div className="details-content-inventory">
-            {<div className='hello'><a href="#" className="addbutton" onClick={() => handlePopupOpen("Work Order")}>Crew Notes</a></div>}
-            <div className="team-details-my details-content-my">
-              {renderEditableField("Status", "Status", "text", editableBooking.Status, "Status")} 
-              {renderEditableField("Assigned To", "Assigned_To", "text", editableBooking.Assigned_To, "Assigned_To")}
-              {renderEditableField("Sales Agent", "Sales_Agent", "text", editableBooking.Sales_Agent, "Sales_Agent")}
-              {renderEditableField("Move Coordinators", "Move_Co_Ordinators", "text", editableBooking.Move_Co_Ordinators, "Move_Co_Ordinators")}
-              {renderEditableField("Dispatch Agent", "Dispatch_Agent", "text", editableBooking.Dispatch_Agent, "Dispatch_Agent")}
-              {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
-              {renderEditableField("Pick Up Crew Leader Assigned", "Pick_Up_Crew_Leader_Assigned", "text", editableBooking.Pick_Up_Crew_Leader_Assigned, "Pick_Up_Crew_Leader_Assigned")}
-              {renderEditableField("Drop Crew Leader Assigned", "Drop_Crew_Leader_Assigned", "text", editableBooking.Drop_Crew_Leader_Assigned, "Drop_Crew_Leader_Assigned")}
-
+              {<div className='hello'><a href="#" className="addbutton" onClick={() => handlePopupOpen("Work Order")}>Crew Notes</a></div>}
+              <div className="team-details-my details-content-my">
+               {renderEditableField("Status", "Status", "text", editableBooking.Status, "Status")} 
+               {renderEditableField("Assigned To", "Assigned_To", "text", editableBooking.Assigned_To, "Assigned_To")}
+               {renderEditableField("Sales Agent", "Sales_Agent", "text", editableBooking.Sales_Agent, "Sales_Agent")}
+               {renderEditableField("Move Coordinators", "Move_Co_Ordinators", "text", editableBooking.Move_Co_Ordinators, "Move_Co_Ordinators")}
+               {renderEditableField("Dispatch Agent", "Dispatch_Agent", "text", editableBooking.Dispatch_Agent, "Dispatch_Agent")}
+               {/* {renderEditableField("Crew Leader Assigned", "Crew_Leader_Assigned", "text", editableBooking.Crew_Leader_Assigned, "Crew_Leader_Assigned")}
+               {renderEditableField("Pick Up Crew Leader Assigned", "Pick_Up_Crew_Leader_Assigned", "text", editableBooking.Pick_Up_Crew_Leader_Assigned, "Pick_Up_Crew_Leader_Assigned")}
+               {renderEditableField("Drop Crew Leader Assigned", "Drop_Crew_Leader_Assigned", "text", editableBooking.Drop_Crew_Leader_Assigned, "Drop_Crew_Leader_Assigned")} */}
+              </div> 
             </div>
           </div>
-          </div>
-          </>
+          <Team currentInvoice={editableBooking.ID}/>
+        </>
         );
         case "Inventory":
           return (
@@ -1338,35 +1323,13 @@ if (origin && destination) {
                         {renderEditableField("Move Type", "Move_Type", "text", editableBooking.Move_Type, "Move_Type")}
                         {renderEditableField("Contract Reviewed", "Contract_Reviewed", "text", editableBooking.Contract_Reviewed, "Contract_Reviewed")}
                         {renderEditableField("Clubbed Move", "Clubbed_Move", "text", editableBooking.Clubbed_Move, "Clubbed_Move")}
-                        {/* {renderEditableField("Invoice", "INVOICE", "text", editableBooking.INVOICE, "INVOICE")} */}
                       </div>
-                     
                     </>
                   )}
                 </div>
                 <div>
                   <Merg currentInvoice={editableBooking.ID}/>
                 </div>
-
-            {/* <div  className='details-header'>
-              <h1>Move Requirement <span
-                    className="toggle-icon"
-                    onClick={toggleCustomerRequirement1}
-                    style={{ cursor: 'pointer', marginLeft: '10px' }}
-                  >
-                    {isCustomerRequirementExpanded1 ? '-' : '+'}
-                  </span>
-                </h1>
-               {isCustomerRequirementExpanded1 && (
-                <div className="team-details-my details-content-my">
-                  {renderEditableField("Move Coordinators", "Move_Co_Ordinators", "text", editableBooking.Move_Co_Ordinators, "Move_Co_Ordinators")}
-                  {renderEditableField("Move Type", "Move_Type", "text", editableBooking.Move_Type, "Move_Type")}
-                  {renderEditableField("Contract Reviewed", "Contract_Reviewed", "text", editableBooking.Contract_Reviewed, "Contract_Reviewed")}
-                  {renderEditableField("Clubbed Move", "Clubbed_Move", "text", editableBooking.Clubbed_Move, "Clubbed_Move")}
-                  {renderEditableField("Customer Instruction Given", "Customer_Instruction_Given", "text", editableBooking.Customer_Instruction_Given, "Customer_Instruction_Given")}
-                </div>
-               )}
-               </div> */}
             </>
           );
         case "Move Reviews":

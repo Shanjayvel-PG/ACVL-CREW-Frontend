@@ -365,7 +365,7 @@ const TaskManager = ({ currentInvoice, onCreateSuccess }) => {
                 <div className='view-editbutton' style={{ padding: '10px', display: 'flex' }}>
                   <button
                     style={{ background: 'red', borderRadius: '20px', padding: '8px', width: '150px' }}
-                    onClick={() => createTask(invoice, 'PickUp_Drop')}
+                    onClick={() => createTask(invoice, 'PickUp&Drop')}
                   >
                     Pick Up & Drop
                   </button>
@@ -395,7 +395,7 @@ const TaskManager = ({ currentInvoice, onCreateSuccess }) => {
                   </button>
                 </div>
               </div>
-              {['PickUp_Drop','PickUp', 'Transit', 'Drop','Storage'].map((type) => (
+              {['PickUp&Drop','PickUp', 'Transit', 'Drop','Storage'].map((type) => (
                 <div key={type}>
                   <ul>
                     {tasks[invoice]?.[type]?.map((task) => (

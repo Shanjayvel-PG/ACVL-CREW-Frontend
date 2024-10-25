@@ -765,7 +765,7 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
   return (
     <>
       {tasks.map((task, taskIndex) => (
-        <div key={task.Task_Id} className="detail-container" style={{ marginBottom: '20px' }}>
+        <div key={task.Task_Id} className="detail-container" style={{ marginBottom: '20px'  }}>
           <div className="detail-header">
             <h1>{task.Task_Id} 
               <span 
