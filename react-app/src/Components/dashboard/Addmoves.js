@@ -475,9 +475,6 @@ const isValidCityStateFormat = (inputValue) => cityStatePattern.test(inputValue.
       .map(option => ({ label: option, value: option })),
     { label: 'Other', value: 'Other' } 
   ];
-  const finalMoveSize = formData.Move_Size === 'Other' ? formData.Move_Size_Custom : formData.Move_Size;
-
-
     const options1 = MoveOptions
     .filter(option => option && option.trim() !== '')
     .map(option => ({ label: option, value: option }))

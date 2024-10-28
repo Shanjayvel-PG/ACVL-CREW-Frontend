@@ -247,7 +247,7 @@ const useBookings = () => {
     const dataToSend = {
       rowIndex: editableBooking.row_index,
       updatedFields: {},
-      userFirstName: userFirstName 
+      userFirstName: userFirstName
     };
   
     for (const fieldName in editableBooking) {
@@ -1097,7 +1097,7 @@ if (origin && destination) {
               </div> 
             </div>
           </div>
-          <Team currentInvoice={editableBooking.ID}/>
+          <Team currentInvoice={editableBooking.Record_ID}/>
         </>
         );
         case "Inventory":
@@ -1328,7 +1328,7 @@ if (origin && destination) {
                   )}
                 </div>
                 <div>
-                  <Merg currentInvoice={editableBooking.ID}/>
+                  <Merg currentInvoice={editableBooking.Record_ID}/>
                 </div>
             </>
           );

@@ -501,7 +501,7 @@ const Drop = ({ currentInvoice, refreshPtd }) => {
       const { dataRows, columnMapping } = response.data;
 
       setColumnMapping(columnMapping);
-      const matchingTasks = dataRows.filter(task => task.ID === currentInvoice && task.Task_Type === 'Drop');
+      const matchingTasks = dataRows.filter(task => task.Record_ID === currentInvoice && task.Task_Type === 'Drop');
       if (matchingTasks.length > 0) {
         setTasks(matchingTasks);
         setIsEditing(new Array(matchingTasks.length).fill(false)); 

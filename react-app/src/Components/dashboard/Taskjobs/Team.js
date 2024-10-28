@@ -623,7 +623,7 @@ const Team = ({ currentInvoice, refreshPtd }) => {
       ];
 
       const matchingTasks = dataRows
-        .filter(task => task.ID === currentInvoice)
+        .filter(task => task.Record_ID === currentInvoice)
         .map(task => {
           const filteredTask = {};
           relevantColumns.forEach(col => {

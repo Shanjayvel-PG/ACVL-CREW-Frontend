@@ -521,7 +521,7 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
       const { dataRows, columnMapping } = response.data;
   
       setColumnMapping(columnMapping);
-      const matchingTasks = dataRows.filter(task => task.ID === currentInvoice && task.Task_Type === 'PickUp');
+      const matchingTasks = dataRows.filter(task => task.Record_ID === currentInvoice && task.Task_Type === 'PickUp');
       if (matchingTasks.length > 0) {
         const updatedTasks = matchingTasks.map(task => {
           if (task.Task_Date) {
@@ -775,7 +775,7 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
                 {collapsed[taskIndex] ? '+' : '-'}
             </span>
             </h1>
-            </div>
+          </div>
 
           {!collapsed[taskIndex] && ( 
             <div >
@@ -800,8 +800,8 @@ const Ptd = ({ currentInvoice, refreshPtd }) => {
                   {renderEditableField("Truck size", "Pick_up_Truck_size", "text", task.Pick_up_Truck_size, taskIndex)}
                   {renderEditableField("Hub", "Pick_up_Hub", "text", task.Pick_up_Hub, taskIndex)}
                   {renderEditableField("Truck Capacity", "Pick_up_Truck_Capacity", "text", task.Pick_up_Truck_Capacity, taskIndex)}
-                  {renderEditableField("PickUp Schedule Date", "PickUp_Schedule_Date", "date", task.PickUp_Schedule_Date, taskIndex)}
-                  {renderEditableField("PickUp Schedule Time", "PickUp_Schedule_Time", "time", task.PickUp_Schedule_Time, taskIndex)}
+                  {renderEditableField("Schedule Date", "PickUp_Schedule_Date", "date", task.PickUp_Schedule_Date, taskIndex)}
+                  {renderEditableField(" Schedule Time", "PickUp_Schedule_Time", "time", task.PickUp_Schedule_Time, taskIndex)}
                 </div>
                 <hr/>   
                 <div  className="team-details-my details-content-my">
